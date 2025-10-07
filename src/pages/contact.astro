@@ -1,0 +1,416 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client, queries, urlFor } from '../lib/sanity';
+
+// Fetch contact page content from Sanity
+const contactPage = await client.fetch(queries.contactPage);
+
+// Extract content with fallbacks
+const pageTitle = contactPage?.pageTitle || 'Contact Us - Paradise Hotel';
+const heroTitle = contactPage?.heroTitle || 'Contact Us';
+const heroSubtitle = contactPage?.heroSubtitle || 'We\'d love to hear from you';
+const heroImage = contactPage?.heroImage;
+const contactInfo = contactPage?.contactInfo || {};
+const contactForm = contactPage?.contactForm || {};
+const mapSettings = contactPage?.mapSettings || {};
+const additionalInfo = contactPage?.additionalInfo || {};
+
+// Helper function to get image URL safely
+function getImageUrl(image: any, width: number, height: number): string {
+  if (!image?.asset?._ref) {
+    return '/hero-image.jpg'; // fallback image
+  }
+  return urlFor(image).width(width).height(height).url();
+}
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+---
+
+<Layout title={pageTitle}>
+	<main>
+		<!-- Banner Section -->
+		<section class="page-banner">
+			<img src={heroImage ? getImageUrl(heroImage, 1920, 1080) : getUnsplashImage('hotel lobby', 1920, 1080)} alt="Contact us" />
+			<div class="overlay"></div>
+			<div class="heading">
+				<div class="inner">
+					<span class="subtitle">{heroSubtitle}</span>
+					<h1 class="title3">{heroTitle}</h1>
+				</div>
+			</div>
+		</section>
+
+		<!-- Main Content -->
+		<section id="main">
+			<div class="wrapper">
+				<div class="contact-content">
+					<!-- Contact Information -->
+					<div class="contact-info">
+						<h2>Get in Touch</h2>
+						
+						{contactInfo.phone && (
+							<div class="contact-item">
+								<h3>Phone</h3>
+								<p><a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a></p>
+							</div>
+						)}
+
+						{contactInfo.email && (
+							<div class="contact-item">
+								<h3>Email</h3>
+								<p><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></p>
+							</div>
+						)}
+
+						{contactInfo.address && (
+							<div class="contact-item">
+								<h3>Address</h3>
+								<p>{contactInfo.address}</p>
+							</div>
+						)}
+
+						{contactInfo.hours && (
+							<div class="contact-item">
+								<h3>Business Hours</h3>
+								<p>{contactInfo.hours}</p>
+							</div>
+						)}
+
+						{additionalInfo.emergencyContact && (
+							<div class="contact-item emergency">
+								<h3>Emergency Contact</h3>
+								<p>{additionalInfo.emergencyContact}</p>
+							</div>
+						)}
+					</div>
+
+					<!-- Contact Form -->
+					<div class="contact-form-section">
+						<h2>{contactForm.formTitle || 'Send us a Message'}</h2>
+						{contactForm.formDescription && (
+							<p class="form-description">{contactForm.formDescription}</p>
+						)}
+
+						<form class="contact-form" action="/api/contact" method="POST">
+							{contactForm.formFields?.map((field: any) => (
+								<div class="form-group">
+									<label for={field.name}>{field.label}</label>
+									{field.type === 'textarea' ? (
+										<textarea 
+											id={field.name}
+											name={field.name}
+											placeholder={field.placeholder}
+											required={field.required}
+											rows="4"
+										></textarea>
+									) : field.type === 'select' ? (
+										<select 
+											id={field.name}
+											name={field.name}
+											required={field.required}
+										>
+											<option value="">{field.placeholder || 'Please select...'}</option>
+											{field.options?.map((option: string) => (
+												<option value={option}>{option}</option>
+											))}
+										</select>
+									) : (
+										<input 
+											type={field.type}
+											id={field.name}
+											name={field.name}
+											placeholder={field.placeholder}
+											required={field.required}
+										/>
+									)}
+								</div>
+							))}
+
+							{/* Default form fields if none are configured */}
+							{!contactForm.formFields && (
+								<>
+									<div class="form-group">
+										<label for="name">Name</label>
+										<input type="text" id="name" name="name" required />
+									</div>
+									<div class="form-group">
+										<label for="email">Email</label>
+										<input type="email" id="email" name="email" required />
+									</div>
+									<div class="form-group">
+										<label for="phone">Phone</label>
+										<input type="tel" id="phone" name="phone" />
+									</div>
+									<div class="form-group">
+										<label for="subject">Subject</label>
+										<input type="text" id="subject" name="subject" required />
+									</div>
+									<div class="form-group">
+										<label for="message">Message</label>
+										<textarea id="message" name="message" rows="4" required></textarea>
+									</div>
+								</>
+							)}
+
+							<button type="submit" class="btn btn-primary">
+								{contactForm.submitButtonText || 'Send Message'}
+							</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- Map Section -->
+				{mapSettings.showMap && (
+					<div class="map-section">
+						<h2>{mapSettings.mapTitle || 'Find Us'}</h2>
+						<div class="map-container">
+							{mapSettings.latitude && mapSettings.longitude ? (
+								<div 
+									id="contact-map" 
+									class="leaflet-map"
+									data-lat={mapSettings.latitude}
+									data-lng={mapSettings.longitude}
+									data-zoom={mapSettings.zoom || 15}
+									data-marker-zoom={mapSettings.markerZoom || 18}
+								></div>
+							) : (
+								<div class="map-placeholder">
+									<p>Map coordinates not configured. Please add latitude and longitude in the CMS.</p>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
+
+				<!-- Additional Information -->
+				{(additionalInfo.specialInstructions || additionalInfo.parkingInfo) && (
+					<div class="additional-info">
+						<h2>Additional Information</h2>
+						
+						{additionalInfo.specialInstructions && (
+							<div class="info-section">
+								<h3>Special Instructions</h3>
+								<p>{additionalInfo.specialInstructions}</p>
+							</div>
+						)}
+
+						{additionalInfo.parkingInfo && (
+							<div class="info-section">
+								<h3>Parking Information</h3>
+								<p>{additionalInfo.parkingInfo}</p>
+							</div>
+						)}
+					</div>
+				)}
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.contact-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3rem;
+		margin-bottom: 3rem;
+	}
+
+	@media (max-width: 768px) {
+		.contact-content {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+	}
+
+	.contact-info h2,
+	.contact-form-section h2 {
+		margin-bottom: 1.5rem;
+		color: var(--color-primary);
+	}
+
+	.contact-item {
+		margin-bottom: 1.5rem;
+		padding: 1rem;
+		background: var(--color-light);
+		border-radius: 8px;
+	}
+
+	.contact-item h3 {
+		margin-bottom: 0.5rem;
+		color: var(--color-primary);
+		font-size: 1.1rem;
+	}
+
+	.contact-item p {
+		margin: 0;
+	}
+
+	.contact-item a {
+		color: var(--color-primary);
+		text-decoration: none;
+	}
+
+	.contact-item a:hover {
+		text-decoration: underline;
+	}
+
+	.contact-item.emergency {
+		background: #fff3cd;
+		border-left: 4px solid #ffc107;
+	}
+
+	.form-description {
+		margin-bottom: 1.5rem;
+		color: var(--color-text-light);
+	}
+
+	.contact-form {
+		background: var(--color-light);
+		padding: 2rem;
+		border-radius: 8px;
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	.form-group label {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	.form-group input,
+	.form-group textarea,
+	.form-group select {
+		width: 100%;
+		padding: 0.75rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 1rem;
+		font-family: inherit;
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus,
+	.form-group select:focus {
+		outline: none;
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+	}
+
+	.btn-primary {
+		background: var(--color-primary);
+		color: white;
+		padding: 0.75rem 2rem;
+		border: none;
+		border-radius: 4px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.btn-primary:hover {
+		background: var(--color-primary-dark);
+	}
+
+	.map-section {
+		margin: 3rem 0;
+	}
+
+	.map-section h2 {
+		margin-bottom: 1.5rem;
+		color: var(--color-primary);
+	}
+
+	.map-container {
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.map-placeholder {
+		height: 400px;
+		background: #f8f9fa;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--color-text-light);
+	}
+
+	.leaflet-map {
+		height: 400px;
+		width: 100%;
+		border-radius: 8px;
+	}
+
+	.additional-info {
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid #eee;
+	}
+
+	.additional-info h2 {
+		margin-bottom: 1.5rem;
+		color: var(--color-primary);
+	}
+
+	.info-section {
+		margin-bottom: 1.5rem;
+	}
+
+	.info-section h3 {
+		margin-bottom: 0.5rem;
+		color: var(--color-primary);
+		font-size: 1.1rem;
+	}
+
+	.info-section p {
+		margin: 0;
+		line-height: 1.6;
+	}
+</style>
+
+<!-- Leaflet CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+	// Initialize Leaflet map for contact page
+	document.addEventListener('DOMContentLoaded', function() {
+		const mapElement = document.getElementById('contact-map');
+		if (mapElement) {
+			const lat = parseFloat(mapElement.dataset.lat);
+			const lng = parseFloat(mapElement.dataset.lng);
+			const initialZoom = parseInt(mapElement.dataset.zoom) || 15;
+			const markerZoom = parseInt(mapElement.dataset.markerZoom) || 18;
+			
+			if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+				// Initialize the map
+				const map = L.map('contact-map').setView([lat, lng], initialZoom);
+				
+				// Add OpenStreetMap tiles
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map);
+				
+				// Add a marker with click zoom functionality
+				const marker = L.marker([lat, lng]).addTo(map);
+				
+				marker.bindPopup('Hotel Location').openPopup();
+				
+				// Add click event to zoom in when marker is clicked
+				marker.on('click', function() {
+					map.setView([lat, lng], markerZoom);
+				});
+			}
+		}
+	});
+</script>

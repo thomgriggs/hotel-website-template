@@ -1,0 +1,70 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client, queries, urlFor } from '../../lib/sanity';
+
+// Fetch all rooms from Sanity
+const rooms = await client.fetch(queries.rooms);
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+---
+
+<Layout title="Hotel Rooms - Luxury Accommodations">
+  <section id="main">
+    <div class="wrapper">
+      <div class="summary">
+        <div class="inner">
+          <h1><span>Our Rooms & Suites</span></h1>
+          <p>Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.</p>
+        </div>
+      </div>
+      
+      <div class="post-group">
+        {rooms.map((room: any) => (
+          <article class="post post-repeat">
+            <div class="inner">
+              <div class="post-img">
+                {room.images && room.images.length > 0 ? (
+                  <img 
+                    src={urlFor(room.images[0]).width(800).height(600).url()} 
+                    alt={room.images[0].alt || room.title}
+                  />
+                ) : (
+                  <img 
+                    src={getUnsplashImage('luxury hotel bedroom', 800, 600)} 
+                    alt={room.title}
+                  />
+                )}
+              </div>
+              <div class="post-content">
+                <div class="inner">
+                  <h2><span>{room.title}</span></h2>
+                  <span class="subtitle">Starting at ${room.price}/night</span>
+                  <p>{room.description}</p>
+                  {room.amenities && room.amenities.length > 0 && (
+                    <ul class="alt-list">
+                      {room.amenities.slice(0, 3).map((amenity: string) => (
+                        <li>{amenity}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <div class="buttons">
+                    <div>
+                      <a class="btn" href={`/rooms/${room.slug.current}`}>
+                        View Details
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

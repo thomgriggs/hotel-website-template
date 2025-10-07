@@ -1,0 +1,10 @@
+/* Import your CSS architecture in order */
+@import './variables.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+
+/* Tailwind CSS - no default styles applied */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

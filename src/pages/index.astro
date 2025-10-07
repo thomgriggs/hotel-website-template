@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client, queries, urlFor } from '../lib/sanity';
+
+// Fetch site settings and featured content from Sanity
+const siteSettings = await client.fetch(queries.siteSettings);
+const homepage = await client.fetch(queries.homepage);
+const featuredRooms = await client.fetch(queries.featuredRooms);
+const featuredDining = await client.fetch(queries.featuredDining);
+const featuredAmenities = await client.fetch(queries.featuredAmenities);
+
+// Extract homepage content
+const pageTitle = homepage?.pageTitle || 'Home - Paradise Hotel';
+const heroSubtitle = homepage?.heroSubtitle || 'Welcome to';
+const heroTitle = homepage?.heroTitle || 'Paradise Hotel';
+const heroImage = homepage?.heroImage;
+const mainHeading = homepage?.mainHeading || 'Luxury Redefined';
+const mainDescription = homepage?.mainDescription || 'Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.';
+const primaryButtonText = homepage?.primaryButtonText || 'View Rooms';
+const primaryButtonUrl = homepage?.primaryButtonUrl || '/rooms';
+const secondaryButtonText = homepage?.secondaryButtonText || 'Book Now';
+const secondaryButtonUrl = homepage?.secondaryButtonUrl || '/contact';
+const roomsSectionTitle = homepage?.roomsSectionTitle || 'Featured Accommodations';
+const diningSectionTitle = homepage?.diningSectionTitle || 'Exceptional Dining';
+const amenitiesSectionTitle = homepage?.amenitiesSectionTitle || 'World-Class Amenities';
+
+// Helper function to get image URL safely
+function getImageUrl(image: any, width: number, height: number): string {
+  if (!image?.asset?._ref) {
+    return '/hero-image.jpg'; // fallback image
+  }
+  return urlFor(image).width(width).height(height).url();
+}
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+
+// Helper function to map amenity categories to image types
+function getAmenityImageType(category: string): string {
+  const categoryMap: { [key: string]: string } = {
+    'Spa & Wellness': 'spa',
+    'Fitness': 'gym',
+    'Pool': 'pool',
+    'Dining': 'restaurant',
+    'Entertainment': 'bar',
+    'Business': 'conference',
+    'Recreation': 'garden',
+    'Services': 'lobby',
+  };
+  
+  return categoryMap[category] || 'hotel';
+}
+---
+
+<Layout title={pageTitle}>
+	<main>
+		<!-- Banner Section -->
+		<section class="page-banner">
+			<img src={heroImage ? getImageUrl(heroImage, 1920, 1080) : getUnsplashImage('luxury hotel', 1920, 1080)} alt="Luxury hotel exterior" />
+			<div class="overlay"></div>
+			<div class="heading">
+				<div class="inner">
+					<span class="subtitle">{heroSubtitle}</span>
+					<h1 class="title3">{heroTitle}</h1>
+				</div>
+			</div>
+		</section>
+
+		<!-- Main Content -->
+		<section id="main">
+			<div class="wrapper">
+				<div class="summary">
+					<div class="inner">
+						<h1><span>{mainHeading}</span></h1>
+						<p>{mainDescription}</p>
+						<div class="buttons">
+							<div><a class="btn" href={primaryButtonUrl}>{primaryButtonText}</a></div>
+							<div><a class="btn btn-secondary" href={secondaryButtonUrl}>{secondaryButtonText}</a></div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Featured Rooms -->
+				{featuredRooms.length > 0 && (
+					<div class="section">
+						<h2 class="section-title">{roomsSectionTitle}</h2>
+						<div class="post-group">
+							{featuredRooms.slice(0, 2).map((room: any) => (
+								<article class="post post-repeat">
+									<div class="inner">
+										<div class="post-img">
+											{room.images && room.images.length > 0 ? (
+												<img 
+													src={urlFor(room.images[0]).width(800).height(600).url()} 
+													alt={room.images[0].alt || room.title}
+												/>
+											) : (
+												<img 
+													src={getUnsplashImage('luxury hotel bedroom', 800, 600)} 
+													alt={room.title}
+												/>
+											)}
+										</div>
+										<div class="post-content">
+											<div class="inner">
+												<h3><span>{room.title}</span></h3>
+												<span class="subtitle">Starting at ${room.price}/night</span>
+												<p>{room.description}</p>
+												{room.amenities && room.amenities.length > 0 && (
+													<ul class="alt-list">
+														{room.amenities.slice(0, 3).map((amenity: string) => (
+															<li>{amenity}</li>
+														))}
+													</ul>
+												)}
+												<div class="buttons">
+													<div>
+														<a class="btn" href={`/rooms/${room.slug.current}`}>
+															View Details
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</article>
+							))}
+						</div>
+					</div>
+				)}
+				
+				<!-- Featured Dining -->
+				{featuredDining.length > 0 && (
+					<div class="section">
+						<h2 class="section-title">{diningSectionTitle}</h2>
+						<div class="post-group">
+							{featuredDining.slice(0, 2).map((restaurant: any) => (
+								<article class="post post-repeat">
+									<div class="inner">
+										<div class="post-img">
+											{restaurant.images && restaurant.images.length > 0 ? (
+												<img 
+													src={urlFor(restaurant.images[0]).width(800).height(600).url()} 
+													alt={restaurant.images[0].alt || restaurant.name}
+												/>
+											) : (
+												<img 
+													src={getUnsplashImage('restaurant dining', 800, 600)} 
+													alt={restaurant.name}
+												/>
+											)}
+										</div>
+										<div class="post-content">
+											<div class="inner">
+												<h3><span>{restaurant.name}</span></h3>
+												<span class="subtitle">{restaurant.cuisine} • {restaurant.priceRange}</span>
+												<p>{restaurant.description}</p>
+												<div class="buttons">
+													<div>
+														<a class="btn" href={`/dining/${restaurant.slug.current}`}>
+															View Menu
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</article>
+							))}
+						</div>
+					</div>
+				)}
+				
+				<!-- Featured Amenities -->
+				{featuredAmenities.length > 0 && (
+					<div class="section">
+						<h2 class="section-title">{amenitiesSectionTitle}</h2>
+						<div class="post-group">
+							{featuredAmenities.slice(0, 2).map((amenity: any) => (
+								<article class="post post-repeat">
+									<div class="inner">
+										<div class="post-img">
+											{amenity.images && amenity.images.length > 0 ? (
+												<img 
+													src={urlFor(amenity.images[0]).width(800).height(600).url()} 
+													alt={amenity.images[0].alt || amenity.title}
+												/>
+											) : (
+												<img 
+													src={getUnsplashImage(getAmenityImageType(amenity.category), 800, 600)} 
+													alt={amenity.title}
+												/>
+											)}
+										</div>
+										<div class="post-content">
+											<div class="inner">
+												<h3><span>{amenity.title}</span></h3>
+												<span class="subtitle">{amenity.category}</span>
+												<p>{amenity.description}</p>
+												{amenity.features && amenity.features.length > 0 && (
+													<ul class="alt-list">
+														{amenity.features.slice(0, 3).map((feature: string) => (
+															<li>{feature}</li>
+														))}
+													</ul>
+												)}
+												<div class="buttons">
+													<div>
+														<a class="btn" href={`/amenities/${amenity.slug.current}`}>
+															Learn More
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</article>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.section {
+		margin: 4rem 0;
+	}
+	
+	.section-title {
+		text-align: center;
+		margin-bottom: 3rem;
+		color: var(--color_navy);
+		font-size: var(--title_heading-2);
+	}
+	
+	.post-group {
+		display: grid;
+		gap: 3rem;
+	}
+	
+	@media (min-width: 768px) {
+		.post-group {
+			grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		}
+	}
+</style>

@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client, queries, urlFor } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  const rooms = await client.fetch(queries.rooms);
+  
+  return rooms.map((room: any) => ({
+    params: { slug: room.slug.current },
+    props: { room },
+  }));
+}
+
+const { room } = Astro.props;
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+---
+
+<Layout title={`${room.title} - Hotel Rooms`}>
+  <section id="main">
+    <div class="wrapper">
+      <div class="summary">
+        <div class="inner">
+          <h1><span>{room.title}</span></h1>
+          <p>Starting at ${room.price}/night</p>
+        </div>
+      </div>
+      
+      <div class="post-group">
+        <article class="post post-repeat">
+          <div class="inner">
+            <div class="post-img">
+              {room.images && room.images.length > 0 ? (
+                <img 
+                  src={urlFor(room.images[0]).width(1200).height(800).url()} 
+                  alt={room.images[0].alt || room.title}
+                />
+              ) : (
+                <img 
+                  src={getUnsplashImage('luxury hotel bedroom', 1200, 800)} 
+                  alt={room.title}
+                />
+              )}
+            </div>
+            <div class="post-content">
+              <div class="inner">
+                <h2><span>Room Details</span></h2>
+                <p>{room.description}</p>
+                
+                <div class="room-specs">
+                  <div class="spec-item">
+                    <strong>Maximum Occupancy:</strong> {room.maxOccupancy} guests
+                  </div>
+                  <div class="spec-item">
+                    <strong>Room Size:</strong> {room.roomSize} sq ft
+                  </div>
+                  <div class="spec-item">
+                    <strong>Bed Type:</strong> {room.bedType}
+                  </div>
+                  <div class="spec-item">
+                    <strong>Starting Price:</strong> ${room.price}/night
+                  </div>
+                </div>
+                
+                {room.amenities && room.amenities.length > 0 && (
+                  <>
+                    <h3>Amenities</h3>
+                    <ul class="alt-list">
+                      {room.amenities.map((amenity: string) => (
+                        <li>{amenity}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                
+                <div class="buttons">
+                  <div>
+                    <a class="btn" href="/contact">
+                      Book Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .room-specs {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--color_offwhite);
+    border-radius: 8px;
+  }
+  
+  .spec-item {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .spec-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color_navy);
+  }
+</style>
+

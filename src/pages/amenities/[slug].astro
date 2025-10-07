@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client, queries, urlFor } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  const amenities = await client.fetch(queries.amenities);
+  
+  return amenities.map((amenity: any) => ({
+    params: { slug: amenity.slug.current },
+    props: { amenity },
+  }));
+}
+
+const { slug } = Astro.params;
+const amenity = await client.fetch(queries.amenity, { slug });
+
+if (!amenity) {
+  return Astro.redirect('/404'); // Or a custom not found page
+}
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+
+// Helper function to map amenity categories to image types
+function getAmenityImageType(category: string): string {
+  const categoryMap: { [key: string]: string } = {
+    'Spa & Wellness': 'spa',
+    'Fitness': 'gym',
+    'Pool': 'pool',
+    'Dining': 'restaurant',
+    'Entertainment': 'bar',
+    'Business': 'conference',
+    'Recreation': 'garden',
+    'Services': 'lobby',
+  };
+  
+  return categoryMap[category] || 'hotel';
+}
+---
+
+<Layout title={`${amenity.title} - Paradise Hotel`}>
+  <main>
+    <section class="page-banner">
+      {amenity.images && amenity.images.length > 0 ? (
+        <img src={urlFor(amenity.images[0]).width(1920).height(1080).url()} alt={amenity.images[0].alt || amenity.title} />
+      ) : (
+        <img src={getUnsplashImage(getAmenityImageType(amenity.category), 1920, 1080)} alt={amenity.title} />
+      )}
+      <div class="overlay"></div>
+      <div class="heading">
+        <div class="inner">
+          <span class="subtitle">Our Exclusive</span>
+          <h1 class="title3">{amenity.title}</h1>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="wrapper">
+        <div class="post-details">
+          <div class="post-content">
+            <div class="inner">
+              <h2><span>{amenity.title}</span></h2>
+              <span class="subtitle">{amenity.category}</span>
+              <p>{amenity.description}</p>
+
+              {amenity.features && amenity.features.length > 0 && (
+                <>
+                  <h3>Features</h3>
+                  <ul class="alt-list">
+                    {amenity.features.map((feature: string) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              <h3>Amenity Details</h3>
+              <ul class="alt-list">
+                {amenity.location && <li><strong>Location:</strong> {amenity.location}</li>}
+                {amenity.ageRestriction && <li><strong>Age Restriction:</strong> {amenity.ageRestriction}</li>}
+                {amenity.reservationRequired && <li><strong>Reservation Required:</strong> Yes</li>}
+                {amenity.additionalFee && (
+                  <li><strong>Additional Fee:</strong> ${amenity.feeAmount || 'Contact for pricing'}</li>
+                )}
+              </ul>
+
+              <div class="buttons">
+                <div><a class="btn" href="/contact">Contact Us</a></div>
+              </div>
+            </div>
+          </div>
+          {amenity.images && amenity.images.length > 1 && (
+            <div class="post-gallery">
+              {amenity.images.slice(1).map((image: any) => (
+                <img src={urlFor(image).width(800).height(600).url()} alt={image.alt || amenity.title} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+.post-details {
+  display: grid;
+  gap: 3rem;
+  margin: 4rem 0;
+}
+
+.post-gallery {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.post-gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .post-details {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+</style>

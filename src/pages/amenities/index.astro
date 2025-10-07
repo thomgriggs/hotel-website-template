@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client, queries, urlFor } from '../../lib/sanity';
+
+// Fetch all amenities from Sanity
+const amenities = await client.fetch(queries.amenities);
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+
+// Helper function to map amenity categories to image types
+function getAmenityImageType(category: string): string {
+  const categoryMap: { [key: string]: string } = {
+    'Spa & Wellness': 'spa',
+    'Fitness': 'gym',
+    'Pool': 'pool',
+    'Dining': 'restaurant',
+    'Entertainment': 'bar',
+    'Business': 'conference',
+    'Recreation': 'garden',
+    'Services': 'lobby',
+  };
+  
+  return categoryMap[category] || 'hotel';
+}
+---
+
+<Layout title="Hotel Amenities - Services & Facilities">
+  <section id="main">
+    <div class="wrapper">
+      <div class="summary">
+        <div class="inner">
+          <h1><span>Hotel Amenities</span></h1>
+          <p>Discover our world-class facilities and services designed to enhance your stay and provide the ultimate luxury experience.</p>
+        </div>
+      </div>
+      
+      <div class="post-group">
+        {amenities.map((amenity: any) => (
+          <article class="post post-repeat">
+            <div class="inner">
+              <div class="post-img">
+                {amenity.images && amenity.images.length > 0 ? (
+                  <img 
+                    src={urlFor(amenity.images[0]).width(800).height(600).url()} 
+                    alt={amenity.images[0].alt || amenity.title}
+                  />
+                ) : (
+                  <img 
+                    src={getUnsplashImage(getAmenityImageType(amenity.category), 800, 600)} 
+                    alt={amenity.title}
+                  />
+                )}
+              </div>
+              <div class="post-content">
+                <div class="inner">
+                  <h2><span>{amenity.title}</span></h2>
+                  <span class="subtitle">{amenity.category}</span>
+                  <p>{amenity.description}</p>
+                  
+                  <div class="amenity-info">
+                    {amenity.location && (
+                      <div class="info-item">
+                        <strong>Location:</strong> {amenity.location}
+                      </div>
+                    )}
+                    {amenity.ageRestriction && amenity.ageRestriction !== 'all' && (
+                      <div class="info-item">
+                        <strong>Age Restriction:</strong> {amenity.ageRestriction}
+                      </div>
+                    )}
+                    {amenity.reservationRequired && (
+                      <div class="info-item">
+                        <strong>Reservation:</strong> Required
+                      </div>
+                    )}
+                    {amenity.additionalFee && (
+                      <div class="info-item">
+                        <strong>Fee:</strong> ${amenity.feeAmount || 'Contact concierge for pricing'}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {amenity.features && amenity.features.length > 0 && (
+                    <ul class="alt-list">
+                      {amenity.features.slice(0, 4).map((feature: string) => (
+                        <li>{feature}</li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  <div class="buttons">
+                    <div>
+                      <a class="btn" href={`/amenities/${amenity.slug.current}`}>
+                        Learn More
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .amenity-info {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--color_offwhite);
+    border-radius: 6px;
+  }
+  
+  .info-item {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .info-item:last-child {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+// Simplified header without Sanity for now
+const navigation = [
+	{ label: 'Home', url: '/' },
+	{ label: 'Rooms', url: '/rooms' },
+	{ label: 'Dining', url: '/dining' },
+	{ label: 'Amenities', url: '/amenities' },
+	{ label: 'Location', url: '/location' },
+	{ label: 'Contact', url: '/contact' }
+];
+---
+
+<header>
+	<div class="wrapper">
+		<ul class="header-links">
+			<li>
+				<button 
+					class="menu-btn" 
+					aria-label="Open mobile menu" 
+					aria-expanded="false" 
+					aria-controls="mobile-menu"
+					popovertarget="mobile-menu"
+				>
+					<span class="menu-icon" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+					<span class="menu-text">Menu</span>
+				</button>
+			</li>
+		</ul>
+		<a class="logo" href="/">
+			<img height="200" width="800" class="logo-color" src="/logo-placeholder.png" alt="Paradise Hotel" />
+			<img height="200" width="800" class="logo-white" src="/logo-white-placeholder.png" alt="Paradise Hotel" />
+		</a>
+		<ul class="header-links">
+			<li>
+				<a class="btn btn-book" href="/contact">Book Now</a>
+			</li>
+		</ul>
+	</div>
+</header>
+<dialog id="mobile-menu" class="mobile-menu" popover="manual">
+	<div class="inner">
+		<button class="mobile-menu-close" aria-label="Close mobile menu" popovertarget="mobile-menu" popovertargetaction="hide">
+			<span class="material-symbols-outlined">close</span>
+		</button>
+		<ul class="menu menu-trigger">
+			{navigation.map((item: any) => (
+				<li>
+					<a href={item.url}>
+						{item.label}
+					</a>
+				</li>
+			))}
+		</ul>
+		<ul class="menu menu-alt">
+			<!-- Secondary menu items can be added here -->
+		</ul>
+	</div>
+</dialog>

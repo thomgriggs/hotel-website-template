@@ -1,0 +1,206 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/main.css';
+
+export interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Modern Portfolio Template" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Accessibility & SEO -->
+		<meta name="robots" content="index, follow" />
+		<meta name="theme-color" content="#043345" />
+		
+		<!-- Preload critical fonts -->
+		<!-- Enhanced Font Loading - Performance Optimized -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		
+		<!-- Preload critical fonts -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600&display=swap" as="style">
+		
+		<!-- Load fonts with display=swap for better UX -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600&display=swap">
+		
+		<!-- Material Symbols for icons -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+		
+		<title>{title}</title>
+	</head>
+	<body>
+		<a href="#main" class="skiptocontent">Skip to main content</a>
+		
+		<Header />
+		
+		<slot />
+		
+		<Footer />
+		
+		<script>
+			// Enhanced Theme & Font System
+			document.addEventListener('DOMContentLoaded', function() {
+				const themeToggle = document.getElementById('theme-toggle');
+				const themeIcon = themeToggle?.querySelector('.theme-icon');
+				const themeSelect = document.getElementById('theme-select');
+				const fontModeSelect = document.getElementById('font-mode-select');
+				
+				// Initialize color scheme from localStorage or system preference
+				const savedColorScheme = localStorage.getItem('colorScheme');
+				const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const initialColorScheme = savedColorScheme || (systemPrefersDark ? 'dark' : 'light');
+				
+				document.documentElement.style.colorScheme = initialColorScheme;
+				if (themeIcon) {
+					themeIcon.textContent = initialColorScheme === 'dark' ? '☀️' : '🌙';
+				}
+				
+				// Initialize theme preset from localStorage
+				const savedTheme = localStorage.getItem('theme');
+				const initialTheme = savedTheme || 'default';
+				document.documentElement.setAttribute('data-theme', initialTheme);
+				if (themeSelect) {
+					themeSelect.value = initialTheme;
+				}
+				
+				// Initialize font mode from localStorage
+				const savedFontMode = localStorage.getItem('fontMode');
+				const initialFontMode = savedFontMode || 'dual';
+				document.documentElement.setAttribute('data-font-mode', initialFontMode);
+				if (fontModeSelect) {
+					fontModeSelect.value = initialFontMode;
+				}
+				
+				// Color scheme toggle functionality
+				themeToggle?.addEventListener('click', function() {
+					const currentColorScheme = document.documentElement.style.colorScheme;
+					const newColorScheme = currentColorScheme === 'dark' ? 'light' : 'dark';
+					
+					document.documentElement.style.colorScheme = newColorScheme;
+					localStorage.setItem('colorScheme', newColorScheme);
+					
+					if (themeIcon) {
+						themeIcon.textContent = newColorScheme === 'dark' ? '☀️' : '🌙';
+					}
+				});
+				
+				// Theme preset switching functionality
+				themeSelect?.addEventListener('change', function() {
+					const selectedTheme = this.value;
+					document.documentElement.setAttribute('data-theme', selectedTheme);
+					localStorage.setItem('theme', selectedTheme);
+				});
+				
+				// Font mode switching functionality
+				fontModeSelect?.addEventListener('change', function() {
+					const selectedFontMode = this.value;
+					document.documentElement.setAttribute('data-font-mode', selectedFontMode);
+					localStorage.setItem('fontMode', selectedFontMode);
+				});
+				
+				// Performance optimization: Use system fonts for users on slow connections
+				if (navigator.connection && navigator.connection.effectiveType === 'slow-2g') {
+					document.documentElement.setAttribute('data-font-mode', 'performance');
+					if (fontModeSelect) {
+						fontModeSelect.value = 'performance';
+					}
+				}
+			});
+
+			// Mobile Menu with Dialog + Popover API
+			document.addEventListener('DOMContentLoaded', function() {
+				const menuBtn = document.querySelector('.menu-btn');
+				const mobileMenu = document.querySelector('.mobile-menu');
+				const closeBtn = document.querySelector('.mobile-menu-close');
+
+				// Open menu when hamburger is clicked
+				if (menuBtn && mobileMenu) {
+					menuBtn.addEventListener('click', function() {
+						mobileMenu.showModal();
+						menuBtn.setAttribute('aria-expanded', 'true');
+						menuBtn.setAttribute('aria-label', 'Close mobile menu');
+						
+						// Focus the first menu item
+						const firstMenuItem = mobileMenu.querySelector('.menu a');
+						if (firstMenuItem) {
+							firstMenuItem.focus();
+						}
+					});
+				}
+
+				// Close menu when close button is clicked
+				if (closeBtn && mobileMenu) {
+					closeBtn.addEventListener('click', function() {
+						mobileMenu.close();
+						menuBtn.setAttribute('aria-expanded', 'false');
+						menuBtn.setAttribute('aria-label', 'Open mobile menu');
+						
+						// Return focus to menu button
+						menuBtn.focus();
+					});
+				}
+
+				// Close menu when clicking backdrop
+				if (mobileMenu) {
+					mobileMenu.addEventListener('click', function(e) {
+						if (e.target === mobileMenu) {
+							mobileMenu.close();
+							menuBtn.setAttribute('aria-expanded', 'false');
+							menuBtn.setAttribute('aria-label', 'Open mobile menu');
+							menuBtn.focus();
+						}
+					});
+				}
+
+				// Close menu when escape key is pressed
+				document.addEventListener('keydown', function(e) {
+					if (e.key === 'Escape' && mobileMenu.open) {
+						mobileMenu.close();
+						menuBtn.setAttribute('aria-expanded', 'false');
+						menuBtn.setAttribute('aria-label', 'Open mobile menu');
+						menuBtn.focus();
+					}
+				});
+
+				// Focus trapping in the menu
+				if (mobileMenu) {
+					mobileMenu.addEventListener('keydown', function(e) {
+						if (e.key === 'Tab') {
+							const focusableElements = mobileMenu.querySelectorAll('a, button');
+							const firstElement = focusableElements[0];
+							const lastElement = focusableElements[focusableElements.length - 1];
+
+							if (e.shiftKey) {
+								// Shift + Tab
+								if (document.activeElement === firstElement) {
+									e.preventDefault();
+									lastElement.focus();
+								}
+							} else {
+								// Tab
+								if (document.activeElement === lastElement) {
+									e.preventDefault();
+									firstElement.focus();
+								}
+							}
+						}
+					});
+				}
+			});
+
+	</script>
+</body>
+</html>

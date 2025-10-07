@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client, queries, urlFor } from '../../lib/sanity';
+
+// Fetch all dining options from Sanity
+const dining = await client.fetch(queries.dining);
+
+// Unsplash image helper function
+function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
+  // Use Picsum Photos for reliable placeholder images
+  const seed = query.replace(/\s+/g, '').toLowerCase();
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+---
+
+<Layout title="Dining - Restaurants & Bars">
+  <section id="main">
+    <div class="wrapper">
+      <div class="summary">
+        <div class="inner">
+          <h1><span>Dining & Restaurants</span></h1>
+          <p>Indulge in exceptional culinary experiences at our diverse collection of restaurants, bars, and dining venues.</p>
+        </div>
+      </div>
+      
+      <div class="post-group">
+        {dining.map((restaurant: any) => (
+          <article class="post post-repeat">
+            <div class="inner">
+              <div class="post-img">
+                {restaurant.images && restaurant.images.length > 0 ? (
+                  <img 
+                    src={urlFor(restaurant.images[0]).width(800).height(600).url()} 
+                    alt={restaurant.images[0].alt || restaurant.name}
+                  />
+                ) : (
+                  <img 
+                    src={getUnsplashImage('restaurant dining', 800, 600)} 
+                    alt={restaurant.name}
+                  />
+                )}
+              </div>
+              <div class="post-content">
+                <div class="inner">
+                  <h2><span>{restaurant.name}</span></h2>
+                  <span class="subtitle">{restaurant.cuisine} • {restaurant.priceRange}</span>
+                  <p>{restaurant.description}</p>
+                  
+                  <div class="restaurant-info">
+                    {restaurant.location && (
+                      <div class="info-item">
+                        <strong>Location:</strong> {restaurant.location}
+                      </div>
+                    )}
+                    {restaurant.hours && (
+                      <div class="info-item">
+                        <strong>Hours:</strong> {restaurant.hours.dinner || restaurant.hours.lunch || 'Check with concierge'}
+                      </div>
+                    )}
+                    {restaurant.reservations && (
+                      <div class="info-item">
+                        <strong>Reservations:</strong> Recommended
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div class="buttons">
+                    <div>
+                      <a class="btn" href={`/dining/${restaurant.slug.current}`}>
+                        View Menu
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .restaurant-info {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--color_offwhite);
+    border-radius: 6px;
+  }
+  
+  .info-item {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .info-item:last-child {
+    margin-bottom: 0;
+  }
+</style>
