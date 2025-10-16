@@ -622,6 +622,8 @@ function initializePreviewMode() {
 		
 		// Make entire bordered area clickable
 		field.addEventListener('click', (e) => {
+			console.log('Field clicked:', fieldPath, fieldType); // Debug log
+			
 			// Skip editing if in no-edit mode
 			if (document.body.classList.contains('preview-no-edit')) {
 				return; // Allow normal link behavior
@@ -658,7 +660,10 @@ function initializePreviewMode() {
 			}
 			
 			// Show editor
-			(window as any).inlineEditor.showEditor(fieldPath, currentValue, fieldType, currentUrl, contentLabel);
+			const labelText = field.getAttribute('data-content-label') || 'Content';
+			console.log('Calling inlineEditor.showEditor:', fieldPath, currentValue, fieldType, currentUrl, labelText); // Debug log
+			console.log('Inline editor available:', !!(window as any).inlineEditor); // Debug log
+			(window as any).inlineEditor.showEditor(fieldPath, currentValue, fieldType, currentUrl, labelText);
 		});
 	});
 }
