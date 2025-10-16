@@ -354,10 +354,13 @@ export class WYSIWYGEditor {
   }
   
   private updateToolbarState() {
-    // Simple implementation for textarea - no complex selection handling needed
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    const hasSelection = start !== end;
+    // Implementation for contenteditable - check selection properly
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    const hasSelection = selectedText && selectedText.trim().length > 0;
     
     // Update toolbar button states based on selection
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
