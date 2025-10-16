@@ -320,7 +320,8 @@ export class InlineEditor {
     
     // Handle icon picker
     iconPickerBtn.addEventListener('click', () => {
-      this.showIconPicker(fieldPath, fieldType);
+      // Icon picker is now handled by WYSIWYG editor
+      console.log('Icon picker functionality moved to WYSIWYG editor');
     });
     
     // Close on overlay click (outside popup)
@@ -1356,17 +1357,8 @@ export class InlineEditor {
           </div>
         `;
 
-        // Load SVG content for each icon
-        const { iconRegistry } = await import('./iconRegistry');
-        for (const icon of relevantIcons) {
-          const svgElement = content.querySelector(`[data-icon-id="${icon.id}"]`);
-          if (svgElement) {
-            const svgContent = await iconRegistry.getIconSVG(icon.id);
-            if (svgContent) {
-              svgElement.innerHTML = svgContent;
-            }
-          }
-        }
+        // Icon picker functionality moved to WYSIWYG editor
+        console.log('Icon picker moved to WYSIWYG editor');
       }
 
       // Add event listeners
