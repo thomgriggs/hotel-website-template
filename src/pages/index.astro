@@ -10,7 +10,6 @@ const homepage = await client.fetch(queries.homepage);
 const featuredRooms = await client.fetch(queries.featuredRooms);
 const featuredDining = await client.fetch(queries.featuredDining);
 const featuredAmenities = await client.fetch(queries.featuredAmenities);
-
 // Extract homepage content
 const pageTitle = homepage?.pageTitle || 'Home - Paradise Hotel';
 const heroSubtitle = homepage?.heroSubtitle || 'Welcome to';
@@ -25,7 +24,6 @@ const secondaryButtonUrl = homepage?.secondaryButtonUrl || '/contact';
 const roomsSectionTitle = homepage?.roomsSectionTitle || 'Featured Accommodations';
 const diningSectionTitle = homepage?.diningSectionTitle || 'Exceptional Dining';
 const amenitiesSectionTitle = homepage?.amenitiesSectionTitle || 'World-Class Amenities';
-
 // Create slides data for the hero slider
 const heroSlides = [
 	{
@@ -73,7 +71,6 @@ const heroSlides = [
 		ctaSecondaryUrl: '/contact'
 	}
 ];
-
 // Helper function to get image URL safely
 function getImageUrl(image: any, width: number, height: number): string {
   if (!image?.asset?._ref) {
@@ -105,7 +102,6 @@ function getAmenityImageType(category: string): string {
   return categoryMap[category] || 'hotel';
 }
 ---
-
 <Layout 
 	title={pageTitle}
 	description={mainDescription}
@@ -124,12 +120,10 @@ function getAmenityImageType(category: string): string {
 	]}
 >
 	<!-- Preview Mode Indicator (client-side) -->
-	
 	<!-- Debug Info (client-side) -->
 	<div id="debug-info" style="position: fixed; top: 40px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; font-size: 12px; z-index: 998; border-radius: 4px; display: none;">
 		Debug: Preview Mode Active
 	</div>
-	
 	<main id="main-content">
 		<!-- Hero Slider -->
 		<HeroSlider slides={heroSlides} />
@@ -147,7 +141,6 @@ function getAmenityImageType(category: string): string {
 						</div>
 					</div>
 				</div>
-				
 				<!-- Featured Rooms -->
 				{featuredRooms.length > 0 && (
 					<div class="section">
@@ -200,7 +193,6 @@ function getAmenityImageType(category: string): string {
 						</div>
 					</div>
 				)}
-				
 				<!-- Featured Dining -->
 				{featuredDining.length > 0 && (
 					<div class="section">
@@ -244,7 +236,6 @@ function getAmenityImageType(category: string): string {
 						</div>
 					</div>
 				)}
-				
 				<!-- Featured Amenities -->
 				{featuredAmenities.length > 0 && (
 					<div class="section">
@@ -304,19 +295,16 @@ function getAmenityImageType(category: string): string {
 	.section {
 		margin: 4rem 0;
 	}
-	
 	.section-title {
 		text-align: center;
 		margin-bottom: 3rem;
 		color: var(--color_navy);
 		font-size: var(--title_heading-2);
 	}
-	
 	.post-group {
 		display: grid;
 		gap: 3rem;
 	}
-	
 	@media (min-width: 768px) {
 		.post-group {
 			grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

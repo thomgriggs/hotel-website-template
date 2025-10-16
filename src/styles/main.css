@@ -4,7 +4,4 @@
 @import './layout.css';
 @import './components.css';
 
-/* Tailwind CSS - no default styles applied */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS is handled by Astro integration - no manual imports needed */
