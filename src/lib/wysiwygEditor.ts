@@ -164,10 +164,28 @@ export class WYSIWYGEditor {
     
     // Selection change events for visual feedback
     this.textarea.addEventListener('mouseup', () => {
+      console.log('Mouse up event - updating toolbar state');
       this.updateToolbarState();
     });
     
     this.textarea.addEventListener('keyup', () => {
+      console.log('Key up event - updating toolbar state');
+      this.updateToolbarState();
+    });
+    
+    // More comprehensive selection change detection
+    this.textarea.addEventListener('selectstart', () => {
+      console.log('Select start event');
+    });
+    
+    this.textarea.addEventListener('selectionchange', () => {
+      console.log('Selection change event');
+      this.updateToolbarState();
+    });
+    
+    // Focus events
+    this.textarea.addEventListener('focus', () => {
+      console.log('Textarea focused');
       this.updateToolbarState();
     });
   }
@@ -356,11 +374,18 @@ export class WYSIWYGEditor {
   private updateToolbarState() {
     // Implementation for contenteditable - check selection properly
     const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
+    console.log('updateToolbarState called, selection:', selection);
+    
+    if (!selection || selection.rangeCount === 0) {
+      console.log('No selection found');
+      return;
+    }
     
     const range = selection.getRangeAt(0);
     const selectedText = range.toString();
     const hasSelection = selectedText && selectedText.trim().length > 0;
+    
+    console.log('Selection state:', { selectedText, hasSelection });
     
     // Update toolbar button states based on selection
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
@@ -368,10 +393,12 @@ export class WYSIWYGEditor {
     
     if (hasSelection) {
       // Text is selected - enable formatting buttons
+      console.log('Enabling formatting buttons');
       if (boldBtn) boldBtn.style.opacity = '1';
       if (italicBtn) italicBtn.style.opacity = '1';
     } else {
       // No text selected - dim formatting buttons
+      console.log('Dimming formatting buttons');
       if (boldBtn) boldBtn.style.opacity = '0.6';
       if (italicBtn) italicBtn.style.opacity = '0.6';
     }
