@@ -433,15 +433,39 @@ a.btn:focus-visible {
 	transform: translateY(-2px);
 }
 
-.social a svg {
+.social a .social-icon svg {
 	width: 24px;
 	height: 24px;
 	transition: all 0.3s ease;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
 
-.social a:hover svg,
-.social a:focus svg {
+.social a:hover .social-icon svg,
+.social a:focus .social-icon svg {
 	transform: scale(1.1);
+}
+
+/* Additional control classes for custom styling */
+.social-icon.small svg {
+	width: 20px;
+	height: 20px;
+}
+
+.social-icon.large svg {
+	width: 32px;
+	height: 32px;
+}
+
+.social-icon.primary svg {
+	color: var(--color-primary);
+}
+
+.social-icon.secondary svg {
+	color: var(--color-secondary);
 }
 
 .social-text {
