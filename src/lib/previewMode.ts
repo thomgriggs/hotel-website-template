@@ -586,15 +586,17 @@ function initializePreviewMode() {
 				currentUrl = field.href;
 			} else {
 				// Get text content excluding any child buttons, preserving line breaks from <br> tags
-				currentValue = Array.from(field.childNodes)
-					.filter(node => node.nodeType === Node.TEXT_NODE || !node.classList?.contains('preview-edit-button'))
-					.map(node => {
-						if (node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'BR') {
-							return '\n';
-						}
-						return node.textContent || '';
-					})
-					.join('').trim();
+				// Handle nested <br> tags by converting them to line breaks
+				const tempDiv = document.createElement('div');
+				tempDiv.innerHTML = field.innerHTML;
+				
+				// Replace all <br> tags with \n
+				const brElements = tempDiv.querySelectorAll('br');
+				brElements.forEach(br => {
+					br.replaceWith('\n');
+				});
+				
+				currentValue = tempDiv.textContent?.trim() || '';
 			}
 			
 			// Show editor

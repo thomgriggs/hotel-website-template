@@ -703,15 +703,6 @@ export class InlineEditor {
         // Just preserve the raw text with line breaks intact
         const displayValue = currentValue || '';
         
-        // Debug logging for address fields
-        if (fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address')) {
-          console.log('Address field debug:', {
-            fieldName,
-            currentValue: JSON.stringify(currentValue),
-            displayValue: JSON.stringify(displayValue),
-            hasLineBreaks: displayValue.includes('\n')
-          });
-        }
         
         // Enhanced styling for address fields
         const addressStyle = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
