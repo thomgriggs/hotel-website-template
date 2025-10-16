@@ -145,6 +145,12 @@ export class WYSIWYGEditor {
       this.textarea.setAttribute('data-max-length', this.options.maxLength.toString());
     }
     
+    // Ensure proper text selection behavior
+    this.textarea.style.userSelect = 'text';
+    this.textarea.style.webkitUserSelect = 'text';
+    this.textarea.style.mozUserSelect = 'text';
+    this.textarea.style.msUserSelect = 'text';
+    
     this.container.appendChild(this.textarea);
   }
 
@@ -220,24 +226,28 @@ export class WYSIWYGEditor {
   }
 
   private insertFormatting(prefix: string, suffix: string) {
-    // Use modern approach for contenteditable formatting
+    // Ensure we have a valid selection
     const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
+    if (!selection || selection.rangeCount === 0) {
+      // If no selection, create one at cursor position
+      const range = document.createRange();
+      range.selectNodeContents(this.textarea);
+      range.collapse(false); // Move to end
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
     
     const range = selection.getRangeAt(0);
     const selectedText = range.toString();
     
-    if (selectedText) {
+    if (selectedText && selectedText.trim()) {
       // Wrap selected text in formatting
       const formattedText = `${prefix}${selectedText}${suffix}`;
       range.deleteContents();
       range.insertNode(document.createTextNode(formattedText));
       
-      // Update selection to cover the formatted text
-      range.setStart(range.startContainer, range.startOffset);
-      range.setEnd(range.endContainer, range.endOffset);
+      // Clear selection
       selection.removeAllRanges();
-      selection.addRange(range);
     } else {
       // Insert formatting markers at cursor position
       const markerText = `${prefix}${suffix}`;

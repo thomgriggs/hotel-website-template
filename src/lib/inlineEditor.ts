@@ -258,12 +258,6 @@ export class InlineEditor {
             </div>
           </div>
           <div class="editor-actions">
-            <button class="icon-picker-button" aria-label="Change icon" title="Change icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
-              </svg>
-            </button>
             <button class="inline-editor-close" aria-label="Close editor">×</button>
           </div>
         </div>
@@ -311,18 +305,11 @@ export class InlineEditor {
     const closeBtn = overlay.querySelector('.inline-editor-close') as HTMLButtonElement;
     const cancelBtn = overlay.querySelector('.btn-cancel') as HTMLButtonElement;
     const saveBtn = overlay.querySelector('.btn-save') as HTMLButtonElement;
-    const iconPickerBtn = overlay.querySelector('.icon-picker-button') as HTMLButtonElement;
 
     const closeEditor = () => overlay.remove();
     
     closeBtn.addEventListener('click', closeEditor);
     cancelBtn.addEventListener('click', closeEditor);
-    
-    // Handle icon picker
-    iconPickerBtn.addEventListener('click', () => {
-      // Icon picker is now handled by WYSIWYG editor
-      console.log('Icon picker functionality moved to WYSIWYG editor');
-    });
     
     // Close on overlay click (outside popup)
     overlay.addEventListener('click', (e) => {

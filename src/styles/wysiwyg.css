@@ -70,12 +70,18 @@
   resize: vertical;
   transition: border-color 0.2s ease;
   outline: none;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
 
 .wysiwyg-textarea:empty:before {
   content: attr(data-placeholder);
   color: var(--color-text-muted, #7f8c8d);
   pointer-events: none;
+  position: absolute;
 }
 
 .wysiwyg-textarea:focus {
