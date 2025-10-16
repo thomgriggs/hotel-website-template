@@ -391,16 +391,38 @@ export class WYSIWYGEditor {
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
     const italicBtn = this.toolbar.querySelector('[data-action="italic"]') as HTMLButtonElement;
     
+    console.log('Found buttons:', { boldBtn: !!boldBtn, italicBtn: !!italicBtn });
+    
     if (hasSelection) {
       // Text is selected - enable formatting buttons
       console.log('Enabling formatting buttons');
-      if (boldBtn) boldBtn.style.opacity = '1';
-      if (italicBtn) italicBtn.style.opacity = '1';
+      if (boldBtn) {
+        console.log('Setting bold button opacity to 1');
+        boldBtn.style.opacity = '1';
+        boldBtn.style.backgroundColor = '#007bff';
+        boldBtn.style.color = 'white';
+      }
+      if (italicBtn) {
+        console.log('Setting italic button opacity to 1');
+        italicBtn.style.opacity = '1';
+        italicBtn.style.backgroundColor = '#007bff';
+        italicBtn.style.color = 'white';
+      }
     } else {
       // No text selected - dim formatting buttons
       console.log('Dimming formatting buttons');
-      if (boldBtn) boldBtn.style.opacity = '0.6';
-      if (italicBtn) italicBtn.style.opacity = '0.6';
+      if (boldBtn) {
+        console.log('Setting bold button opacity to 0.6');
+        boldBtn.style.opacity = '0.6';
+        boldBtn.style.backgroundColor = '';
+        boldBtn.style.color = '';
+      }
+      if (italicBtn) {
+        console.log('Setting italic button opacity to 0.6');
+        italicBtn.style.opacity = '0.6';
+        italicBtn.style.backgroundColor = '';
+        italicBtn.style.color = '';
+      }
     }
   }
 }
