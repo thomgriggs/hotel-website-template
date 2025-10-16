@@ -163,6 +163,182 @@ export default {
           }
         }
       ]
+    },
+    {
+      name: 'previewModeConfig',
+      title: 'Preview Mode Configuration',
+      type: 'object',
+      fields: [
+        {
+          name: 'enablePreview',
+          title: 'Enable Preview Mode',
+          type: 'boolean',
+          initialValue: true,
+          description: 'Enable preview mode functionality for content editing'
+        },
+        {
+          name: 'previewPassword',
+          title: 'Preview Password',
+          type: 'string',
+          initialValue: 'edit2024',
+          description: 'Password required to access preview mode'
+        },
+        {
+          name: 'defaultTheme',
+          title: 'Default Theme',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Neutral', value: 'neutral' },
+              { title: 'Warm', value: 'warm' },
+              { title: 'Cool', value: 'cool' },
+              { title: 'Professional', value: 'professional' },
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'neutral',
+          description: 'Default theme for preview mode indicators and labels'
+        },
+        {
+          name: 'autoDetectTheme',
+          title: 'Auto-detect Theme',
+          type: 'boolean',
+          initialValue: true,
+          description: 'Automatically detect optimal theme based on background color'
+        },
+        {
+          name: 'showContentLabels',
+          title: 'Show Content Labels',
+          type: 'boolean',
+          initialValue: true,
+          description: 'Show content type labels on hover'
+        },
+        {
+          name: 'labelPosition',
+          title: 'Label Position',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Top Left', value: 'top-left' },
+              { title: 'Top Right', value: 'top-right' },
+              { title: 'Bottom Left', value: 'bottom-left' },
+              { title: 'Bottom Right', value: 'bottom-right' },
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'top-left',
+          description: 'Position of content type labels'
+        },
+        {
+          name: 'customColors',
+          title: 'Custom Colors',
+          type: 'object',
+          fields: [
+            {
+              name: 'primary',
+              title: 'Primary Color',
+              type: 'color',
+              options: {
+                disableAlpha: true,
+              },
+              description: 'Override default primary color'
+            },
+            {
+              name: 'background',
+              title: 'Background Color',
+              type: 'color',
+              options: {
+                disableAlpha: false,
+              },
+              description: 'Override default background color'
+            },
+            {
+              name: 'text',
+              title: 'Text Color',
+              type: 'color',
+              options: {
+                disableAlpha: true,
+              },
+              description: 'Override default text color'
+            },
+            {
+              name: 'border',
+              title: 'Border Color',
+              type: 'color',
+              options: {
+                disableAlpha: true,
+              },
+              description: 'Override default border color'
+            }
+          ],
+          description: 'Customize preview mode colors'
+        },
+        {
+          name: 'iconSettings',
+          title: 'Icon Settings',
+          type: 'object',
+          fields: [
+            {
+              name: 'showCustomIcons',
+              title: 'Show Custom Icons',
+              type: 'boolean',
+              initialValue: true,
+              description: 'Include custom uploaded icons in icon picker'
+            },
+            {
+              name: 'iconSize',
+              title: 'Icon Size',
+              type: 'number',
+              initialValue: 16,
+              min: 12,
+              max: 32,
+              description: 'Default size for icons in preview mode (pixels)'
+            },
+            {
+              name: 'defaultIcons',
+              title: 'Default Icon Mappings',
+              type: 'object',
+              fields: [
+                {
+                  name: 'headline',
+                  title: 'Headline Icon',
+                  type: 'string',
+                  initialValue: 'type',
+                  description: 'Icon ID for headline content'
+                },
+                {
+                  name: 'paragraph',
+                  title: 'Paragraph Icon',
+                  type: 'string',
+                  initialValue: 'file-text',
+                  description: 'Icon ID for paragraph content'
+                },
+                {
+                  name: 'image',
+                  title: 'Image Icon',
+                  type: 'string',
+                  initialValue: 'image',
+                  description: 'Icon ID for image content'
+                },
+                {
+                  name: 'button',
+                  title: 'Button Icon',
+                  type: 'string',
+                  initialValue: 'link',
+                  description: 'Icon ID for button content'
+                },
+                {
+                  name: 'address',
+                  title: 'Address Icon',
+                  type: 'string',
+                  initialValue: 'map-pin',
+                  description: 'Icon ID for address content'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -6,6 +6,10 @@ A modern, CMS-driven hotel website built with Astro and Sanity, featuring live p
 
 - **Live Preview Mode** - Real-time content editing with password protection
 - **Inline Editing** - Direct content editing from the frontend with visual indicators
+- **Professional Icon System** - Lucide icons with custom upload capabilities
+- **Adaptive Styling** - Smart theme detection based on content background
+- **Icon Management** - Admin interface for uploading and managing custom icons
+- **Theme Configuration** - Configurable themes via Sanity Studio
 - **CMS-Driven Content** - All content managed through Sanity Studio
 - **Content Templates** - Flexible template system for dynamic page creation
 - **Visual Editing** - Sanity's visual editing capabilities
@@ -21,17 +25,38 @@ A modern, CMS-driven hotel website built with Astro and Sanity, featuring live p
 hotel-website-template/
 ├── src/                    # Main website source
 │   ├── components/         # Reusable components
+│   │   ├── IconPicker.tsx  # Icon selection component
+│   │   └── IconManager.tsx # Icon management interface
 │   ├── layouts/           # Page layouts
 │   ├── pages/             # Website pages
+│   │   └── admin/         # Admin pages
+│   │       └── icons.astro # Icon management dashboard
 │   ├── styles/            # CSS stylesheets
 │   └── lib/               # Utilities and preview mode
 │       ├── previewMode.ts  # Global preview mode functionality
 │       ├── inlineEditor.ts # Inline editing system
+│       ├── iconRegistry.ts # Icon registry service
+│       ├── iconManager.ts  # Icon management service
+│       ├── iconUploader.ts # Icon upload handler
+│       ├── themeConfig.ts  # Theme management system
 │       └── sanity.ts      # Sanity client configuration
 ├── hotel-website/         # Sanity Studio
 │   ├── schemaTypes/       # Content schemas
+│   │   ├── previewConfig.ts # Preview mode configuration
+│   │   └── siteSettings.ts # Site settings with theme config
 │   └── scripts/          # Content management scripts
-└── package.json           # Dependencies
+├── public/               # Static assets
+│   └── icons/           # Icon storage
+│       ├── lucide/      # Built-in Lucide icons
+│       ├── custom/      # Custom uploaded icons
+│       └── metadata.json # Icon registry database
+├── tests/               # Playwright test suite
+│   ├── preview-mode/    # Preview mode tests
+│   ├── navigation/      # Navigation tests
+│   └── pages/          # Page content tests
+├── ICON_SYSTEM.md      # Icon system documentation
+├── THEME_CUSTOMIZATION.md # Theme customization guide
+└── package.json         # Dependencies
 ```
 
 ## 🎨 Assets
@@ -45,6 +70,37 @@ The project includes placeholder assets that are ready to use:
 - `manifest.json` - PWA configuration
 
 **To customize:** Simply replace the placeholder files in the `public/` directory with your own assets. The project will automatically use your custom images.
+
+## 🎨 Icon System & Adaptive Styling
+
+### Professional Icon System
+- **Lucide Icons**: Consistent, semantic icons replace emoji-based indicators
+- **Custom Upload**: Upload and manage custom SVG icons via admin interface
+- **Icon Registry**: Centralized management of all icons with metadata
+- **Usage Tracking**: Analytics for icon usage across the site
+- **Icon Picker**: Change icons directly in preview mode
+
+### Adaptive Theme System
+- **Smart Detection**: Automatically detects optimal theme based on background color
+- **4 Preset Themes**: Neutral, Warm, Cool, and Professional themes
+- **Custom Colors**: Override any theme color via Sanity Studio
+- **CSS Variables**: All styling uses CSS custom properties for easy customization
+- **High Contrast**: Ensures accessibility across all backgrounds
+
+### Theme Configuration
+Configure themes and icons through Sanity Studio:
+1. **Site Settings** → **Preview Mode Configuration**
+2. **Theme Settings**: Choose default theme, enable auto-detection
+3. **Icon Settings**: Configure default icons, enable custom icons
+4. **Custom Colors**: Override theme colors with brand colors
+
+### Admin Interface
+Access the icon management dashboard at `/admin/icons`:
+- Upload custom SVG icons
+- Browse all available icons
+- View usage statistics
+- Delete unused icons
+- Manage icon categories
 
 ## 🎨 Preview Mode
 

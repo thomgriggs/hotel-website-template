@@ -1,6 +1,40 @@
 // Global Preview Mode Module
 // Extracted from individual pages to eliminate code duplication
 
+import { iconRegistry } from './iconRegistry';
+import { themeManager } from './themeConfig';
+
+/**
+ * Render a Lucide icon as SVG string
+ */
+async function renderLucideIcon(iconName: string, size: number = 16): Promise<string> {
+	try {
+		const { icons } = await import('lucide');
+		const IconComponent = icons[iconName as keyof typeof icons];
+		
+		if (!IconComponent) {
+			console.warn(`Lucide icon "${iconName}" not found`);
+			return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
+		}
+
+		// Create a temporary element to render the icon
+		const tempDiv = document.createElement('div');
+		const iconElement = IconComponent({ size });
+		
+		if (typeof iconElement === 'string') {
+			return iconElement;
+		} else if (iconElement && typeof iconElement === 'object') {
+			tempDiv.appendChild(iconElement);
+			return tempDiv.innerHTML;
+		}
+
+		return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
+	} catch (error) {
+		console.error(`Error rendering Lucide icon "${iconName}":`, error);
+		return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
+	}
+}
+
 export function initPreviewMode() {
 	// Check if preview mode is requested
 	const urlParams = new URLSearchParams(window.location.search);
@@ -364,12 +398,12 @@ function initializePreviewMode() {
 			left: -4px;
 			right: -4px;
 			bottom: -4px;
-			border: 3px solid #ff6b35;
+			border: 3px solid var(--preview-border, #374151);
 			border-radius: 6px;
-			background: rgba(255, 107, 53, 0.08);
+			background: var(--preview-background-light, rgba(55, 65, 81, 0.1));
 			pointer-events: none;
 			z-index: 9999; /* High z-index to avoid conflicts */
-			box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+			box-shadow: 0 0 0 1px var(--preview-shadow-light, rgba(0, 0, 0, 0.1));
 			min-width: calc(100% + 8px);
 			min-height: calc(100% + 8px);
 		}
@@ -380,8 +414,8 @@ function initializePreviewMode() {
 			position: absolute;
 			top: -32px;
 			left: 0;
-			background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-			color: white;
+			background: var(--preview-background, rgba(55, 65, 81, 0.9));
+			color: var(--preview-text, #FFFFFF);
 			padding: 6px 12px;
 			border-radius: 6px;
 			font-size: 12px;
@@ -389,7 +423,8 @@ function initializePreviewMode() {
 			white-space: nowrap;
 			pointer-events: none;
 			z-index: 10000; /* Even higher z-index for labels */
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
+			border: 1px solid var(--preview-border-light, #6B7280);
 		}
 		
 		/* Special positioning for images */
@@ -490,78 +525,61 @@ function initializePreviewMode() {
 	document.head.appendChild(previewStyle);
 	
 	// Make ALL content editable - add labels and click handlers
-	document.querySelectorAll('[data-sanity-edit-field]').forEach(field => {
+	document.querySelectorAll('[data-sanity-edit-field]').forEach(async (field) => {
 		const fieldPath = field.getAttribute('data-sanity-edit-field');
 		const fieldName = fieldPath.split('#')[1];
 		
-			// Determine field type
-			let fieldType = 'text';
-			let contentLabel = '✏️ Text';
-			
-			if (field.tagName === 'H1' || field.tagName === 'H2' || field.tagName === 'H3') {
-				fieldType = 'headline';
-				contentLabel = '📰 Headline';
-			} else if (field.tagName === 'IMG' || fieldName.toLowerCase().includes('image')) {
-				fieldType = 'image';
-				contentLabel = '🖼️ Image';
-			} else if (field.tagName === 'A' || fieldName.toLowerCase().includes('button')) {
-				fieldType = 'button';
-				contentLabel = '🔘 Button';
-			} else if (fieldName.toLowerCase().includes('description') || fieldName.toLowerCase().includes('paragraph')) {
-				fieldType = 'paragraph';
-				contentLabel = '📄 Paragraph';
-			} else if (fieldName.toLowerCase().includes('address')) {
-				fieldType = 'paragraph';
-				contentLabel = '📍 Address';
-			}
+		// Determine field type and get appropriate Lucide icon
+		let fieldType = 'text';
+		let iconName = 'type';
+		let labelText = 'Text';
+		
+		if (field.tagName === 'H1' || field.tagName === 'H2' || field.tagName === 'H3') {
+			fieldType = 'headline';
+			iconName = 'type';
+			labelText = 'Headline';
+		} else if (field.tagName === 'IMG' || fieldName.toLowerCase().includes('image')) {
+			fieldType = 'image';
+			iconName = 'image';
+			labelText = 'Image';
+		} else if (field.tagName === 'A' || fieldName.toLowerCase().includes('button')) {
+			fieldType = 'button';
+			iconName = 'link';
+			labelText = 'Button';
+		} else if (fieldName.toLowerCase().includes('description') || fieldName.toLowerCase().includes('paragraph')) {
+			fieldType = 'paragraph';
+			iconName = 'file-text';
+			labelText = 'Paragraph';
+		} else if (fieldName.toLowerCase().includes('address')) {
+			fieldType = 'paragraph';
+			iconName = 'map-pin';
+			labelText = 'Address';
+		}
+
+		// Render the Lucide icon
+		const iconSVG = await renderLucideIcon(iconName, 16);
+		const contentLabel = `${iconSVG} ${labelText}`;
 		
 		field.setAttribute('data-content-label', contentLabel);
 		field.setAttribute('data-field-type', fieldType);
 		
-		// ADAPTIVE COLOR DETECTION
-		// Detect background color and apply appropriate contrast
+		// SMART ADAPTIVE COLOR DETECTION
+		// Use theme manager to detect optimal theme for this element
 		field.addEventListener('mouseenter', () => {
-			const computedStyle = window.getComputedStyle(field);
-			const backgroundColor = computedStyle.backgroundColor;
+			const optimalTheme = themeManager.detectOptimalTheme(field);
 			
-			// Parse RGB values
-			const rgbMatch = backgroundColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-			if (rgbMatch) {
-				const r = parseInt(rgbMatch[1]);
-				const g = parseInt(rgbMatch[2]);
-				const b = parseInt(rgbMatch[3]);
-				
-				// Calculate luminance
-				const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-				
-				// If background is dark (luminance < 0.5), use high contrast colors
-				if (luminance < 0.5) {
-					field.classList.add('dark-context');
-				} else {
-					field.classList.remove('dark-context');
-				}
+			// Apply the optimal theme temporarily for this element
+			if (optimalTheme !== themeManager.getCurrentTheme()?.id) {
+				themeManager.applyTheme(optimalTheme);
 			}
 			
-			// Also check parent elements for dark backgrounds
-			let parent = field.parentElement;
-			while (parent && parent !== document.body) {
-				const parentStyle = window.getComputedStyle(parent);
-				const parentBg = parentStyle.backgroundColor;
-				const parentRgbMatch = parentBg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-				
-				if (parentRgbMatch) {
-					const pr = parseInt(parentRgbMatch[1]);
-					const pg = parseInt(parentRgbMatch[2]);
-					const pb = parseInt(parentRgbMatch[3]);
-					const parentLuminance = (0.299 * pr + 0.587 * pg + 0.114 * pb) / 255;
-					
-					if (parentLuminance < 0.5) {
-						field.classList.add('dark-context');
-						break;
-					}
-				}
-				parent = parent.parentElement;
-			}
+			// Add data attribute for CSS targeting
+			field.setAttribute('data-theme', optimalTheme);
+		});
+		
+		field.addEventListener('mouseleave', () => {
+			// Optionally revert to default theme when leaving
+			// For now, we'll keep the detected theme active
 		});
 		
 		// Make entire bordered area clickable

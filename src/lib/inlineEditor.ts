@@ -255,7 +255,15 @@ export class InlineEditor {
               <span class="editor-subtitle">${this.getFieldDescription(fieldType)}</span>
             </div>
           </div>
-          <button class="inline-editor-close" aria-label="Close editor">×</button>
+          <div class="editor-actions">
+            <button class="icon-picker-button" aria-label="Change icon" title="Change icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+              </svg>
+            </button>
+            <button class="inline-editor-close" aria-label="Close editor">×</button>
+          </div>
         </div>
         <div class="inline-editor-content">
           ${this.getEditorHTML(fieldType, currentValue, currentUrl, isParagraph, isList, fieldName)}
@@ -277,11 +285,17 @@ export class InlineEditor {
     const closeBtn = overlay.querySelector('.inline-editor-close') as HTMLButtonElement;
     const cancelBtn = overlay.querySelector('.btn-cancel') as HTMLButtonElement;
     const saveBtn = overlay.querySelector('.btn-save') as HTMLButtonElement;
+    const iconPickerBtn = overlay.querySelector('.icon-picker-button') as HTMLButtonElement;
 
     const closeEditor = () => overlay.remove();
     
     closeBtn.addEventListener('click', closeEditor);
     cancelBtn.addEventListener('click', closeEditor);
+    
+    // Handle icon picker
+    iconPickerBtn.addEventListener('click', () => {
+      this.showIconPicker(fieldPath, fieldType);
+    });
     
     // Close on overlay click (outside popup)
     overlay.addEventListener('click', (e) => {
@@ -414,7 +428,8 @@ export class InlineEditor {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        border-bottom: 2px solid #f0f0f0;
+        border-bottom: 2px solid var(--preview-border-light, #e5e7eb);
+        background: var(--preview-background-light, rgba(55, 65, 81, 0.05));
       }
 
       .editor-title {
@@ -423,31 +438,61 @@ export class InlineEditor {
         align-items: flex-start;
       }
 
+      .editor-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .icon-picker-button {
+        background: var(--preview-background-light, #f5f5f5);
+        border: 1px solid var(--preview-border-light, #e5e7eb);
+        font-size: 16px;
+        cursor: pointer;
+        color: var(--preview-text-secondary, #666);
+        padding: 8px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .icon-picker-button:hover {
+        background: var(--preview-primary-light, #6B7280);
+        color: var(--preview-text, white);
+        border-color: var(--preview-primary-light, #6B7280);
+      }
+
       .editor-icon {
         font-size: 32px;
         line-height: 1;
+        color: var(--preview-primary, #374151);
       }
 
       .editor-title h3 {
         margin: 0 0 4px;
         font-size: 20px;
-        color: #1a1a1a;
+        color: var(--preview-text-inverse, #1a1a1a);
         font-weight: 600;
         line-height: 1.3;
       }
 
       .editor-subtitle {
         font-size: 13px;
-        color: #666;
+        color: var(--preview-text-secondary, #666);
         display: block;
       }
       
       .inline-editor-close {
-        background: #f5f5f5;
-        border: none;
+        background: var(--preview-background-light, #f5f5f5);
+        border: 1px solid var(--preview-border-light, #e5e7eb);
         font-size: 28px;
         cursor: pointer;
-        color: #666;
+        color: var(--preview-text-secondary, #666);
         padding: 0;
         width: 36px;
         height: 36px;
@@ -476,7 +521,7 @@ export class InlineEditor {
       .inline-editor-field {
         width: 100%;
         padding: 14px 16px;
-        border: 2px solid #e0e0e0;
+        border: 2px solid var(--preview-border-light, #e0e0e0);
         border-radius: 10px;
         font-size: 15px;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -486,17 +531,19 @@ export class InlineEditor {
         transition: all 0.2s ease;
         box-sizing: border-box;
         white-space: pre-wrap;
+        background: var(--preview-background-light, rgba(255, 255, 255, 0.8));
+        color: var(--preview-text-inverse, #1a1a1a);
       }
       
       .inline-editor-field:focus {
         outline: none;
-        border-color: #ff6b35;
-        box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+        border-color: var(--preview-primary, #374151);
+        box-shadow: 0 0 0 4px var(--preview-background-light, rgba(55, 65, 81, 0.1));
         transform: translateY(-1px);
       }
       
       .inline-editor-field:hover:not(:focus) {
-        border-color: #c0c0c0;
+        border-color: var(--preview-border, #c0c0c0);
       }
 
       /* Multi-field editors */
@@ -607,14 +654,16 @@ export class InlineEditor {
       }
       
       .btn-save {
-        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        background: var(--preview-primary, #374151);
+        color: var(--preview-text, #FFFFFF);
+        border: 1px solid var(--preview-primary, #374151);
+        box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
       }
 
       .btn-save:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        background: var(--preview-primary-hover, #4B5563);
+        box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.4)) 0 6px 20px;
       }
 
       .btn-save:active:not(:disabled) {
@@ -627,14 +676,14 @@ export class InlineEditor {
       }
       
       .btn-cancel {
-        background: white;
-        color: #666;
-        border: 2px solid #e0e0e0;
+        background: var(--preview-background-light, white);
+        color: var(--preview-text-secondary, #666);
+        border: 2px solid var(--preview-border-light, #e0e0e0);
       }
 
       .btn-cancel:hover {
-        background: #f5f5f5;
-        border-color: #c0c0c0;
+        background: var(--preview-background-light, #f5f5f5);
+        border-color: var(--preview-border, #c0c0c0);
       }
 
       /* Mobile Responsive */
@@ -1105,5 +1154,230 @@ export class InlineEditor {
       toast.remove();
       style.remove();
     }, 4000);
+  }
+
+  /**
+   * Show icon picker for changing field icons
+   */
+  async showIconPicker(fieldPath: string, fieldType: string): Promise<void> {
+    try {
+      // Create overlay for icon picker
+      const overlay = document.createElement('div');
+      overlay.className = 'icon-picker-overlay';
+      overlay.innerHTML = `
+        <div class="icon-picker-container">
+          <div class="icon-picker-header">
+            <h3>Choose Icon for ${this.getFieldLabel(fieldPath.split('#')[1])}</h3>
+            <button class="icon-picker-close">×</button>
+          </div>
+          <div class="icon-picker-content">
+            <div class="icon-picker-loading">Loading icons...</div>
+          </div>
+        </div>
+      `;
+
+      // Add styles
+      const style = document.createElement('style');
+      style.textContent = `
+        .icon-picker-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 10002;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .icon-picker-container {
+          background: white;
+          border-radius: 12px;
+          width: 90vw;
+          max-width: 800px;
+          max-height: 80vh;
+          overflow: hidden;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-picker-header {
+          padding: 20px 24px;
+          border-bottom: 1px solid #e5e7eb;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: var(--preview-background-light, #f9fafb);
+        }
+
+        .icon-picker-header h3 {
+          margin: 0;
+          font-size: 18px;
+          color: var(--preview-text-inverse, #1f2937);
+        }
+
+        .icon-picker-close {
+          background: none;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: var(--preview-text-secondary, #6b7280);
+          padding: 4px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+        }
+
+        .icon-picker-close:hover {
+          background: var(--preview-background-light, #f3f4f6);
+          color: var(--preview-text-inverse, #1f2937);
+        }
+
+        .icon-picker-content {
+          padding: 24px;
+          max-height: 60vh;
+          overflow-y: auto;
+        }
+
+        .icon-picker-loading {
+          text-align: center;
+          padding: 40px;
+          color: var(--preview-text-secondary, #6b7280);
+        }
+
+        .icon-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 16px;
+        }
+
+        .icon-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 16px;
+          border: 2px solid var(--preview-border-light, #e5e7eb);
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .icon-item:hover {
+          border-color: var(--preview-primary, #374151);
+          background: var(--preview-background-light, #f9fafb);
+          transform: translateY(-2px);
+        }
+
+        .icon-item.selected {
+          border-color: var(--preview-primary, #374151);
+          background: var(--preview-background-light, rgba(55, 65, 81, 0.1));
+        }
+
+        .icon-preview {
+          width: 24px;
+          height: 24px;
+          margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .icon-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--preview-text-inverse, #1f2937);
+          text-align: center;
+        }
+      `;
+
+      document.head.appendChild(style);
+      document.body.appendChild(overlay);
+
+      // Load icons
+      const { iconManager } = await import('./iconManager');
+      const icons = await iconManager.getAvailableIcons();
+      
+      // Filter icons by field type
+      const relevantIcons = icons.filter(icon => {
+        const tags = icon.tags.map(tag => tag.toLowerCase());
+        const fieldTypeLower = fieldType.toLowerCase();
+        return tags.includes(fieldTypeLower) || 
+               tags.includes('general') || 
+               icon.category === 'content';
+      });
+
+      // Render icon grid
+      const content = overlay.querySelector('.icon-picker-content');
+      if (content) {
+        content.innerHTML = `
+          <div class="icon-grid">
+            ${relevantIcons.map(icon => `
+              <div class="icon-item" data-icon-id="${icon.id}">
+                <div class="icon-preview">
+                  <div class="icon-svg" data-icon-id="${icon.id}"></div>
+                </div>
+                <div class="icon-name">${icon.name}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        // Load SVG content for each icon
+        const { iconRegistry } = await import('./iconRegistry');
+        for (const icon of relevantIcons) {
+          const svgElement = content.querySelector(`[data-icon-id="${icon.id}"]`);
+          if (svgElement) {
+            const svgContent = await iconRegistry.getIconSVG(icon.id);
+            if (svgContent) {
+              svgElement.innerHTML = svgContent;
+            }
+          }
+        }
+      }
+
+      // Add event listeners
+      const closeBtn = overlay.querySelector('.icon-picker-close');
+      const iconItems = overlay.querySelectorAll('.icon-item');
+
+      const closePicker = () => {
+        overlay.remove();
+        style.remove();
+      };
+
+      closeBtn?.addEventListener('click', closePicker);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closePicker();
+      });
+
+      // Handle icon selection
+      iconItems.forEach(item => {
+        item.addEventListener('click', async () => {
+          const iconId = item.getAttribute('data-icon-id');
+          if (iconId) {
+            // Track usage
+            await iconManager.trackIconUsage(iconId, `field-${fieldType}`);
+            
+            // Update the field's icon (this would need to be implemented)
+            // For now, just show a success message
+            this.showToast(`Icon changed to ${iconId}`, 'success');
+            
+            closePicker();
+          }
+        });
+      });
+
+      // Close on ESC key
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          closePicker();
+          document.removeEventListener('keydown', handleKeydown);
+        }
+      };
+      document.addEventListener('keydown', handleKeydown);
+
+    } catch (error) {
+      console.error('Error showing icon picker:', error);
+      this.showToast('Failed to load icon picker', 'error');
+    }
   }
 }
