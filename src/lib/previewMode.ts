@@ -23,7 +23,15 @@ function renderLucideIcon(iconName: string, size: number = 16): string {
 	return iconMap[iconName] || iconMap['edit']; // Fallback to edit icon
 }
 
+// Cleanup function to remove all preview labels
+function cleanupPreviewLabels() {
+	const labels = document.querySelectorAll('.preview-content-label');
+	labels.forEach(label => label.remove());
+}
+
 export function initPreviewMode() {
+	// Clean up any existing labels first
+	cleanupPreviewLabels();
 	// Check if preview mode is requested
 	const urlParams = new URLSearchParams(window.location.search);
 	const wantsPreview = urlParams.has('preview');
@@ -414,6 +422,12 @@ function initializePreviewMode() {
 			transition: all 0.2s ease;
 			box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
 			border: 1px solid var(--preview-border-light, #6B7280);
+			position: fixed;
+			top: -9999px;
+			left: -9999px;
+			width: auto;
+			height: auto;
+			z-index: 10000;
 		}
 
 		.preview-content-label.show {
@@ -577,6 +591,13 @@ function initializePreviewMode() {
 		// Add the label to the document body and position it relative to the field
 		document.body.appendChild(labelElement);
 		
+		// Add cleanup on page unload
+		window.addEventListener('beforeunload', () => {
+			if (labelElement && labelElement.parentNode) {
+				labelElement.parentNode.removeChild(labelElement);
+			}
+		});
+		
 		// Store reference to label for cleanup
 		field.setAttribute('data-label-id', `label-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
 		labelElement.id = field.getAttribute('data-label-id')!;
@@ -614,6 +635,9 @@ function initializePreviewMode() {
 			const label = labelId ? document.getElementById(labelId) as HTMLElement : null;
 			if (label) {
 				label.classList.remove('show');
+				// Move label off-screen when not visible
+				label.style.top = '-9999px';
+				label.style.left = '-9999px';
 			}
 			
 			// Optionally revert to default theme when leaving
