@@ -165,7 +165,10 @@ export class WYSIWYGEditor {
     // Selection change events for visual feedback
     this.textarea.addEventListener('mouseup', () => {
       console.log('Mouse up event - updating toolbar state');
-      this.updateToolbarState();
+      // Small delay to let selection settle
+      setTimeout(() => {
+        this.updateToolbarState();
+      }, 10);
     });
     
     this.textarea.addEventListener('keyup', () => {
@@ -186,7 +189,8 @@ export class WYSIWYGEditor {
     // Focus events
     this.textarea.addEventListener('focus', () => {
       console.log('Textarea focused');
-      this.updateToolbarState();
+      // Don't update toolbar state on focus as it clears selection
+      // this.updateToolbarState();
     });
   }
 
