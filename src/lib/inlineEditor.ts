@@ -936,15 +936,21 @@ export class InlineEditor {
            const rawValue = wysiwygEditor.getValue();
            console.log('WYSIWYG Raw Value:', rawValue);
            
-           // For textarea-based WYSIWYG, we get plain text
+           // For HTML content from WYSIWYG editor
            if (fieldType === 'paragraph') {
-             // Split by double newlines for paragraphs
-             newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+             // Convert HTML to plain text for paragraph fields
+             const tempDiv = document.createElement('div');
+             tempDiv.innerHTML = rawValue;
+             const plainText = tempDiv.textContent || tempDiv.innerText || '';
+             newValue = plainText.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
            } else if (fieldType === 'list') {
-             // Split by single newlines for list items
-             newValue = rawValue.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
+             // Convert HTML to plain text for list fields
+             const tempDiv = document.createElement('div');
+             tempDiv.innerHTML = rawValue;
+             const plainText = tempDiv.textContent || tempDiv.innerText || '';
+             newValue = plainText.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
            } else {
-             // For textarea, keep as string
+             // For textarea, keep as HTML string
              newValue = rawValue;
            }
            console.log('WYSIWYG Processed Value:', newValue);

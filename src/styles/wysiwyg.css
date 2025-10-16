@@ -71,10 +71,16 @@
   transition: border-color 0.2s ease;
   outline: none;
   cursor: text;
-  user-select: text;
+  
+  /* Ensure proper text selection */
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+  user-select: text;
+  
+  /* Better text selection highlighting */
+  -webkit-touch-callout: text;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wysiwyg-textarea:empty:before {

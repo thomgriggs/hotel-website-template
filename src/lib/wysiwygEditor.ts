@@ -162,7 +162,6 @@ export class WYSIWYGEditor {
     
     // Selection change events for visual feedback
     this.textarea.addEventListener('mouseup', () => {
-      console.log('Mouse up event - updating toolbar state');
       // Small delay to let selection settle
       setTimeout(() => {
         this.updateToolbarState();
@@ -170,35 +169,22 @@ export class WYSIWYGEditor {
     });
     
     this.textarea.addEventListener('keyup', () => {
-      console.log('Key up event - updating toolbar state');
       this.updateToolbarState();
     });
     
-    // More comprehensive selection change detection
-    this.textarea.addEventListener('selectstart', () => {
-      console.log('Select start event');
-    });
-    
+    // Selection change detection
     this.textarea.addEventListener('selectionchange', () => {
-      console.log('Selection change event');
       this.updateToolbarState();
-    });
-    
-    // Focus events
-    this.textarea.addEventListener('focus', () => {
-      console.log('Textarea focused');
-      // Don't update toolbar state on focus as it clears selection
-      // this.updateToolbarState();
     });
   }
 
   private handleToolbarAction(action: string) {
     switch (action) {
       case 'bold':
-        this.insertFormatting('**', '**');
+        this.insertFormatting('bold');
         break;
       case 'italic':
-        this.insertFormatting('*', '*');
+        this.insertFormatting('italic');
         break;
       case 'link':
         this.insertLink();
@@ -222,13 +208,13 @@ export class WYSIWYGEditor {
     // Ctrl/Cmd + B for bold
     if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
       e.preventDefault();
-      this.insertFormatting('**', '**');
+      this.insertFormatting('bold');
     }
     
     // Ctrl/Cmd + I for italic
     if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
       e.preventDefault();
-      this.insertFormatting('*', '*');
+      this.insertFormatting('italic');
     }
     
     // Ctrl/Cmd + K for link
@@ -238,45 +224,16 @@ export class WYSIWYGEditor {
     }
   }
 
-  private insertFormatting(prefix: string, suffix: string) {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) {
-      // If no selection, create one at cursor position
-      const range = document.createRange();
-      range.selectNodeContents(this.textarea);
-      range.collapse(false); // Move to end
-      selection.removeAllRanges();
-      selection.addRange(range);
+  private insertFormatting(formatType: 'bold' | 'italic') {
+    // Use document.execCommand for reliable formatting
+    const success = document.execCommand(formatType === 'bold' ? 'bold' : 'italic', false);
+    
+    if (success) {
+      // Focus back to the editor
+      this.textarea.focus();
+      // Update toolbar state
+      this.updateToolbarState();
     }
-    
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString();
-    
-    if (selectedText && selectedText.trim()) {
-      // Wrap selected text in formatting
-      const formattedText = `${prefix}${selectedText}${suffix}`;
-      range.deleteContents();
-      range.insertNode(document.createTextNode(formattedText));
-      
-      // Clear selection
-      selection.removeAllRanges();
-    } else {
-      // Insert formatting markers at cursor position
-      const markerText = `${prefix}${suffix}`;
-      range.insertNode(document.createTextNode(markerText));
-      
-      // Position cursor between markers
-      const textNode = range.startContainer;
-      if (textNode.nodeType === Node.TEXT_NODE) {
-        const offset = range.startOffset + prefix.length;
-        range.setStart(textNode, offset);
-        range.setEnd(textNode, offset);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
-    }
-    
-    this.textarea.focus();
   }
 
   private insertLink() {
@@ -350,11 +307,13 @@ export class WYSIWYGEditor {
   }
 
   public getValue(): string {
-    return this.textarea.textContent || '';
+    // Return the HTML content for rich text
+    return this.textarea.innerHTML;
   }
 
   public setValue(value: string) {
-    this.textarea.textContent = value;
+    // Set HTML content for rich text
+    this.textarea.innerHTML = value;
   }
 
   private toggleView() {
@@ -376,10 +335,8 @@ export class WYSIWYGEditor {
   private updateToolbarState() {
     // Implementation for contenteditable - check selection properly
     const selection = window.getSelection();
-    console.log('updateToolbarState called, selection:', selection);
     
     if (!selection || selection.rangeCount === 0) {
-      console.log('No selection found');
       return;
     }
     
@@ -387,40 +344,30 @@ export class WYSIWYGEditor {
     const selectedText = range.toString();
     const hasSelection = selectedText && selectedText.trim().length > 0;
     
-    console.log('Selection state:', { selectedText, hasSelection });
-    
     // Update toolbar button states based on selection
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
     const italicBtn = this.toolbar.querySelector('[data-action="italic"]') as HTMLButtonElement;
     
-    console.log('Found buttons:', { boldBtn: !!boldBtn, italicBtn: !!italicBtn });
-    
     if (hasSelection) {
       // Text is selected - enable formatting buttons
-      console.log('Enabling formatting buttons');
       if (boldBtn) {
-        console.log('Setting bold button opacity to 1');
         boldBtn.style.opacity = '1';
         boldBtn.style.backgroundColor = '#007bff';
         boldBtn.style.color = 'white';
       }
       if (italicBtn) {
-        console.log('Setting italic button opacity to 1');
         italicBtn.style.opacity = '1';
         italicBtn.style.backgroundColor = '#007bff';
         italicBtn.style.color = 'white';
       }
     } else {
       // No text selected - dim formatting buttons
-      console.log('Dimming formatting buttons');
       if (boldBtn) {
-        console.log('Setting bold button opacity to 0.6');
         boldBtn.style.opacity = '0.6';
         boldBtn.style.backgroundColor = '';
         boldBtn.style.color = '';
       }
       if (italicBtn) {
-        console.log('Setting italic button opacity to 0.6');
         italicBtn.style.opacity = '0.6';
         italicBtn.style.backgroundColor = '';
         italicBtn.style.color = '';
