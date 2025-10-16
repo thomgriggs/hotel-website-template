@@ -640,7 +640,6 @@ function initializePreviewMode() {
 		
 		// Make entire bordered area clickable
 		field.addEventListener('click', (e) => {
-			console.log('Field clicked:', fieldPath, fieldType); // Debug log
 			
 			// Skip editing if in no-edit mode
 			if (document.body.classList.contains('preview-no-edit')) {
@@ -679,8 +678,6 @@ function initializePreviewMode() {
 			
 			// Show editor
 			const labelText = field.getAttribute('data-content-label') || 'Content';
-			console.log('Calling inlineEditor.showEditor:', fieldPath, currentValue, fieldType, currentUrl, labelText); // Debug log
-			console.log('Inline editor available:', !!(window as any).inlineEditor); // Debug log
 			(window as any).inlineEditor.showEditor(fieldPath, currentValue, fieldType, currentUrl, labelText);
 		});
 	});

@@ -9,8 +9,4 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
-  api: {
-    projectId: '0knotzp4',
-    dataset: 'production',
-  },
 })

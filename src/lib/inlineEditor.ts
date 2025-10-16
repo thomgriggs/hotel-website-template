@@ -286,7 +286,6 @@ export class InlineEditor {
         const value = wysiwygElement.dataset.value || '';
         
         // Create WYSIWYG editor
-        console.log('Creating WYSIWYG editor for:', fieldType);
         const wysiwygEditor = new WYSIWYGEditor(wysiwygElement, {
           fieldType: fieldType,
           placeholder: placeholder
@@ -299,7 +298,6 @@ export class InlineEditor {
         
         // Store reference for save functionality
         (overlay as any).wysiwygEditor = wysiwygEditor;
-        console.log('WYSIWYG editor created and stored:', !!wysiwygEditor);
       }
     }
 
@@ -887,7 +885,6 @@ export class InlineEditor {
     const [documentId, fieldName] = fieldPath.split('#');
     const overlay = saveButton.closest('.inline-editor-overlay') as HTMLElement;
     
-    console.log('Save started:', { fieldPath, fieldType, overlay: !!overlay });
     
     try {
       // Show loading state
@@ -930,11 +927,9 @@ export class InlineEditor {
        } else if (fieldType === 'paragraph' || fieldType === 'list' || fieldType === 'textarea') {
          // Check if we have a WYSIWYG editor
          const wysiwygEditor = (overlay as any).wysiwygEditor;
-         console.log('WYSIWYG Save Debug:', { fieldType, hasWysiwygEditor: !!wysiwygEditor });
          
          if (wysiwygEditor) {
            const rawValue = wysiwygEditor.getValue();
-           console.log('WYSIWYG Raw Value:', rawValue);
            
            // For HTML content from WYSIWYG editor
            if (fieldType === 'paragraph') {
@@ -953,9 +948,7 @@ export class InlineEditor {
              // For textarea, keep as HTML string
              newValue = rawValue;
            }
-           console.log('WYSIWYG Processed Value:', newValue);
          } else {
-           console.log('WYSIWYG: No editor found, using fallback');
            // Fallback to regular textarea
            const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
           const rawValue = textarea?.value || '';
@@ -980,7 +973,6 @@ export class InlineEditor {
         newValue = (input.value || '').trim();
       }
       
-      console.log('Saving changes:', { documentId, fieldName, newValue, fieldType });
       
       // Use Sanity client directly with proper error handling
       const { createClient } = await import('@sanity/client');
