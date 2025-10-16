@@ -36,22 +36,22 @@ export default {
       title: 'Page Sections',
       type: 'array',
       of: [
-        { type: 'textSection' },
-        { type: 'imageTextSection' },
-        { type: 'gallerySection' },
-        { type: 'postGridSection' },
-        { type: 'mapSection' },
-        { type: 'formSection' },
-        { type: 'testimonialsSection' },
-        { type: 'ctaSection' },
-        { type: 'faqSection' },
-        { type: 'popoverSection' },
+        { type: 'object', fields: [
+          { name: 'title', title: 'Section Title', type: 'string' },
+          { name: 'content', title: 'Content', type: 'text' }
+        ]}
       ],
     },
     {
       name: 'cta',
       title: 'Call to Action Section',
-      type: 'ctaSection',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'CTA Title', type: 'string' },
+        { name: 'description', title: 'CTA Description', type: 'text' },
+        { name: 'buttonText', title: 'Button Text', type: 'string' },
+        { name: 'buttonUrl', title: 'Button URL', type: 'url' }
+      ],
     },
     {
       name: 'seoSettings',
