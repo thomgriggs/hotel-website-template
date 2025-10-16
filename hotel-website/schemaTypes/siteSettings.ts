@@ -28,13 +28,25 @@ export default {
       name: 'navigation',
       title: 'Main Navigation Menu',
       type: 'array',
-      of: [{ type: 'navigationItem' }]
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'title', title: 'Menu Title', type: 'string' },
+          { name: 'url', title: 'URL', type: 'string' }
+        ]
+      }]
     },
     {
       name: 'footerMenu',
       title: 'Footer Menu',
       type: 'array',
-      of: [{ type: 'navigationItem' }]
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'title', title: 'Menu Title', type: 'string' },
+          { name: 'url', title: 'URL', type: 'string' }
+        ]
+      }]
     },
     {
       name: 'socialLinks',
@@ -117,7 +129,13 @@ export default {
       name: 'legalLinks',
       title: 'Legal Links',
       type: 'array',
-      of: [{ type: 'navigationItem' }]
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'title', title: 'Link Title', type: 'string' },
+          { name: 'url', title: 'URL', type: 'string' }
+        ]
+      }]
     },
     {
       name: 'siteName',
@@ -237,38 +255,26 @@ export default {
             {
               name: 'primary',
               title: 'Primary Color',
-              type: 'color',
-              options: {
-                disableAlpha: true,
-              },
-              description: 'Override default primary color'
+              type: 'string',
+              description: 'Override default primary color (hex code)'
             },
             {
               name: 'background',
               title: 'Background Color',
-              type: 'color',
-              options: {
-                disableAlpha: false,
-              },
-              description: 'Override default background color'
+              type: 'string',
+              description: 'Override default background color (hex code)'
             },
             {
               name: 'text',
               title: 'Text Color',
-              type: 'color',
-              options: {
-                disableAlpha: true,
-              },
-              description: 'Override default text color'
+              type: 'string',
+              description: 'Override default text color (hex code)'
             },
             {
               name: 'border',
               title: 'Border Color',
-              type: 'color',
-              options: {
-                disableAlpha: true,
-              },
-              description: 'Override default border color'
+              type: 'string',
+              description: 'Override default border color (hex code)'
             }
           ],
           description: 'Customize preview mode colors'
