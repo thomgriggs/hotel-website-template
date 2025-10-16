@@ -8,14 +8,14 @@ export function initPreviewMode() {
 	
 	if (wantsPreview) {
 		// Load inline editor and set up preview mode
-		import('/src/lib/inlineEditor.ts').then(module => {
+		import('/src/lib/inlineEditor.ts').then((module: any) => {
 			const { InlineEditor } = module;
-			window.inlineEditor = new InlineEditor();
+			(window as any).inlineEditor = new InlineEditor();
 			
 			// Check if already authenticated
-			if (!window.inlineEditor.isAuthenticated) {
+			if (!(window as any).inlineEditor.isAuthenticated) {
 				// Show password prompt first
-				window.inlineEditor.showPasswordPrompt(() => {
+				(window as any).inlineEditor.showPasswordPrompt(() => {
 					// After successful authentication, enable preview mode
 					initializePreviewMode();
 				});
@@ -121,6 +121,7 @@ function initializePreviewMode() {
 			top: 80px;
 			z-index: 1000;
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            pointer-events: none;
 		}
 		
 		.preview-icon {
@@ -136,6 +137,7 @@ function initializePreviewMode() {
 			box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 			transition: all 0.3s ease;
 			animation: pulse 2s infinite;
+            pointer-events: auto;
 		}
 		
 		.preview-icon:hover {
@@ -159,6 +161,7 @@ function initializePreviewMode() {
 			min-width: 200px;
 			overflow: hidden;
 			animation: slideDown 0.2s ease;
+            pointer-events: auto;
 		}
 		
 		.smart-preview-indicator[data-position="left"] .preview-menu {
@@ -487,23 +490,26 @@ function initializePreviewMode() {
 		const fieldPath = field.getAttribute('data-sanity-edit-field');
 		const fieldName = fieldPath.split('#')[1];
 		
-		// Determine field type
-		let fieldType = 'text';
-		let contentLabel = '✏️ Text';
-		
-		if (field.tagName === 'H1' || field.tagName === 'H2' || field.tagName === 'H3') {
-			fieldType = 'headline';
-			contentLabel = '📰 Headline';
-		} else if (field.tagName === 'IMG' || fieldName.toLowerCase().includes('image')) {
-			fieldType = 'image';
-			contentLabel = '🖼️ Image';
-		} else if (field.tagName === 'A' || fieldName.toLowerCase().includes('button')) {
-			fieldType = 'button';
-			contentLabel = '🔘 Button';
-		} else if (fieldName.toLowerCase().includes('description') || fieldName.toLowerCase().includes('paragraph')) {
-			fieldType = 'paragraph';
-			contentLabel = '📄 Paragraph';
-		}
+			// Determine field type
+			let fieldType = 'text';
+			let contentLabel = '✏️ Text';
+			
+			if (field.tagName === 'H1' || field.tagName === 'H2' || field.tagName === 'H3') {
+				fieldType = 'headline';
+				contentLabel = '📰 Headline';
+			} else if (field.tagName === 'IMG' || fieldName.toLowerCase().includes('image')) {
+				fieldType = 'image';
+				contentLabel = '🖼️ Image';
+			} else if (field.tagName === 'A' || fieldName.toLowerCase().includes('button')) {
+				fieldType = 'button';
+				contentLabel = '🔘 Button';
+			} else if (fieldName.toLowerCase().includes('description') || fieldName.toLowerCase().includes('paragraph')) {
+				fieldType = 'paragraph';
+				contentLabel = '📄 Paragraph';
+			} else if (fieldName.toLowerCase().includes('address')) {
+				fieldType = 'paragraph';
+				contentLabel = '📍 Address';
+			}
 		
 		field.setAttribute('data-content-label', contentLabel);
 		field.setAttribute('data-field-type', fieldType);
@@ -583,7 +589,7 @@ function initializePreviewMode() {
 			}
 			
 			// Show editor
-			window.inlineEditor.showEditor(fieldPath, currentValue, fieldType, currentUrl, contentLabel);
+			(window as any).inlineEditor.showEditor(fieldPath, currentValue, fieldType, currentUrl, contentLabel);
 		});
 	});
 }

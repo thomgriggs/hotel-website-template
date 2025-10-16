@@ -78,7 +78,7 @@ function getSocialIcon(platform: string): string {
 					<ul class="footer-links">
 						{contactInfo?.address && (
 							<li>
-								<span class="address" data-sanity-edit-field="siteSettings#contactAddress">
+								<span class="address" data-sanity-edit-field="siteSettings#contactInfo.address">
 									{Array.isArray(contactInfo.address) ? (
 										contactInfo.address.map((line: string) => (
 											<span>{line}</span>
@@ -92,7 +92,7 @@ function getSocialIcon(platform: string): string {
 						{contactInfo?.phone && (
 							<li>
 								<span class="telephone">
-									<a href={`tel:${contactInfo.phone}`} data-sanity-edit-field="siteSettings#contactPhone">
+									<a href={`tel:${contactInfo.phone}`} data-sanity-edit-field="siteSettings#contactInfo.phone">
 										<span>Tel:</span>
 										<span>{contactInfo.phone}</span>
 									</a>
@@ -102,7 +102,7 @@ function getSocialIcon(platform: string): string {
 						{contactInfo?.email && (
 							<li>
 								<span class="email">
-									<a href={`mailto:${contactInfo.email}`} data-sanity-edit-field="siteSettings#contactEmail">
+									<a href={`mailto:${contactInfo.email}`} data-sanity-edit-field="siteSettings#contactInfo.email">
 										<span>{contactInfo.email}</span>
 									</a>
 								</span>

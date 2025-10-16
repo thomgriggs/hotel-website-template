@@ -258,7 +258,7 @@ export class InlineEditor {
           <button class="inline-editor-close" aria-label="Close editor">×</button>
         </div>
         <div class="inline-editor-content">
-          ${this.getEditorHTML(fieldType, currentValue, currentUrl, isParagraph, isList)}
+          ${this.getEditorHTML(fieldType, currentValue, currentUrl, isParagraph, isList, fieldName)}
           ${isMultiLine ? `<div class="editor-hint">${isParagraph ? 'Press Enter twice for a new paragraph' : isList ? 'Press Enter for a new list item' : 'Use line breaks as needed'}</div>` : ''}
           ${fieldType === 'menu' ? `<div class="editor-note">💡 To reorder menu items, use Sanity Studio</div>` : ''}
         </div>
@@ -685,7 +685,7 @@ export class InlineEditor {
   }
 
   // Get appropriate editor HTML based on field type
-  getEditorHTML(fieldType: string, currentValue: string, currentUrl?: string, isParagraph?: boolean, isList?: boolean): string {
+  getEditorHTML(fieldType: string, currentValue: string, currentUrl?: string, isParagraph?: boolean, isList?: boolean, fieldName?: string): string {
     const escapeHtml = (str: string) => (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     
     switch (fieldType) {
@@ -693,12 +693,23 @@ export class InlineEditor {
       case 'list':
       case 'textarea':
         const rows = Math.max(5, (currentValue.match(/\n/g) || []).length + 3);
+        const placeholder = isParagraph ? 
+          'Enter paragraphs... (Press Enter twice for new paragraph)' : 
+          isList ? 'Enter list items... (Press Enter for new item)' : 
+          'Enter text...';
+        
+        // For address fields, preserve line breaks in display
+        const displayValue = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
+          currentValue.replace(/\n/g, '\n') : 
+          escapeHtml(currentValue);
+        
         return `
           <textarea 
             class="inline-editor-field" 
-            placeholder="${isParagraph ? 'Enter paragraphs... (Press Enter twice for new paragraph)' : isList ? 'Enter list items... (Press Enter for new item)' : 'Enter text...'}"
+            placeholder="${placeholder}"
             rows="${rows}"
-          >${escapeHtml(currentValue)}</textarea>
+            style="white-space: pre-wrap; line-height: 1.6;"
+          >${displayValue}</textarea>
           ${currentValue ? `<div class="editor-count">${currentValue.length} characters</div>` : ''}
         `;
       
@@ -900,43 +911,24 @@ export class InlineEditor {
       
       console.log('Saving changes:', { documentId, fieldName, newValue, fieldType });
       
-      // Use direct Sanity client call
-      const { createClient } = await import('@sanity/client');
-      
-      const client = createClient({
-        projectId: '0knotzp4',
-        dataset: 'production',
-        useCdn: false,
-        apiVersion: '2023-05-03',
-        token: import.meta.env.SANITY_API_WRITE_TOKEN || import.meta.env.SANITY_API_READ_TOKEN,
+      // Use API endpoint instead of direct Sanity client
+      const response = await fetch('/api/preview-save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          documentId,
+          fieldName,
+          newValue,
+          fieldType
+        })
       });
 
-      // Build the patch operation
-      const patch = client.patch(documentId);
-      
-      // Handle different field types
-      if (fieldType === 'button') {
-        // For buttons, we need to update multiple fields
-        await patch
-          .set({ [`${fieldName}.text`]: newValue.text })
-          .set({ [`${fieldName}.url`]: newValue.url })
-          .set({ [`${fieldName}.target`]: newValue.target })
-          .commit();
-      } else if (fieldType === 'image') {
-        // For images, update URL and alt text
-        await patch
-          .set({ [`${fieldName}.url`]: newValue.url })
-          .set({ [`${fieldName}.alt`]: newValue.alt })
-          .commit();
-      } else if (fieldType === 'menu') {
-        // For menu items, update text and URL
-        await patch
-          .set({ [`${fieldName}.text`]: newValue.text })
-          .set({ [`${fieldName}.url`]: newValue.url })
-          .commit();
-      } else {
-        // For simple fields, just set the value
-        await patch.set({ [fieldName]: newValue }).commit();
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to save changes');
       }
 
       // Update the page content

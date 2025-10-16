@@ -179,27 +179,6 @@ header.is-fixed {
 	background-color: var(--color-surface);
 }
 
-header.is-fixed .logo-white {
-	display: none;
-}
-
-header.is-hiding:not(.is-fixed) .logo {
-	opacity: 0;
-}
-
-header:not(.is-fixed) .wrapper {
-	align-items: flex-start;
-	padding: 34px 10px;
-}
-
-header:not(.is-fixed) .logo {
-	margin-top: 68px;
-}
-
-header:not(.is-fixed) .logo-color {
-	display: none;
-}
-
 header:not(.is-fixed) .menu-btn {
 	color: #ffffff;
 }
@@ -212,7 +191,7 @@ header:not(.is-fixed) .menu-icon span {
 	background-color: #ffffff;
 }
 
-header .wrapper {
+header .wrapper nav{
 	align-items: center;
 	display: flex;
 	flex-direction: row-reverse;
