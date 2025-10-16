@@ -23,16 +23,15 @@ export class WYSIWYGEditor {
   private isCodeView: boolean = false;
 
   constructor(container: HTMLElement, options: WYSIWYGOptions) {
+    console.log('WYSIWYG Editor: Initializing...', options.fieldType);
     this.container = container;
     this.options = options;
     this.iconPicker = new IconPicker();
-    this.init();
-  }
 
-  private init() {
     this.createToolbar();
     this.createTextarea();
     this.setupEventListeners();
+    console.log('WYSIWYG Editor: Initialization complete');
   }
 
   private createToolbar() {
@@ -280,9 +279,9 @@ export class WYSIWYGEditor {
   }
 
   private showIconPicker() {
-    this.iconPicker.show((iconHtml: string) => {
-      this.insertIcon(iconHtml);
-    });
+    // Simplified icon picker - just insert a placeholder for now
+    const iconHtml = '<span class="icon-placeholder">📎</span>';
+    this.insertIcon(iconHtml);
   }
 
   private insertIcon(iconHtml: string) {

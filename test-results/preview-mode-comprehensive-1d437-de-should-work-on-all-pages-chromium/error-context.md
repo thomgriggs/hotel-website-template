@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e1]:
+- generic [active] [ref=e1]:
   - link "Skip to main content" [ref=e2] [cursor=pointer]:
     - /url: "#main"
   - banner [ref=e3]:
@@ -19,7 +19,7 @@
             - text: Book Now
   - main [ref=e17]:
     - generic [ref=e18]:
-      - img "Our Rooms & Suites" [ref=e19]
+      - img "Our Rooms & Suites" [ref=e19] [cursor=pointer]
       - generic [ref=e21]:
         - heading "Our Rooms & Suites" [level=1] [ref=e22]
         - paragraph [ref=e23]: Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.
@@ -242,33 +242,4 @@
     - generic:
       - img
     - generic: Button
-  - generic [ref=e148]:
-    - generic [ref=e149]:
-      - generic [ref=e150]:
-        - img [ref=e152]
-        - generic [ref=e155]:
-          - heading "Edit Button" [level=3] [ref=e156]
-          - generic [ref=e157]: Update button text and link
-      - button "Close editor" [ref=e159] [cursor=pointer]: ×
-    - generic [ref=e161]:
-      - generic [ref=e162]:
-        - generic [ref=e163]:
-          - img [ref=e164]
-          - text: "Button Text:"
-        - textbox "e.g., Learn More" [active] [ref=e167]: Paradise Hotel
-      - generic [ref=e168]:
-        - generic [ref=e169]:
-          - img [ref=e170]
-          - text: "Button URL:"
-        - textbox "e.g., /contact or https://example.com" [ref=e173]: http://localhost:4321/
-      - generic [ref=e174]:
-        - generic [ref=e175]:
-          - img [ref=e176]
-          - text: "Open in:"
-        - combobox [ref=e179]:
-          - option "Same Window" [selected]
-          - option "New Window / Tab"
-    - generic [ref=e180]:
-      - button "Cancel" [ref=e181] [cursor=pointer]
-      - button "Save Changes" [ref=e182] [cursor=pointer]
 ```

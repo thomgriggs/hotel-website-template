@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYSIWYG Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-container { max-width: 600px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        textarea { width: 100%; min-height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>WYSIWYG Editor Test</h1>
+        
+        <div class="test-section">
+            <h3>Test 1: Basic Textarea</h3>
+            <textarea id="test1" placeholder="Type some text here..."></textarea>
+            <button onclick="testSelection()">Test Selection</button>
+            <button onclick="testFormatting()">Test Formatting</button>
+            <div class="result" id="result1"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 2: Selection Range</h3>
+            <textarea id="test2">This is some sample text for testing selection.</textarea>
+            <button onclick="testRange()">Test Range</button>
+            <div class="result" id="result2"></div>
+        </div>
+    </div>
+
+    <script>
+        function testSelection() {
+            const textarea = document.getElementById('test1');
+            const result = document.getElementById('result1');
+            
+            textarea.focus();
+            textarea.setSelectionRange(0, 4); // Select first 4 characters
+            
+            result.innerHTML = `
+                <strong>Selection Test:</strong><br>
+                Start: ${textarea.selectionStart}<br>
+                End: ${textarea.selectionEnd}<br>
+                Selected: "${textarea.value.substring(textarea.selectionStart, textarea.selectionEnd)}"
+            `;
+        }
+        
+        function testFormatting() {
+            const textarea = document.getElementById('test1');
+            const result = document.getElementById('result1');
+            
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            if (selectedText) {
+                const formattedText = `**${selectedText}**`;
+                textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
+                textarea.setSelectionRange(start + 2, end + 2);
+            } else {
+                textarea.value = textarea.value.substring(0, start) + '**bold**' + textarea.value.substring(end);
+                textarea.setSelectionRange(start + 2, start + 6);
+            }
+            
+            textarea.focus();
+            
+            result.innerHTML = `
+                <strong>Formatting Test:</strong><br>
+                Value: "${textarea.value}"<br>
+                Cursor at: ${textarea.selectionStart}
+            `;
+        }
+        
+        function testRange() {
+            const textarea = document.getElementById('test2');
+            const result = document.getElementById('result2');
+            
+            // Select "sample" in the text
+            const text = textarea.value;
+            const start = text.indexOf('sample');
+            const end = start + 6;
+            
+            textarea.setSelectionRange(start, end);
+            textarea.focus();
+            
+            result.innerHTML = `
+                <strong>Range Test:</strong><br>
+                Selected: "${text.substring(start, end)}"<br>
+                Position: ${start}-${end}
+            `;
+        }
+        
+        // Auto-focus first textarea
+        document.getElementById('test1').focus();
+    </script>
+</body>
+</html>

@@ -18,137 +18,102 @@
             - /url: /contact
             - text: Book Now
   - main [ref=e17]:
-    - generic [ref=e19]:
+    - generic [ref=e18]:
+      - img "Our Rooms & Suites" [ref=e19]
       - generic [ref=e21]:
-        - heading "Dining & Restaurants" [level=1] [ref=e22]
-        - paragraph [ref=e23]: Indulge in exceptional culinary experiences at our diverse collection of restaurants, bars, and dining venues.
-      - generic [ref=e24]:
-        - article [ref=e25]:
-          - generic [ref=e26]:
-            - img [ref=e28]
-            - generic [ref=e30]:
-              - heading [level=2]
-              - generic [ref=e31]: International •
-              - paragraph [ref=e32]: Refreshing cocktails and light bites by the infinity pool.
-              - generic [ref=e34]:
-                - strong [ref=e35]: "Hours:"
-                - text: Check with concierge
-              - link "View Menu" [ref=e38] [cursor=pointer]:
-                - /url: /dining/poolside-bar
-        - article [ref=e39]:
-          - generic [ref=e40]:
-            - img [ref=e42]
-            - generic [ref=e44]:
-              - heading [level=2]
-              - generic [ref=e45]: Mediterranean •
-              - paragraph [ref=e46]: Relaxed atmosphere with fresh, locally-sourced ingredients and seasonal menu.
-              - generic [ref=e48]:
-                - strong [ref=e49]: "Hours:"
-                - text: Check with concierge
-              - link "View Menu" [ref=e52] [cursor=pointer]:
-                - /url: /dining/casual-bistro
-        - article [ref=e53]:
-          - generic [ref=e54]:
-            - img [ref=e56]
-            - generic [ref=e58]:
-              - heading [level=2]
-              - generic [ref=e59]: Contemporary •
-              - paragraph [ref=e60]: Elegant fine dining experience with award-winning cuisine and extensive wine selection.
-              - generic [ref=e62]:
-                - strong [ref=e63]: "Hours:"
-                - text: Check with concierge
-              - link "View Menu" [ref=e66] [cursor=pointer]:
-                - /url: /dining/fine-dining-restaurant
-        - article [ref=e67]:
-          - generic [ref=e68]:
-            - img "Sabor Social" [ref=e70]
-            - generic [ref=e72]:
-              - heading "Sabor Social" [level=2] [ref=e73]
-              - generic [ref=e74]: bar-grill • $$
-              - paragraph [ref=e75]: "Sabor Social is the after-hours heartbeat of Sabor Sabor: a warm, music-forward lounge where fresh-cut citrus, good ice, and Latin spirits meet. The room glows with low amber light and tiled bar fronts; the back bar leans tequila, mezcal, and rum, with a tight list of seasonal signatures and clean classics. Small plates from the kitchen—charred street corn, tuna tostadas, mojo pork sliders—keep the conversation flowing. Come early for an easy paloma and stay for something smoky, spicy, and a little bit loud."
-              - generic [ref=e76]:
-                - generic [ref=e77]:
-                  - strong [ref=e78]: "Location:"
-                  - text: Poolside
-                - generic [ref=e79]:
-                  - strong [ref=e80]: "Hours:"
-                  - text: 5:00 PM – 12:00 PM
-              - link "View Menu" [ref=e83] [cursor=pointer]:
-                - /url: /dining/sabor-social
-        - article [ref=e84]:
-          - generic [ref=e85]:
-            - img "Sabor Sabor" [ref=e87]
-            - generic [ref=e89]:
-              - heading "Sabor Sabor" [level=2] [ref=e90]
-              - generic [ref=e91]: international • $$$
-              - paragraph [ref=e92]: Sabor Sabor is a lively Latin kitchen where bold flavors, bright cocktails, and warm hospitality meet. Think wood-grilled meats, zesty ceviches, handmade tortillas, and playlists that make the room hum.
-              - generic [ref=e93]:
-                - generic [ref=e94]:
-                  - strong [ref=e95]: "Location:"
-                  - text: Rooftop
-                - generic [ref=e96]:
-                  - strong [ref=e97]: "Hours:"
-                  - text: 5:00 PM – 10:00 PM
-                - generic [ref=e98]:
-                  - strong [ref=e99]: "Reservations:"
-                  - text: Recommended
-              - link "View Menu" [ref=e102] [cursor=pointer]:
-                - /url: /dining/sabor-sabor
-  - contentinfo [ref=e103]:
-    - generic [ref=e106]:
-      - generic [ref=e107]:
-        - link "Paradise Hotel" [ref=e108] [cursor=pointer]:
+        - heading "Our Rooms & Suites" [level=1] [ref=e22]
+        - paragraph [ref=e23]: Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.
+    - generic [ref=e26]:
+      - article [ref=e27]:
+        - generic [ref=e28]:
+          - img "Presidential Suite" [ref=e30]
+          - generic [ref=e32]:
+            - heading "Presidential Suite" [level=2] [ref=e33]
+            - generic [ref=e34]: Starting at $800/night
+            - paragraph [ref=e35]: Our most luxurious accommodation with panoramic city views, private terrace, and premium amenities.
+            - link "View Details" [ref=e38] [cursor=pointer]:
+              - /url: /rooms/presidential-suite
+      - article [ref=e39]:
+        - generic [ref=e40]:
+          - img "Junior Suite" [ref=e42]
+          - generic [ref=e44]:
+            - heading "Junior Suite" [level=2] [ref=e45]
+            - generic [ref=e46]: Starting at $300/night
+            - paragraph [ref=e47]: "A Junior Suite offers extra space for unwinding: an open-plan bedroom and lounge, a plush king bed, and a seating area with a sofa or chaise. Expect a larger bath, a work desk, and thoughtful touches like a Nespresso, soft robes, and fast Wi-Fi."
+            - list [ref=e48]:
+              - listitem [ref=e49]: • Lounge
+              - listitem [ref=e50]: • Bath
+              - listitem [ref=e51]: • Smart Tv
+            - link "View Details" [ref=e54] [cursor=pointer]:
+              - /url: /rooms/junior-suite
+      - article [ref=e55]:
+        - generic [ref=e56]:
+          - img "Classic Room" [ref=e58]
+          - generic [ref=e60]:
+            - heading "Classic Room" [level=2] [ref=e61]
+            - generic [ref=e62]: Starting at $200/night
+            - paragraph [ref=e63]: A hotel is a welcoming place where travelers check in, rest, and recharge. The lobby leads to comfortable rooms with fresh linens, a private bath, and Wi-Fi. Guests can find helpful staff at the front desk, spaces to relax, and often amenities like a café, gym, or pool.
+            - list [ref=e64]:
+              - listitem [ref=e65]: • Free Wifi
+              - listitem [ref=e66]: • Nespresso
+              - listitem [ref=e67]: • Safe
+            - link "View Details" [ref=e70] [cursor=pointer]:
+              - /url: /rooms/classic-room
+  - contentinfo [ref=e71]:
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - link "Paradise Hotel" [ref=e76] [cursor=pointer]:
           - /url: /
-        - list [ref=e109]
-      - list [ref=e111]:
-        - listitem [ref=e112]:
-          - generic [ref=e113]:
-            - generic [ref=e114]: 123 Paradise Drive
-            - generic [ref=e115]: Paradise City, PC 90210
-            - generic [ref=e116]: United States
-        - listitem [ref=e117]:
-          - 'link "Tel: +1 (555) 123-4567" [ref=e119] [cursor=pointer]':
+        - list [ref=e77]
+      - list [ref=e79]:
+        - listitem [ref=e80]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: 123 Paradise Drive
+            - generic [ref=e83]: Paradise City, PC 90210
+            - generic [ref=e84]: United States
+        - listitem [ref=e85]:
+          - 'link "Tel: +1 (555) 123-4567" [ref=e87] [cursor=pointer]':
             - /url: tel:+1 (555) 123-4567
-        - listitem [ref=e120]:
-          - link "info@paradisehotel.com" [ref=e122] [cursor=pointer]:
+        - listitem [ref=e88]:
+          - link "info@paradisehotel.com" [ref=e90] [cursor=pointer]:
             - /url: mailto:info@paradisehotel.com
-      - generic [ref=e123]:
+      - generic [ref=e91]:
         - list
-        - list [ref=e124]:
-          - listitem [ref=e125]:
-            - link "Follow us on Facebook" [ref=e126] [cursor=pointer]:
+        - list [ref=e92]:
+          - listitem [ref=e93]:
+            - link "Follow us on Facebook" [ref=e94] [cursor=pointer]:
               - /url: https://facebook.com/paradisehotel
-              - img [ref=e128]
-          - listitem [ref=e130]:
-            - link "Follow us on Instagram" [ref=e131] [cursor=pointer]:
+              - img [ref=e96]
+          - listitem [ref=e98]:
+            - link "Follow us on Instagram" [ref=e99] [cursor=pointer]:
               - /url: https://instagram.com/paradisehotel
-              - img [ref=e133]
-          - listitem [ref=e136]:
-            - link "Follow us on Twitter" [ref=e137] [cursor=pointer]:
+              - img [ref=e101]
+          - listitem [ref=e104]:
+            - link "Follow us on Twitter" [ref=e105] [cursor=pointer]:
               - /url: https://twitter.com/paradisehotel
-              - img [ref=e139]
-    - generic [ref=e142]:
+              - img [ref=e107]
+    - generic [ref=e110]:
       - list
-      - button "Open theme controls" [ref=e144] [cursor=pointer]:
-        - img [ref=e146]
-        - generic [ref=e148]: Customize
-  - generic [ref=e151]:
-    - button "Menu" [ref=e152]:
-      - img [ref=e154]
+      - button "Open theme controls" [ref=e112] [cursor=pointer]:
+        - img [ref=e114]
+        - generic [ref=e116]: Customize
+  - generic [ref=e119]:
+    - button "Menu" [ref=e120]:
+      - img [ref=e122]
       - generic: Menu
-    - button "Inspect" [ref=e158]:
-      - img [ref=e160]
+    - button "Inspect" [ref=e126]:
+      - img [ref=e128]
       - generic: Inspect
-    - button "Audit" [ref=e162]:
-      - generic [ref=e163]:
-        - img [ref=e164]
-        - img [ref=e167]
+    - button "Audit" [ref=e130]:
+      - generic [ref=e131]:
+        - img [ref=e132]
+        - img [ref=e135]
       - generic: Audit
-    - button "Settings" [ref=e170]:
-      - img [ref=e172]
+    - button "Settings" [ref=e138]:
+      - img [ref=e140]
       - generic: Settings
-  - generic "Preview Mode Active" [ref=e175] [cursor=pointer]:
-    - img [ref=e176]
+  - generic "Preview Mode Active" [ref=e143] [cursor=pointer]:
+    - img [ref=e144]
   - generic:
     - generic:
       - img
@@ -181,6 +146,10 @@
     - generic:
       - img
     - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
   - generic:
     - generic:
       - img
@@ -228,6 +197,10 @@
   - generic:
     - generic:
       - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
     - generic: Button
   - generic:
     - generic:
@@ -248,43 +221,7 @@
   - generic:
     - generic:
       - img
-    - generic: Button
-  - generic:
-    - generic:
-      - img
-    - generic: Image
-  - generic:
-    - generic:
-      - img
-    - generic: Headline
-  - generic:
-    - generic:
-      - img
     - generic: Text
-  - generic:
-    - generic:
-      - img
-    - generic: Paragraph
-  - generic:
-    - generic:
-      - img
-    - generic: Button
-  - generic:
-    - generic:
-      - img
-    - generic: Image
-  - generic:
-    - generic:
-      - img
-    - generic: Headline
-  - generic:
-    - generic:
-      - img
-    - generic: Text
-  - generic:
-    - generic:
-      - img
-    - generic: Paragraph
   - generic:
     - generic:
       - img
@@ -305,33 +242,33 @@
     - generic:
       - img
     - generic: Button
-  - generic [ref=e180]:
-    - generic [ref=e181]:
-      - generic [ref=e182]:
-        - img [ref=e184]
-        - generic [ref=e187]:
-          - heading "Edit Button" [level=3] [ref=e188]
-          - generic [ref=e189]: Update button text and link
-      - button "Close editor" [ref=e191] [cursor=pointer]: ×
-    - generic [ref=e193]:
-      - generic [ref=e194]:
-        - generic [ref=e195]:
-          - img [ref=e196]
+  - generic [ref=e148]:
+    - generic [ref=e149]:
+      - generic [ref=e150]:
+        - img [ref=e152]
+        - generic [ref=e155]:
+          - heading "Edit Button" [level=3] [ref=e156]
+          - generic [ref=e157]: Update button text and link
+      - button "Close editor" [ref=e159] [cursor=pointer]: ×
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - generic [ref=e163]:
+          - img [ref=e164]
           - text: "Button Text:"
-        - textbox "e.g., Learn More" [active] [ref=e199]: Paradise Hotel
-      - generic [ref=e200]:
-        - generic [ref=e201]:
-          - img [ref=e202]
+        - textbox "e.g., Learn More" [active] [ref=e167]: Paradise Hotel
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - img [ref=e170]
           - text: "Button URL:"
-        - textbox "e.g., /contact or https://example.com" [ref=e205]: http://localhost:4321/
-      - generic [ref=e206]:
-        - generic [ref=e207]:
-          - img [ref=e208]
+        - textbox "e.g., /contact or https://example.com" [ref=e173]: http://localhost:4321/
+      - generic [ref=e174]:
+        - generic [ref=e175]:
+          - img [ref=e176]
           - text: "Open in:"
-        - combobox [ref=e211]:
+        - combobox [ref=e179]:
           - option "Same Window" [selected]
           - option "New Window / Tab"
-    - generic [ref=e212]:
-      - button "Cancel" [ref=e213] [cursor=pointer]
-      - button "Save Changes" [ref=e214] [cursor=pointer]
+    - generic [ref=e180]:
+      - button "Cancel" [ref=e181] [cursor=pointer]
+      - button "Save Changes" [ref=e182] [cursor=pointer]
 ```
