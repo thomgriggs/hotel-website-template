@@ -32,8 +32,6 @@ import buttonLink from './buttonLink'
 import ctaSection from './ctaSection'
 import faqSection from './faqSection'
 import popoverSection from './popoverSection'
-import previewConfig from './previewConfig'
-
 export const schemaTypes = [
   room, 
   dining, 
@@ -68,6 +66,5 @@ export const schemaTypes = [
   buttonLink,
   ctaSection,
   faqSection,
-  popoverSection,
-  previewConfig
+  popoverSection
 ]

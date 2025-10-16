@@ -6,10 +6,8 @@ A modern, CMS-driven hotel website built with Astro and Sanity, featuring live p
 
 - **Live Preview Mode** - Real-time content editing with password protection
 - **Inline Editing** - Direct content editing from the frontend with visual indicators
-- **Professional Icon System** - Lucide icons with custom upload capabilities
-- **Adaptive Styling** - Smart theme detection based on content background
-- **Icon Management** - Admin interface for uploading and managing custom icons
-- **Theme Configuration** - Configurable themes via Sanity Studio
+- **WYSIWYG Editor** - Rich text editor with formatting, icons, and lists
+- **Progressive Icon Picker** - Core icons + search + favorites system
 - **CMS-Driven Content** - All content managed through Sanity Studio
 - **Content Templates** - Flexible template system for dynamic page creation
 - **Visual Editing** - Sanity's visual editing capabilities
@@ -25,38 +23,25 @@ A modern, CMS-driven hotel website built with Astro and Sanity, featuring live p
 hotel-website-template/
 ├── src/                    # Main website source
 │   ├── components/         # Reusable components
-│   │   ├── IconPicker.tsx  # Icon selection component
-│   │   └── IconManager.tsx # Icon management interface
 │   ├── layouts/           # Page layouts
 │   ├── pages/             # Website pages
-│   │   └── admin/         # Admin pages
-│   │       └── icons.astro # Icon management dashboard
 │   ├── styles/            # CSS stylesheets
+│   │   ├── main.css       # Main styles
+│   │   └── wysiwyg.css    # WYSIWYG editor styles
 │   └── lib/               # Utilities and preview mode
 │       ├── previewMode.ts  # Global preview mode functionality
 │       ├── inlineEditor.ts # Inline editing system
-│       ├── iconRegistry.ts # Icon registry service
-│       ├── iconManager.ts  # Icon management service
-│       ├── iconUploader.ts # Icon upload handler
-│       ├── themeConfig.ts  # Theme management system
+│       ├── wysiwygEditor.ts # WYSIWYG editor with icon picker
 │       └── sanity.ts      # Sanity client configuration
 ├── hotel-website/         # Sanity Studio
 │   ├── schemaTypes/       # Content schemas
-│   │   ├── previewConfig.ts # Preview mode configuration
-│   │   └── siteSettings.ts # Site settings with theme config
+│   │   └── siteSettings.ts # Site settings
 │   └── scripts/          # Content management scripts
 ├── public/               # Static assets
-│   └── icons/           # Icon storage
-│       ├── lucide/      # Built-in Lucide icons
-│       ├── custom/      # Custom uploaded icons
-│       └── metadata.json # Icon registry database
 ├── tests/               # Playwright test suite
-│   ├── preview-mode/    # Preview mode tests
-│   ├── navigation/      # Navigation tests
-│   └── pages/          # Page content tests
-├── ICON_SYSTEM.md      # Icon system documentation
-├── THEME_CUSTOMIZATION.md # Theme customization guide
-└── package.json         # Dependencies
+│   ├── tests/           # Test files
+│   └── playwright.config.ts # Test configuration
+└── package.json         # Dependencies and scripts
 ```
 
 ## 🎨 Assets
@@ -71,36 +56,37 @@ The project includes placeholder assets that are ready to use:
 
 **To customize:** Simply replace the placeholder files in the `public/` directory with your own assets. The project will automatically use your custom images.
 
-## 🎨 Icon System & Adaptive Styling
+## ✨ **WYSIWYG Editor**
 
-### Professional Icon System
-- **Lucide Icons**: Consistent, semantic icons replace emoji-based indicators
-- **Custom Upload**: Upload and manage custom SVG icons via admin interface
-- **Icon Registry**: Centralized management of all icons with metadata
-- **Usage Tracking**: Analytics for icon usage across the site
-- **Icon Picker**: Change icons directly in preview mode
+The hotel website template includes a powerful WYSIWYG (What-You-See-Is-What-You-Get) editor for rich text content editing in preview mode.
 
-### Adaptive Theme System
-- **Smart Detection**: Automatically detects optimal theme based on background color
-- **4 Preset Themes**: Neutral, Warm, Cool, and Professional themes
-- **Custom Colors**: Override any theme color via Sanity Studio
-- **CSS Variables**: All styling uses CSS custom properties for easy customization
-- **High Contrast**: Ensures accessibility across all backgrounds
+### **Core Features**
+- **Rich Text Formatting**: Bold, italic, links
+- **Progressive Icon Picker**: Core icons + search + favorites
+- **List Creation**: Bulleted and numbered lists
+- **Keyboard Shortcuts**: Ctrl+B (bold), Ctrl+I (italic), Ctrl+K (link)
+- **Responsive Design**: Works on all devices
 
-### Theme Configuration
-Configure themes and icons through Sanity Studio:
-1. **Site Settings** → **Preview Mode Configuration**
-2. **Theme Settings**: Choose default theme, enable auto-detection
-3. **Icon Settings**: Configure default icons, enable custom icons
-4. **Custom Colors**: Override theme colors with brand colors
+### **Icon System**
+- **Core Icons**: 20 essential icons always visible
+- **Search Functionality**: Search through full Lucide icon library
+- **Favorites System**: Auto-favorite frequently used icons
+- **Recent Icons**: Track recently used icons
+- **Clean Interface**: Intuitive tabbed interface
 
-### Admin Interface
-Access the icon management dashboard at `/admin/icons`:
-- Upload custom SVG icons
-- Browse all available icons
-- View usage statistics
-- Delete unused icons
-- Manage icon categories
+### **Usage**
+1. Enter preview mode (`?preview`)
+2. Click on any text field
+3. Use toolbar for formatting
+4. Click icon button to insert icons
+5. Save changes
+
+### **Progressive Enhancement**
+- **Phase 1**: Core icons + search (current)
+- **Phase 2**: Categories + favorites (future)
+- **Phase 3**: Custom upload (future)
+
+This ensures users get immediate value while having a clear growth path for advanced needs.
 
 ## 🎨 Preview Mode
 

@@ -1,4 +1,6 @@
 // Redesigned Inline Editor with Password Protection and Improved UX
+import { WYSIWYGEditor } from './wysiwygEditor';
+
 export class InlineEditor {
   private password = 'edit2024'; // Development password
   private isAuthenticated = false;
@@ -280,6 +282,30 @@ export class InlineEditor {
     // Add comprehensive styles
     this.addEditorStyles();
     document.body.appendChild(overlay);
+
+    // Initialize WYSIWYG editor for text fields
+    const wysiwygContainer = overlay.querySelector('.wysiwyg-container');
+    if (wysiwygContainer) {
+      const wysiwygElement = wysiwygContainer.querySelector('.wysiwyg-editor') as HTMLElement;
+      if (wysiwygElement) {
+        const placeholder = wysiwygElement.dataset.placeholder || 'Enter content...';
+        const value = wysiwygElement.dataset.value || '';
+        
+        // Create WYSIWYG editor
+        const wysiwygEditor = new WYSIWYGEditor(wysiwygElement, {
+          fieldType: fieldType,
+          placeholder: placeholder
+        });
+        
+        // Set initial value
+        if (value) {
+          wysiwygEditor.setValue(value);
+        }
+        
+        // Store reference for save functionality
+        (overlay as any).wysiwygEditor = wysiwygEditor;
+      }
+    }
 
     // Handle close and cancel
     const closeBtn = overlay.querySelector('.inline-editor-close') as HTMLButtonElement;
@@ -742,30 +768,17 @@ export class InlineEditor {
       case 'paragraph':
       case 'list':
       case 'textarea':
-        const rows = Math.max(5, (currentValue.match(/\n/g) || []).length + 3);
+        // Use WYSIWYG editor for rich text content
         const placeholder = isParagraph ? 
-          'Enter paragraphs... (Press Enter twice for new paragraph)' : 
-          isList ? 'Enter list items... (Press Enter for new item)' : 
-          'Enter text...';
-        
-        // For textareas, we don't need to escape HTML since it's not rendered as HTML
-        // Just preserve the raw text with line breaks intact
-        const displayValue = currentValue || '';
-        
-        
-        // Enhanced styling for address fields
-        const addressStyle = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
-          "white-space: pre-wrap; line-height: 1.6; min-height: 80px; font-family: inherit;" :
-          "white-space: pre-wrap; line-height: 1.6;";
+          'Enter paragraphs... (Use toolbar for formatting)' : 
+          isList ? 'Enter list items... (Use toolbar for formatting)' : 
+          'Enter text... (Use toolbar for formatting)';
         
         return `
-          <textarea 
-            class="inline-editor-field" 
-            placeholder="${placeholder}"
-            rows="${rows}"
-            style="${addressStyle}"
-          >${displayValue}</textarea>
-          ${currentValue ? `<div class="editor-count">${currentValue.length} characters</div>` : ''}
+          <div class="wysiwyg-container" data-field-type="${fieldType}">
+            <div class="wysiwyg-editor" data-placeholder="${placeholder}" data-value="${escapeHtml(currentValue)}"></div>
+            ${currentValue ? `<div class="editor-count">${currentValue.length} characters</div>` : ''}
+          </div>
         `;
       
       case 'button':
@@ -944,16 +957,37 @@ export class InlineEditor {
           text: (labelInput?.value || '').trim(),
           url: (urlInput?.value || '').trim()
         };
-      } else if (fieldType === 'paragraph' || fieldType === 'list') {
-        const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
-        const rawValue = textarea?.value || '';
-        
-        // For paragraphs, split on double line breaks
-        // For lists, split on single line breaks
-        if (fieldType === 'paragraph') {
-          newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
-        } else if (fieldType === 'list') {
-          newValue = rawValue.split(/\n/).map(item => item.trim()).filter(item => item.length > 0);
+      } else if (fieldType === 'paragraph' || fieldType === 'list' || fieldType === 'textarea') {
+        // Check if we have a WYSIWYG editor
+        const wysiwygEditor = (overlay as any).wysiwygEditor;
+        if (wysiwygEditor) {
+          const rawValue = wysiwygEditor.getValue();
+          
+          // For paragraphs, split on double line breaks
+          // For lists, split on single line breaks
+          if (fieldType === 'paragraph') {
+            newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+          } else if (fieldType === 'list') {
+            newValue = rawValue.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
+          } else {
+            // For textarea, keep as single string
+            newValue = rawValue;
+          }
+        } else {
+          // Fallback to regular textarea
+          const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
+          const rawValue = textarea?.value || '';
+          
+          // For paragraphs, split on double line breaks
+          // For lists, split on single line breaks
+          if (fieldType === 'paragraph') {
+            newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+          } else if (fieldType === 'list') {
+            newValue = rawValue.split(/\n/).map(item => item.trim()).filter(item => item.length > 0);
+          } else {
+            // For textarea, keep as single string
+            newValue = rawValue;
+          }
         }
       } else {
         const input = overlay.querySelector('.inline-editor-field') as HTMLInputElement | HTMLTextAreaElement;
