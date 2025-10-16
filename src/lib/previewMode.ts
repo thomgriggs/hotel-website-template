@@ -396,9 +396,8 @@ function initializePreviewMode() {
 			min-height: calc(100% + 8px);
 		}
 		
-		/* Unified content type label for ALL elements */
-		[data-sanity-edit-field]:hover::after {
-			content: attr(data-content-label);
+		/* Content type labels - using actual DOM elements */
+		.preview-content-label {
 			position: absolute;
 			top: -32px;
 			left: 0;
@@ -413,20 +412,38 @@ function initializePreviewMode() {
 			z-index: 10000; /* Even higher z-index for labels */
 			box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
 			border: 1px solid var(--preview-border-light, #6B7280);
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			opacity: 0;
+			transform: translateY(-4px);
+			transition: all 0.2s ease;
+		}
+
+		.preview-content-label.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.preview-content-label .icon {
+			width: 16px;
+			height: 16px;
+			flex-shrink: 0;
 		}
 		
 		/* Special positioning for images */
-		[data-sanity-edit-field][data-field-type="image"]:hover::after {
+		[data-sanity-edit-field][data-field-type="image"] .preview-content-label {
 			top: 8px;
 			left: 8px;
 			font-size: 14px;
 		}
 		
 		/* Special positioning for buttons/links */
-		[data-sanity-edit-field][data-field-type="button"]:hover::after,
-		[data-sanity-edit-field][data-field-type="link"]:hover::after {
+		[data-sanity-edit-field][data-field-type="button"] .preview-content-label,
+		[data-sanity-edit-field][data-field-type="link"] .preview-content-label {
 			top: -32px;
 			left: 0;
+			font-size: 14px;
 		}
 		
 		/* ADAPTIVE COLOR SYSTEM - High contrast alternatives */
@@ -548,10 +565,21 @@ function initializePreviewMode() {
 
 		// Render the Lucide icon
 		const iconSVG = renderLucideIcon(iconName, 16);
-		const contentLabel = `${iconSVG} ${labelText}`;
 		
-		field.setAttribute('data-content-label', contentLabel);
+		field.setAttribute('data-content-label', labelText);
 		field.setAttribute('data-field-type', fieldType);
+		field.setAttribute('data-icon-svg', iconSVG);
+		
+		// Create the content label element
+		const labelElement = document.createElement('div');
+		labelElement.className = 'preview-content-label';
+		labelElement.innerHTML = `
+			<div class="icon">${iconSVG}</div>
+			<span>${labelText}</span>
+		`;
+		
+		// Add the label to the field
+		field.appendChild(labelElement);
 		
 		// SMART ADAPTIVE COLOR DETECTION
 		// Use theme manager to detect optimal theme for this element
@@ -565,9 +593,21 @@ function initializePreviewMode() {
 			
 			// Add data attribute for CSS targeting
 			field.setAttribute('data-theme', optimalTheme);
+			
+			// Show the content label
+			const label = field.querySelector('.preview-content-label') as HTMLElement;
+			if (label) {
+				label.classList.add('show');
+			}
 		});
 		
 		field.addEventListener('mouseleave', () => {
+			// Hide the content label
+			const label = field.querySelector('.preview-content-label') as HTMLElement;
+			if (label) {
+				label.classList.remove('show');
+			}
+			
 			// Optionally revert to default theme when leaving
 			// For now, we'll keep the detected theme active
 		});
