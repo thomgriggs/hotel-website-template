@@ -162,6 +162,15 @@ export class WYSIWYGEditor {
     this.textarea.addEventListener('keydown', (e) => {
       this.handleKeyboardShortcuts(e);
     });
+    
+    // Selection change events for visual feedback
+    this.textarea.addEventListener('mouseup', () => {
+      this.updateToolbarState();
+    });
+    
+    this.textarea.addEventListener('keyup', () => {
+      this.updateToolbarState();
+    });
   }
 
   private handleToolbarAction(action: string) {
@@ -211,28 +220,35 @@ export class WYSIWYGEditor {
   }
 
   private insertFormatting(prefix: string, suffix: string) {
-    // For contenteditable, use document.execCommand or modern approach
-    if (document.queryCommandSupported('bold')) {
-      document.execCommand('bold', false);
+    // Use modern approach for contenteditable formatting
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    
+    if (selectedText) {
+      // Wrap selected text in formatting
+      const formattedText = `${prefix}${selectedText}${suffix}`;
+      range.deleteContents();
+      range.insertNode(document.createTextNode(formattedText));
+      
+      // Update selection to cover the formatted text
+      range.setStart(range.startContainer, range.startOffset);
+      range.setEnd(range.endContainer, range.endOffset);
+      selection.removeAllRanges();
+      selection.addRange(range);
     } else {
-      // Fallback: wrap selection in formatting
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const selectedText = range.toString();
-        
-        if (selectedText) {
-          // Wrap selected text
-          const formattedText = `${prefix}${selectedText}${suffix}`;
-          range.deleteContents();
-          range.insertNode(document.createTextNode(formattedText));
-        } else {
-          // Insert formatting markers
-          range.insertNode(document.createTextNode(`${prefix}${suffix}`));
-          // Position cursor between markers
-          range.setStart(range.startContainer, range.startOffset + prefix.length);
-          range.setEnd(range.endContainer, range.endOffset - suffix.length);
-        }
+      // Insert formatting markers at cursor position
+      const markerText = `${prefix}${suffix}`;
+      range.insertNode(document.createTextNode(markerText));
+      
+      // Position cursor between markers
+      const textNode = range.startContainer;
+      if (textNode.nodeType === Node.TEXT_NODE) {
+        const offset = range.startOffset + prefix.length;
+        range.setStart(textNode, offset);
+        range.setEnd(textNode, offset);
         selection.removeAllRanges();
         selection.addRange(range);
       }
@@ -372,6 +388,28 @@ export class WYSIWYGEditor {
     }
     
     this.textarea.focus();
+  }
+  
+  private updateToolbarState() {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    
+    // Update toolbar button states based on selection
+    const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
+    const italicBtn = this.toolbar.querySelector('[data-action="italic"]') as HTMLButtonElement;
+    
+    if (selectedText) {
+      // Text is selected - enable formatting buttons
+      if (boldBtn) boldBtn.style.opacity = '1';
+      if (italicBtn) italicBtn.style.opacity = '1';
+    } else {
+      // No text selected - dim formatting buttons
+      if (boldBtn) boldBtn.style.opacity = '0.6';
+      if (italicBtn) italicBtn.style.opacity = '0.6';
+    }
   }
 }
 

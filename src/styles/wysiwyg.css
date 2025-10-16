@@ -85,13 +85,38 @@
 }
 
 .wysiwyg-textarea::selection {
-  background: var(--color-primary-light, rgba(44, 62, 80, 0.2));
+  background: var(--color-primary-light, rgba(44, 62, 80, 0.3));
   color: var(--color-text, #2c3e50);
 }
 
 .wysiwyg-textarea::-moz-selection {
-  background: var(--color-primary-light, rgba(44, 62, 80, 0.2));
+  background: var(--color-primary-light, rgba(44, 62, 80, 0.3));
   color: var(--color-text, #2c3e50);
+}
+
+/* Formatting indicators */
+.wysiwyg-textarea strong,
+.wysiwyg-textarea b {
+  font-weight: bold;
+  background: rgba(44, 62, 80, 0.1);
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.wysiwyg-textarea em,
+.wysiwyg-textarea i {
+  font-style: italic;
+  background: rgba(44, 62, 80, 0.1);
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.wysiwyg-textarea a {
+  color: var(--color-primary, #2c3e50);
+  text-decoration: underline;
+  background: rgba(44, 62, 80, 0.1);
+  padding: 1px 2px;
+  border-radius: 2px;
 }
 
 .wysiwyg-textarea::placeholder {
