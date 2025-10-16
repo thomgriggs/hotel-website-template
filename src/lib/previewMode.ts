@@ -398,9 +398,6 @@ function initializePreviewMode() {
 		
 		/* Content type labels - using actual DOM elements */
 		.preview-content-label {
-			position: absolute;
-			top: -32px;
-			left: 0;
 			background: var(--preview-background, rgba(55, 65, 81, 0.9));
 			color: var(--preview-text, #FFFFFF);
 			padding: 6px 12px;
@@ -409,15 +406,14 @@ function initializePreviewMode() {
 			font-weight: 600;
 			white-space: nowrap;
 			pointer-events: none;
-			z-index: 10000; /* Even higher z-index for labels */
-			box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
-			border: 1px solid var(--preview-border-light, #6B7280);
 			display: flex;
 			align-items: center;
 			gap: 6px;
 			opacity: 0;
 			transform: translateY(-4px);
 			transition: all 0.2s ease;
+			box-shadow: var(--preview-shadow, rgba(0, 0, 0, 0.3)) 0 4px 12px;
+			border: 1px solid var(--preview-border-light, #6B7280);
 		}
 
 		.preview-content-label.show {
@@ -578,8 +574,12 @@ function initializePreviewMode() {
 			<span>${labelText}</span>
 		`;
 		
-		// Add the label to the field
-		field.appendChild(labelElement);
+		// Add the label to the document body and position it relative to the field
+		document.body.appendChild(labelElement);
+		
+		// Store reference to label for cleanup
+		field.setAttribute('data-label-id', `label-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+		labelElement.id = field.getAttribute('data-label-id')!;
 		
 		// SMART ADAPTIVE COLOR DETECTION
 		// Use theme manager to detect optimal theme for this element
@@ -594,16 +594,24 @@ function initializePreviewMode() {
 			// Add data attribute for CSS targeting
 			field.setAttribute('data-theme', optimalTheme);
 			
-			// Show the content label
-			const label = field.querySelector('.preview-content-label') as HTMLElement;
+			// Show and position the content label
+			const labelId = field.getAttribute('data-label-id');
+			const label = labelId ? document.getElementById(labelId) as HTMLElement : null;
 			if (label) {
+				// Position the label relative to the field
+				const rect = field.getBoundingClientRect();
+				label.style.position = 'fixed';
+				label.style.top = `${rect.top - 32}px`;
+				label.style.left = `${rect.left}px`;
+				label.style.zIndex = '10000';
 				label.classList.add('show');
 			}
 		});
 		
 		field.addEventListener('mouseleave', () => {
 			// Hide the content label
-			const label = field.querySelector('.preview-content-label') as HTMLElement;
+			const labelId = field.getAttribute('data-label-id');
+			const label = labelId ? document.getElementById(labelId) as HTMLElement : null;
 			if (label) {
 				label.classList.remove('show');
 			}
