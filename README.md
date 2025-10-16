@@ -34,6 +34,18 @@ hotel-website-template/
 └── package.json           # Dependencies
 ```
 
+## 🎨 Assets
+
+The project includes placeholder assets that are ready to use:
+
+- `icon-192.svg` - Website favicon (already configured)
+- `logo-placeholder.png` - Main logo (800x200px)
+- `logo-white-placeholder.png` - White logo variant (800x200px)
+- `logo-placeholder.webp` - Optimized logo format
+- `manifest.json` - PWA configuration
+
+**To customize:** Simply replace the placeholder files in the `public/` directory with your own assets. The project will automatically use your custom images.
+
 ## 🎨 Preview Mode
 
 The website features a powerful preview mode that allows real-time content editing:
