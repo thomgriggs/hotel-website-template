@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "astro",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "env": {
+    "SANITY_STUDIO_PROJECT_ID": "0knotzp4",
+    "SANITY_STUDIO_DATASET": "production"
+  }
+}
