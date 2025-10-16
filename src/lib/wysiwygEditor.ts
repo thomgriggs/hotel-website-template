@@ -23,7 +23,6 @@ export class WYSIWYGEditor {
   private isCodeView: boolean = false;
 
   constructor(container: HTMLElement, options: WYSIWYGOptions) {
-    console.log('WYSIWYG Editor: Initializing...', options.fieldType);
     this.container = container;
     this.options = options;
     this.iconPicker = new IconPicker();
@@ -31,7 +30,6 @@ export class WYSIWYGEditor {
     this.createToolbar();
     this.createTextarea();
     this.setupEventListeners();
-    console.log('WYSIWYG Editor: Initialization complete');
   }
 
   private createToolbar() {
@@ -164,7 +162,6 @@ export class WYSIWYGEditor {
     
     // Selection change events for visual feedback
     this.textarea.addEventListener('mouseup', () => {
-      console.log('Mouse up event - updating toolbar state');
       // Small delay to let selection settle
       setTimeout(() => {
         this.updateToolbarState();
@@ -172,25 +169,21 @@ export class WYSIWYGEditor {
     });
     
     this.textarea.addEventListener('keyup', () => {
-      console.log('Key up event - updating toolbar state');
       this.updateToolbarState();
     });
     
     // More comprehensive selection change detection
     this.textarea.addEventListener('selectstart', () => {
-      console.log('Select start event');
+      // Selection started
     });
     
     this.textarea.addEventListener('selectionchange', () => {
-      console.log('Selection change event');
       this.updateToolbarState();
     });
     
     // Focus events
     this.textarea.addEventListener('focus', () => {
-      console.log('Textarea focused');
       // Don't update toolbar state on focus as it clears selection
-      // this.updateToolbarState();
     });
   }
 
@@ -378,51 +371,37 @@ export class WYSIWYGEditor {
   private updateToolbarState() {
     // Implementation for contenteditable - check selection properly
     const selection = window.getSelection();
-    console.log('updateToolbarState called, selection:', selection);
     
-    if (!selection || selection.rangeCount === 0) {
-      console.log('No selection found');
-      return;
-    }
+    if (!selection || selection.rangeCount === 0) return;
     
     const range = selection.getRangeAt(0);
     const selectedText = range.toString();
     const hasSelection = selectedText && selectedText.trim().length > 0;
     
-    console.log('Selection state:', { selectedText, hasSelection });
-    
     // Update toolbar button states based on selection
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
     const italicBtn = this.toolbar.querySelector('[data-action="italic"]') as HTMLButtonElement;
     
-    console.log('Found buttons:', { boldBtn: !!boldBtn, italicBtn: !!italicBtn });
-    
     if (hasSelection) {
       // Text is selected - enable formatting buttons
-      console.log('Enabling formatting buttons');
       if (boldBtn) {
-        console.log('Setting bold button opacity to 1');
         boldBtn.style.opacity = '1';
         boldBtn.style.backgroundColor = '#007bff';
         boldBtn.style.color = 'white';
       }
       if (italicBtn) {
-        console.log('Setting italic button opacity to 1');
         italicBtn.style.opacity = '1';
         italicBtn.style.backgroundColor = '#007bff';
         italicBtn.style.color = 'white';
       }
     } else {
       // No text selected - dim formatting buttons
-      console.log('Dimming formatting buttons');
       if (boldBtn) {
-        console.log('Setting bold button opacity to 0.6');
         boldBtn.style.opacity = '0.6';
         boldBtn.style.backgroundColor = '';
         boldBtn.style.color = '';
       }
       if (italicBtn) {
-        console.log('Setting italic button opacity to 0.6');
         italicBtn.style.opacity = '0.6';
         italicBtn.style.backgroundColor = '';
         italicBtn.style.color = '';
