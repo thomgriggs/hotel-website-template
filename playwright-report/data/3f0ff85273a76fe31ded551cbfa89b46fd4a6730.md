@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - link "Skip to main content" [ref=e2] [cursor=pointer]:
     - /url: "#main"
   - banner [ref=e3]:
@@ -123,13 +123,215 @@
             - link "Follow us on Instagram" [ref=e131] [cursor=pointer]:
               - /url: https://instagram.com/paradisehotel
               - img [ref=e133]
-          - listitem [ref=e137]:
-            - link "Follow us on Twitter" [ref=e138] [cursor=pointer]:
+          - listitem [ref=e136]:
+            - link "Follow us on Twitter" [ref=e137] [cursor=pointer]:
               - /url: https://twitter.com/paradisehotel
-              - img [ref=e140]
-    - generic [ref=e143]:
+              - img [ref=e139]
+    - generic [ref=e142]:
       - list
-      - button "Open theme controls" [ref=e145] [cursor=pointer]:
-        - img [ref=e147]
-        - generic [ref=e149]: Customize
+      - button "Open theme controls" [ref=e144] [cursor=pointer]:
+        - img [ref=e146]
+        - generic [ref=e148]: Customize
+  - generic [ref=e151]:
+    - button "Menu" [ref=e152]:
+      - img [ref=e154]
+      - generic: Menu
+    - button "Inspect" [ref=e158]:
+      - img [ref=e160]
+      - generic: Inspect
+    - button "Audit" [ref=e162]:
+      - generic [ref=e163]:
+        - img [ref=e164]
+        - img [ref=e167]
+      - generic: Audit
+    - button "Settings" [ref=e170]:
+      - img [ref=e172]
+      - generic: Settings
+  - generic "Preview Mode Active" [ref=e175] [cursor=pointer]:
+    - img [ref=e176]
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Address
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic [ref=e180]:
+    - generic [ref=e181]:
+      - generic [ref=e182]:
+        - img [ref=e184]
+        - generic [ref=e187]:
+          - heading "Edit Button" [level=3] [ref=e188]
+          - generic [ref=e189]: Update button text and link
+      - button "Close editor" [ref=e191] [cursor=pointer]: ×
+    - generic [ref=e193]:
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - img [ref=e196]
+          - text: "Button Text:"
+        - textbox "e.g., Learn More" [active] [ref=e199]: Paradise Hotel
+      - generic [ref=e200]:
+        - generic [ref=e201]:
+          - img [ref=e202]
+          - text: "Button URL:"
+        - textbox "e.g., /contact or https://example.com" [ref=e205]: http://localhost:4321/
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - img [ref=e208]
+          - text: "Open in:"
+        - combobox [ref=e211]:
+          - option "Same Window" [selected]
+          - option "New Window / Tab"
+    - generic [ref=e212]:
+      - button "Cancel" [ref=e213] [cursor=pointer]
+      - button "Save Changes" [ref=e214] [cursor=pointer]
 ```

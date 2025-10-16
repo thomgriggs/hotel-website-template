@@ -945,32 +945,26 @@ export class InlineEditor {
           text: (labelInput?.value || '').trim(),
           url: (urlInput?.value || '').trim()
         };
-      } else if (fieldType === 'paragraph' || fieldType === 'list' || fieldType === 'textarea') {
-        // Check if we have a WYSIWYG editor
-        const wysiwygEditor = (overlay as any).wysiwygEditor;
-        if (wysiwygEditor) {
-          const rawValue = wysiwygEditor.getValue();
-          
-          // For HTML content, we need to handle it differently
-          if (fieldType === 'paragraph') {
-            // Convert HTML to plain text for paragraph fields
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = rawValue;
-            const plainText = tempDiv.textContent || tempDiv.innerText || '';
-            newValue = plainText.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
-          } else if (fieldType === 'list') {
-            // Convert HTML to plain text for list fields
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = rawValue;
-            const plainText = tempDiv.textContent || tempDiv.innerText || '';
-            newValue = plainText.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
-          } else {
-            // For textarea, keep as HTML string
-            newValue = rawValue;
-          }
-        } else {
-          // Fallback to regular textarea
-          const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
+       } else if (fieldType === 'paragraph' || fieldType === 'list' || fieldType === 'textarea') {
+         // Check if we have a WYSIWYG editor
+         const wysiwygEditor = (overlay as any).wysiwygEditor;
+         if (wysiwygEditor) {
+           const rawValue = wysiwygEditor.getValue();
+           
+           // For textarea-based WYSIWYG, we get plain text
+           if (fieldType === 'paragraph') {
+             // Split by double newlines for paragraphs
+             newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+           } else if (fieldType === 'list') {
+             // Split by single newlines for list items
+             newValue = rawValue.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
+           } else {
+             // For textarea, keep as string
+             newValue = rawValue;
+           }
+         } else {
+           // Fallback to regular textarea
+           const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
           const rawValue = textarea?.value || '';
           
           // For paragraphs, split on double line breaks

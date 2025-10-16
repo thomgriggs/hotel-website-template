@@ -16,7 +16,7 @@ export interface WYSIWYGOptions {
 
 export class WYSIWYGEditor {
   private container: HTMLElement;
-  private textarea: HTMLElement; // Changed from HTMLTextAreaElement to HTMLElement
+  private textarea: HTMLTextAreaElement; // Back to textarea
   private toolbar: HTMLElement;
   private options: WYSIWYGOptions;
   private iconPicker: IconPicker;
@@ -135,21 +135,14 @@ export class WYSIWYGEditor {
   }
 
   private createTextarea() {
-    // Create a contenteditable div instead of textarea for rich text
-    this.textarea = document.createElement('div');
+    // Use a simple textarea for now - contenteditable is too complex
+    this.textarea = document.createElement('textarea');
     this.textarea.className = 'wysiwyg-textarea';
-    this.textarea.contentEditable = 'true';
-    this.textarea.setAttribute('data-placeholder', this.options.placeholder || 'Enter content...');
+    this.textarea.placeholder = this.options.placeholder || 'Enter content...';
     
     if (this.options.maxLength) {
-      this.textarea.setAttribute('data-max-length', this.options.maxLength.toString());
+      this.textarea.maxLength = this.options.maxLength;
     }
-    
-    // Ensure proper text selection behavior
-    this.textarea.style.userSelect = 'text';
-    this.textarea.style.webkitUserSelect = 'text';
-    this.textarea.style.mozUserSelect = 'text';
-    this.textarea.style.msUserSelect = 'text';
     
     this.container.appendChild(this.textarea);
   }
@@ -226,42 +219,20 @@ export class WYSIWYGEditor {
   }
 
   private insertFormatting(prefix: string, suffix: string) {
-    // Ensure we have a valid selection
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) {
-      // If no selection, create one at cursor position
-      const range = document.createRange();
-      range.selectNodeContents(this.textarea);
-      range.collapse(false); // Move to end
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
+    const selectedText = this.textarea.value.substring(start, end);
     
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString();
-    
-    if (selectedText && selectedText.trim()) {
-      // Wrap selected text in formatting
-      const formattedText = `${prefix}${selectedText}${suffix}`;
-      range.deleteContents();
-      range.insertNode(document.createTextNode(formattedText));
-      
-      // Clear selection
-      selection.removeAllRanges();
+    if (selectedText) {
+      // Wrap selected text
+      const newText = prefix + selectedText + suffix;
+      this.replaceSelection(newText);
     } else {
-      // Insert formatting markers at cursor position
-      const markerText = `${prefix}${suffix}`;
-      range.insertNode(document.createTextNode(markerText));
-      
+      // Insert formatting markers
+      const newText = prefix + suffix;
+      this.replaceSelection(newText);
       // Position cursor between markers
-      const textNode = range.startContainer;
-      if (textNode.nodeType === Node.TEXT_NODE) {
-        const offset = range.startOffset + prefix.length;
-        range.setStart(textNode, offset);
-        range.setEnd(textNode, offset);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
+      this.textarea.setSelectionRange(start + prefix.length, start + prefix.length);
     }
     
     this.textarea.focus();
@@ -271,50 +242,38 @@ export class WYSIWYGEditor {
     const url = prompt('Enter URL:');
     if (!url) return;
     
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const selectedText = range.toString();
-      
-      const linkText = selectedText || 'Link Text';
-      const linkMarkdown = `[${linkText}](${url})`;
-      
-      range.deleteContents();
-      range.insertNode(document.createTextNode(linkMarkdown));
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
+    const selectedText = this.textarea.value.substring(start, end);
     
+    const linkText = selectedText || 'Link Text';
+    const linkMarkdown = `[${linkText}](${url})`;
+    
+    this.replaceSelection(linkMarkdown);
     this.textarea.focus();
   }
 
   private insertList(type: 'bullet' | 'number') {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const selectedText = range.toString();
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
+    const selectedText = this.textarea.value.substring(start, end);
+    
+    if (selectedText) {
+      // Convert selected text to list
+      const lines = selectedText.split('\n');
+      const listItems = lines.map((line, index) => {
+        if (type === 'bullet') {
+          return `- ${line.trim()}`;
+        } else {
+          return `${index + 1}. ${line.trim()}`;
+        }
+      });
       
-      if (selectedText) {
-        // Convert selected text to list
-        const lines = selectedText.split('\n');
-        const listItems = lines.map((line, index) => {
-          if (type === 'bullet') {
-            return `- ${line.trim()}`;
-          } else {
-            return `${index + 1}. ${line.trim()}`;
-          }
-        });
-        
-        range.deleteContents();
-        range.insertNode(document.createTextNode(listItems.join('\n')));
-      } else {
-        // Insert new list item
-        const listItem = type === 'bullet' ? '- ' : '1. ';
-        range.insertNode(document.createTextNode(listItem));
-      }
-      
-      selection.removeAllRanges();
-      selection.addRange(range);
+      this.replaceSelection(listItems.join('\n'));
+    } else {
+      // Insert new list item
+      const listItem = type === 'bullet' ? '- ' : '1. ';
+      this.replaceSelection(listItem);
     }
     
     this.textarea.focus();
@@ -327,25 +286,11 @@ export class WYSIWYGEditor {
   }
 
   private insertIcon(iconHtml: string) {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      
-      // Create a temporary div to parse the HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = iconHtml;
-      const iconElement = tempDiv.firstChild;
-      
-      if (iconElement) {
-        range.insertNode(iconElement.cloneNode(true));
-        // Move cursor after the icon
-        range.setStartAfter(iconElement);
-        range.setEndAfter(iconElement);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
-    }
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
     
+    // Insert icon HTML at cursor position
+    this.replaceSelection(iconHtml);
     this.textarea.focus();
   }
 
@@ -363,55 +308,40 @@ export class WYSIWYGEditor {
   }
 
   public getValue(): string {
-    return this.textarea.innerHTML;
+    return this.textarea.value;
   }
 
   public setValue(value: string) {
-    this.textarea.innerHTML = value;
+    this.textarea.value = value;
   }
 
   private toggleView() {
     this.isCodeView = !this.isCodeView;
     
     if (this.isCodeView) {
-      // Switch to code view
-      this.textarea.contentEditable = 'false';
+      // Switch to code view - just change styling
       this.textarea.style.fontFamily = 'monospace';
-      this.textarea.style.whiteSpace = 'pre-wrap';
       this.textarea.style.backgroundColor = '#f8f9fa';
-      this.textarea.style.border = '1px solid #e9ecef';
-      
-      // Convert HTML to text
-      const htmlContent = this.textarea.innerHTML;
-      this.textarea.textContent = htmlContent;
     } else {
       // Switch to visual view
-      this.textarea.contentEditable = 'true';
       this.textarea.style.fontFamily = 'var(--font-secondary, "Inter", sans-serif)';
-      this.textarea.style.whiteSpace = 'normal';
       this.textarea.style.backgroundColor = 'var(--color-background, #ffffff)';
-      this.textarea.style.border = '1px solid var(--color-border, #e9ecef)';
-      
-      // Convert text to HTML
-      const textContent = this.textarea.textContent || '';
-      this.textarea.innerHTML = textContent.replace(/\n/g, '<br>');
     }
     
     this.textarea.focus();
   }
   
   private updateToolbarState() {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString();
+    // Simple implementation for textarea - no complex selection handling needed
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
+    const hasSelection = start !== end;
     
     // Update toolbar button states based on selection
     const boldBtn = this.toolbar.querySelector('[data-action="bold"]') as HTMLButtonElement;
     const italicBtn = this.toolbar.querySelector('[data-action="italic"]') as HTMLButtonElement;
     
-    if (selectedText) {
+    if (hasSelection) {
       // Text is selected - enable formatting buttons
       if (boldBtn) boldBtn.style.opacity = '1';
       if (italicBtn) italicBtn.style.opacity = '1';

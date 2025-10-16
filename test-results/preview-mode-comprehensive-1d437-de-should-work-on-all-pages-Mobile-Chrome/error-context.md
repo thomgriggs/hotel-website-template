@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - link "Skip to main content" [ref=e2] [cursor=pointer]:
     - /url: "#main"
   - banner [ref=e3]:
@@ -9,7 +9,7 @@
       - list [ref=e6]:
         - listitem [ref=e7]:
           - button "Open mobile menu" [ref=e8] [cursor=pointer]
-      - link "Paradise Hotel - Home" [ref=e13]:
+      - link "Paradise Hotel - Home" [ref=e13] [cursor=pointer]:
         - /url: /
         - text: Paradise Hotel
       - list [ref=e14]:
@@ -137,7 +137,7 @@
   - contentinfo [ref=e151]:
     - generic [ref=e154]:
       - generic [ref=e155]:
-        - link "Paradise Hotel" [ref=e156]:
+        - link "Paradise Hotel" [ref=e156] [cursor=pointer]:
           - /url: /
         - list [ref=e157]
       - list [ref=e159]:
@@ -147,24 +147,24 @@
             - generic [ref=e163]: Paradise City, PC 90210
             - generic [ref=e164]: United States
         - listitem [ref=e165]:
-          - 'link "Tel: +1 (555) 123-4567" [ref=e167]':
+          - 'link "Tel: +1 (555) 123-4567" [ref=e167] [cursor=pointer]':
             - /url: tel:+1 (555) 123-4567
         - listitem [ref=e168]:
-          - link "info@paradisehotel.com" [ref=e170]:
+          - link "info@paradisehotel.com" [ref=e170] [cursor=pointer]:
             - /url: mailto:info@paradisehotel.com
       - generic [ref=e171]:
         - list
         - list [ref=e172]:
           - listitem [ref=e173]:
-            - link "Follow us on Facebook" [ref=e174]:
+            - link "Follow us on Facebook" [ref=e174] [cursor=pointer]:
               - /url: https://facebook.com/paradisehotel
               - img [ref=e176]
           - listitem [ref=e178]:
-            - link "Follow us on Instagram" [ref=e179]:
+            - link "Follow us on Instagram" [ref=e179] [cursor=pointer]:
               - /url: https://instagram.com/paradisehotel
               - img [ref=e181]
           - listitem [ref=e184]:
-            - link "Follow us on Twitter" [ref=e185]:
+            - link "Follow us on Twitter" [ref=e185] [cursor=pointer]:
               - /url: https://twitter.com/paradisehotel
               - img [ref=e187]
     - generic [ref=e190]:
@@ -187,27 +187,287 @@
     - button "Settings" [ref=e218]:
       - img [ref=e220]
       - generic: Settings
-  - generic [ref=e225]:
-    - generic [ref=e226]:
-      - checkbox "Use dark theme" [ref=e227]
-      - generic [ref=e228] [cursor=pointer]:
-        - img [ref=e229]
-        - img [ref=e233]
-        - generic [ref=e237]: Use dark theme
-    - banner [ref=e238]:
-      - generic [ref=e239]:
-        - heading [level=2]
-        - heading "An error occurred." [level=1] [ref=e240]
-      - img [ref=e243]
-    - generic [ref=e247]:
-      - img [ref=e249]
-      - generic [ref=e251]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
-    - generic [ref=e253]:
-      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e254]
-      - button "Open in editor" [ref=e256]:
-        - text: Open in editor
-        - img [ref=e257]
+  - generic "Preview Mode Active" [ref=e223] [cursor=pointer]:
+    - img [ref=e224]
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Address
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic [ref=e228]:
+    - generic [ref=e229]:
+      - generic [ref=e230]:
+        - img [ref=e232]
+        - generic [ref=e235]:
+          - heading "Edit Button" [level=3] [ref=e236]
+          - generic [ref=e237]: Update button text and link
+      - button "Close editor" [ref=e239] [cursor=pointer]: ×
+    - generic [ref=e241]:
+      - generic [ref=e242]:
+        - generic [ref=e243]:
+          - img [ref=e244]
+          - text: "Button Text:"
+        - textbox "e.g., Learn More" [active] [ref=e247]: Paradise Hotel
+      - generic [ref=e248]:
+        - generic [ref=e249]:
+          - img [ref=e250]
+          - text: "Button URL:"
+        - textbox "e.g., /contact or https://example.com" [ref=e253]: http://localhost:4321/
+      - generic [ref=e254]:
+        - generic [ref=e255]:
+          - img [ref=e256]
+          - text: "Open in:"
+        - combobox [ref=e259]:
+          - option "Same Window" [selected]
+          - option "New Window / Tab"
     - generic [ref=e260]:
-      - heading "Stack Trace" [level=2] [ref=e261]
-      - generic [ref=e262]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
+      - button "Cancel" [ref=e261] [cursor=pointer]
+      - button "Save Changes" [ref=e262] [cursor=pointer]
 ```

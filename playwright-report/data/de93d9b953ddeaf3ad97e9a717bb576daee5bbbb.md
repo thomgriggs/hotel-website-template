@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - link "Skip to main content" [ref=e2] [cursor=pointer]:
     - /url: "#main"
   - banner [ref=e3]:
@@ -172,42 +172,28 @@
       - button "Open theme controls" [ref=e193] [cursor=pointer]:
         - img [ref=e195]
         - generic [ref=e197]: Customize
-  - generic [ref=e200]:
-    - button "Menu" [ref=e201]:
-      - img [ref=e203]
+  - generic [ref=e199]:
+    - generic [ref=e200]:
+      - generic [ref=e201]: 🔒
+      - heading "Preview Mode" [level=3] [ref=e202]
+      - paragraph [ref=e203]: Enter password to enable editing
+    - textbox "Enter password..." [active] [ref=e205]
+    - generic [ref=e206]:
+      - button "Cancel" [ref=e207] [cursor=pointer]
+      - button "Unlock" [ref=e208] [cursor=pointer]
+  - generic [ref=e211]:
+    - button "Menu" [ref=e212]:
+      - img [ref=e214]
       - generic: Menu
-    - button "Inspect" [ref=e207]:
-      - img [ref=e209]
+    - button "Inspect" [ref=e218]:
+      - img [ref=e220]
       - generic: Inspect
-    - button "Audit" [ref=e211]:
-      - generic [ref=e212]:
-        - img [ref=e213]
-        - img [ref=e216]
+    - button "Audit" [ref=e222]:
+      - generic [ref=e223]:
+        - img [ref=e224]
+        - img [ref=e227]
       - generic: Audit
-    - button "Settings" [ref=e219]:
-      - img [ref=e221]
+    - button "Settings" [ref=e230]:
+      - img [ref=e232]
       - generic: Settings
-  - generic [ref=e226]:
-    - generic [ref=e227]:
-      - checkbox "Use dark theme" [ref=e228]
-      - generic [ref=e229] [cursor=pointer]:
-        - img [ref=e230]
-        - img [ref=e233]
-        - generic [ref=e236]: Use dark theme
-    - banner [ref=e237]:
-      - generic [ref=e238]:
-        - heading [level=2]
-        - heading "An error occurred." [level=1] [ref=e239]
-      - img [ref=e242]
-    - generic [ref=e246]:
-      - img [ref=e248]
-      - generic [ref=e250]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
-    - generic [ref=e252]:
-      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e253]
-      - button "Open in editor" [ref=e255]:
-        - text: Open in editor
-        - img [ref=e256]
-    - generic [ref=e259]:
-      - heading "Stack Trace" [level=2] [ref=e260]
-      - generic [ref=e261]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
 ```

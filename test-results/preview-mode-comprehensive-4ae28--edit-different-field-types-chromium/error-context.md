@@ -187,27 +187,258 @@
     - button "Settings" [ref=e218]:
       - img [ref=e220]
       - generic: Settings
-  - generic [ref=e225]:
-    - generic [ref=e226]:
-      - checkbox "Use dark theme" [ref=e227]
-      - generic [ref=e228] [cursor=pointer]:
-        - img [ref=e229]
-        - img [ref=e233]
-        - generic [ref=e237]: Use dark theme
-    - banner [ref=e238]:
-      - generic [ref=e239]:
-        - heading [level=2]
-        - heading "An error occurred." [level=1] [ref=e240]
-      - img [ref=e243]
-    - generic [ref=e247]:
-      - img [ref=e249]
-      - generic [ref=e251]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
-    - generic [ref=e253]:
-      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e254]
-      - button "Open in editor" [ref=e256]:
-        - text: Open in editor
-        - img [ref=e257]
-    - generic [ref=e260]:
-      - heading "Stack Trace" [level=2] [ref=e261]
-      - generic [ref=e262]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
+  - generic "Preview Mode Active" [ref=e223] [cursor=pointer]:
+    - img [ref=e224]
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Image
+  - generic:
+    - generic:
+      - img
+    - generic: Headline
+  - generic:
+    - generic:
+      - img
+    - generic: Text
+  - generic:
+    - generic:
+      - img
+    - generic: Paragraph
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Address
+  - generic:
+    - generic:
+      - img
+    - generic: Button
+  - generic:
+    - generic:
+      - img
+    - generic: Button
 ```

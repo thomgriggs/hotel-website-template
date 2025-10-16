@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - link "Skip to main content" [ref=e2] [cursor=pointer]:
     - /url: "#main"
   - banner [ref=e3]:
@@ -163,50 +163,37 @@
             - link "Follow us on Instagram" [ref=e179] [cursor=pointer]:
               - /url: https://instagram.com/paradisehotel
               - img [ref=e181]
-          - listitem [ref=e184]:
-            - link "Follow us on Twitter" [ref=e185] [cursor=pointer]:
+          - listitem [ref=e185]:
+            - link "Follow us on Twitter" [ref=e186] [cursor=pointer]:
               - /url: https://twitter.com/paradisehotel
-              - img [ref=e187]
-    - generic [ref=e190]:
+              - img [ref=e188]
+    - generic [ref=e191]:
       - list
-      - button "Open theme controls" [ref=e192] [cursor=pointer]:
-        - img [ref=e194]
-        - generic [ref=e196]: Customize
+      - button "Open theme controls" [ref=e193] [cursor=pointer]:
+        - img [ref=e195]
+        - generic [ref=e197]: Customize
   - generic [ref=e199]:
-    - button "Menu" [ref=e200]:
-      - img [ref=e202]
+    - generic [ref=e200]:
+      - generic [ref=e201]: 🔒
+      - heading "Preview Mode" [level=3] [ref=e202]
+      - paragraph [ref=e203]: Enter password to enable editing
+    - textbox "Enter password..." [active] [ref=e205]
+    - generic [ref=e206]:
+      - button "Cancel" [ref=e207] [cursor=pointer]
+      - button "Unlock" [ref=e208] [cursor=pointer]
+  - generic [ref=e211]:
+    - button "Menu" [ref=e212]:
+      - img [ref=e214]
       - generic: Menu
-    - button "Inspect" [ref=e206]:
-      - img [ref=e208]
-      - generic: Inspect
-    - button "Audit" [ref=e210]:
-      - generic [ref=e211]:
-        - img [ref=e212]
-        - img [ref=e215]
-      - generic: Audit
-    - button "Settings" [ref=e218]:
+    - button "Inspect" [ref=e218]:
       - img [ref=e220]
+      - generic: Inspect
+    - button "Audit" [ref=e222]:
+      - generic [ref=e223]:
+        - img [ref=e224]
+        - img [ref=e227]
+      - generic: Audit
+    - button "Settings" [ref=e230]:
+      - img [ref=e232]
       - generic: Settings
-  - generic [ref=e225]:
-    - generic [ref=e226]:
-      - checkbox "Use dark theme" [ref=e227]
-      - generic [ref=e228] [cursor=pointer]:
-        - img [ref=e229]
-        - img [ref=e233]
-        - generic [ref=e237]: Use dark theme
-    - banner [ref=e238]:
-      - generic [ref=e239]:
-        - heading [level=2]
-        - heading "An error occurred." [level=1] [ref=e240]
-    - generic [ref=e242]:
-      - img [ref=e244]
-      - generic [ref=e246]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
-    - generic [ref=e248]:
-      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e249]
-      - button "Open in editor" [ref=e251]:
-        - text: Open in editor
-        - img [ref=e252]
-    - generic [ref=e255]:
-      - heading "Stack Trace" [level=2] [ref=e256]
-      - generic [ref=e257]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
 ```
