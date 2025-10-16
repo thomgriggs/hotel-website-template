@@ -964,14 +964,21 @@ export class InlineEditor {
         if (wysiwygEditor) {
           const rawValue = wysiwygEditor.getValue();
           
-          // For paragraphs, split on double line breaks
-          // For lists, split on single line breaks
+          // For HTML content, we need to handle it differently
           if (fieldType === 'paragraph') {
-            newValue = rawValue.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+            // Convert HTML to plain text for paragraph fields
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = rawValue;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+            newValue = plainText.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
           } else if (fieldType === 'list') {
-            newValue = rawValue.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
+            // Convert HTML to plain text for list fields
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = rawValue;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+            newValue = plainText.split(/\n+/).map(item => item.trim()).filter(item => item.length > 0);
           } else {
-            // For textarea, keep as single string
+            // For textarea, keep as HTML string
             newValue = rawValue;
           }
         } else {
