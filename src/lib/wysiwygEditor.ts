@@ -16,7 +16,7 @@ export interface WYSIWYGOptions {
 
 export class WYSIWYGEditor {
   private container: HTMLElement;
-  private textarea: HTMLTextAreaElement; // Back to textarea
+  private textarea: HTMLElement; // Changed back to HTMLElement for contenteditable
   private toolbar: HTMLElement;
   private options: WYSIWYGOptions;
   private iconPicker: IconPicker;
@@ -134,13 +134,14 @@ export class WYSIWYGEditor {
   }
 
   private createTextarea() {
-    // Use a simple textarea for now - contenteditable is too complex
-    this.textarea = document.createElement('textarea');
+    // Use contenteditable div for rich text editing
+    this.textarea = document.createElement('div');
     this.textarea.className = 'wysiwyg-textarea';
-    this.textarea.placeholder = this.options.placeholder || 'Enter content...';
+    this.textarea.contentEditable = 'true';
+    this.textarea.setAttribute('data-placeholder', this.options.placeholder || 'Enter content...');
     
     if (this.options.maxLength) {
-      this.textarea.maxLength = this.options.maxLength;
+      this.textarea.setAttribute('data-max-length', this.options.maxLength.toString());
     }
     
     this.container.appendChild(this.textarea);
@@ -218,20 +219,41 @@ export class WYSIWYGEditor {
   }
 
   private insertFormatting(prefix: string, suffix: string) {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    const selectedText = this.textarea.value.substring(start, end);
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) {
+      // If no selection, create one at cursor position
+      const range = document.createRange();
+      range.selectNodeContents(this.textarea);
+      range.collapse(false); // Move to end
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
     
-    if (selectedText) {
-      // Wrap selected text
-      const newText = prefix + selectedText + suffix;
-      this.replaceSelection(newText);
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    
+    if (selectedText && selectedText.trim()) {
+      // Wrap selected text in formatting
+      const formattedText = `${prefix}${selectedText}${suffix}`;
+      range.deleteContents();
+      range.insertNode(document.createTextNode(formattedText));
+      
+      // Clear selection
+      selection.removeAllRanges();
     } else {
-      // Insert formatting markers
-      const newText = prefix + suffix;
-      this.replaceSelection(newText);
+      // Insert formatting markers at cursor position
+      const markerText = `${prefix}${suffix}`;
+      range.insertNode(document.createTextNode(markerText));
+      
       // Position cursor between markers
-      this.textarea.setSelectionRange(start + prefix.length, start + prefix.length);
+      const textNode = range.startContainer;
+      if (textNode.nodeType === Node.TEXT_NODE) {
+        const offset = range.startOffset + prefix.length;
+        range.setStart(textNode, offset);
+        range.setEnd(textNode, offset);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
     
     this.textarea.focus();
@@ -285,33 +307,34 @@ export class WYSIWYGEditor {
   }
 
   private insertIcon(iconHtml: string) {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      
+      // Create a temporary div to parse the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = iconHtml;
+      const iconElement = tempDiv.firstChild;
+      
+      if (iconElement) {
+        range.insertNode(iconElement.cloneNode(true));
+        // Move cursor after the icon
+        range.setStartAfter(iconElement);
+        range.setEndAfter(iconElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
     
-    // Insert icon HTML at cursor position
-    this.replaceSelection(iconHtml);
     this.textarea.focus();
   }
 
-  private replaceSelection(text: string) {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    
-    this.textarea.value = 
-      this.textarea.value.substring(0, start) + 
-      text + 
-      this.textarea.value.substring(end);
-    
-    // Update selection to end of inserted text
-    this.textarea.setSelectionRange(start + text.length, start + text.length);
-  }
-
   public getValue(): string {
-    return this.textarea.value;
+    return this.textarea.textContent || '';
   }
 
   public setValue(value: string) {
-    this.textarea.value = value;
+    this.textarea.textContent = value;
   }
 
   private toggleView() {
