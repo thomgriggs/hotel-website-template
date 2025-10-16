@@ -22,36 +22,6 @@ export default defineConfig({
                   .title('Pages')
                   .filter('_type == "homepage"')
               ),
-            S.listItem()
-              .title('Rooms')
-              .child(
-                S.documentTypeList('room')
-                  .title('Rooms')
-                  .filter('_type == "room"')
-              ),
-            S.listItem()
-              .title('Dining')
-              .child(
-                S.documentTypeList('dining')
-                  .title('Dining')
-                  .filter('_type == "dining"')
-              ),
-            S.listItem()
-              .title('Amenities')
-              .child(
-                S.documentTypeList('amenity')
-                  .title('Amenities')
-                  .filter('_type == "amenity"')
-              ),
-            
-            // Content Templates
-            S.listItem()
-              .title('Content Templates')
-              .child(
-                S.documentTypeList('contentTemplate')
-                  .title('Content Templates')
-                  .filter('_type == "contentTemplate"')
-              ),
             
             // Settings
             S.listItem()
@@ -60,12 +30,7 @@ export default defineConfig({
                 S.documentTypeList('siteSettings')
                   .title('Site Settings')
                   .filter('_type == "siteSettings"')
-              ),
-            
-            // All other content types
-            ...S.documentTypeListItems().filter(
-              listItem => !['homepage', 'room', 'dining', 'amenity', 'contentTemplate', 'siteSettings'].includes(listItem.getId() || '')
-            )
+              )
           ])
     }),
     visionTool()
