@@ -1,9 +1,6 @@
 // Global Preview Mode Module
 // Extracted from individual pages to eliminate code duplication
 
-import { iconRegistry } from './iconRegistry';
-import { themeManager } from './themeConfig';
-
 /**
  * Render a Lucide icon as SVG string
  */
@@ -603,17 +600,14 @@ function initializePreviewMode() {
 		labelElement.id = field.getAttribute('data-label-id')!;
 		
 		// SMART ADAPTIVE COLOR DETECTION
-		// Use theme manager to detect optimal theme for this element
+		// Simple color detection based on element background
 		field.addEventListener('mouseenter', () => {
-			const optimalTheme = themeManager.detectOptimalTheme(field);
-			
-			// Apply the optimal theme temporarily for this element
-			if (optimalTheme !== themeManager.getCurrentTheme()?.id) {
-				themeManager.applyTheme(optimalTheme);
-			}
+			// Simple theme detection - can be enhanced later
+			const computedStyle = window.getComputedStyle(field);
+			const backgroundColor = computedStyle.backgroundColor;
 			
 			// Add data attribute for CSS targeting
-			field.setAttribute('data-theme', optimalTheme);
+			field.setAttribute('data-theme', 'default');
 			
 			// Show and position the content label
 			const labelId = field.getAttribute('data-label-id');

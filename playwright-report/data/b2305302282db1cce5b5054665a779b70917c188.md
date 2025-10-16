@@ -9,7 +9,7 @@
       - list [ref=e6]:
         - listitem [ref=e7]:
           - button "Open mobile menu" [ref=e8] [cursor=pointer]
-      - link "Paradise Hotel - Home" [ref=e13] [cursor=pointer]:
+      - link "Paradise Hotel - Home" [ref=e13]:
         - /url: /
         - text: Paradise Hotel
       - list [ref=e14]:
@@ -137,7 +137,7 @@
   - contentinfo [ref=e151]:
     - generic [ref=e154]:
       - generic [ref=e155]:
-        - link "Paradise Hotel" [ref=e156] [cursor=pointer]:
+        - link "Paradise Hotel" [ref=e156]:
           - /url: /
         - list [ref=e157]
       - list [ref=e159]:
@@ -147,24 +147,24 @@
             - generic [ref=e163]: Paradise City, PC 90210
             - generic [ref=e164]: United States
         - listitem [ref=e165]:
-          - 'link "Tel: +1 (555) 123-4567" [ref=e167] [cursor=pointer]':
+          - 'link "Tel: +1 (555) 123-4567" [ref=e167]':
             - /url: tel:+1 (555) 123-4567
         - listitem [ref=e168]:
-          - link "info@paradisehotel.com" [ref=e170] [cursor=pointer]:
+          - link "info@paradisehotel.com" [ref=e170]:
             - /url: mailto:info@paradisehotel.com
       - generic [ref=e171]:
         - list
         - list [ref=e172]:
           - listitem [ref=e173]:
-            - link "Follow us on Facebook" [ref=e174] [cursor=pointer]:
+            - link "Follow us on Facebook" [ref=e174]:
               - /url: https://facebook.com/paradisehotel
               - img [ref=e176]
           - listitem [ref=e178]:
-            - link "Follow us on Instagram" [ref=e179] [cursor=pointer]:
+            - link "Follow us on Instagram" [ref=e179]:
               - /url: https://instagram.com/paradisehotel
               - img [ref=e181]
           - listitem [ref=e184]:
-            - link "Follow us on Twitter" [ref=e185] [cursor=pointer]:
+            - link "Follow us on Twitter" [ref=e185]:
               - /url: https://twitter.com/paradisehotel
               - img [ref=e187]
     - generic [ref=e190]:
@@ -198,16 +198,15 @@
       - generic [ref=e239]:
         - heading [level=2]
         - heading "An error occurred." [level=1] [ref=e240]
-      - img [ref=e243]
-    - generic [ref=e247]:
-      - img [ref=e249]
-      - generic [ref=e251]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
-    - generic [ref=e253]:
-      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e254]
-      - button "Open in editor" [ref=e256]:
+    - generic [ref=e242]:
+      - img [ref=e244]
+      - generic [ref=e246]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
+    - generic [ref=e248]:
+      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e249]
+      - button "Open in editor" [ref=e251]:
         - text: Open in editor
-        - img [ref=e257]
-    - generic [ref=e260]:
-      - heading "Stack Trace" [level=2] [ref=e261]
-      - generic [ref=e262]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
+        - img [ref=e252]
+    - generic [ref=e255]:
+      - heading "Stack Trace" [level=2] [ref=e256]
+      - generic [ref=e257]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
 ```

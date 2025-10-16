@@ -1,0 +1,194 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - navigation "Main navigation" [ref=e5]:
+      - list [ref=e6]:
+        - listitem [ref=e7]:
+          - button "Open mobile menu" [ref=e8] [cursor=pointer]
+      - link "Paradise Hotel - Home" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - text: Paradise Hotel
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Book your stay" [ref=e16] [cursor=pointer]:
+            - /url: /contact
+            - text: Book Now
+  - main [ref=e17]:
+    - main [ref=e18]:
+      - generic [ref=e22]:
+        - generic [ref=e23]: Paradise Awaits
+        - heading "Our Location" [level=1] [ref=e24]
+        - paragraph [ref=e25]: Located in the heart of paradise with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure.
+      - generic [ref=e29]:
+        - heading "Our Address" [level=2] [ref=e30]
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: "[object Object]"
+          - generic [ref=e33]:
+            - link "directions Get Directions" [ref=e34] [cursor=pointer]:
+              - /url: https://maps.google.com/maps?q=%5Bobject%20Object%5D
+              - generic [ref=e35]: directions
+              - text: Get Directions
+            - link "phone Call Us" [ref=e36] [cursor=pointer]:
+              - /url: tel:+1-555-PARADISE
+              - generic [ref=e37]: phone
+              - text: Call Us
+      - generic [ref=e41]:
+        - heading "Getting Here" [level=2] [ref=e42]
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]: ✈️
+            - heading "By Air" [level=3] [ref=e46]
+            - paragraph [ref=e47]:
+              - strong [ref=e48]: Paradise International Airport (PIA)
+            - paragraph [ref=e49]: 15 minutes by car or taxi
+            - paragraph [ref=e50]: Airport shuttle service available
+          - generic [ref=e51]:
+            - generic [ref=e52]: 🚗
+            - heading "By Car" [level=3] [ref=e53]
+            - paragraph [ref=e54]:
+              - strong [ref=e55]: From Downtown Paradise
+            - paragraph [ref=e56]: Take Paradise Drive south for 5 miles
+            - paragraph [ref=e57]: Free valet parking available
+          - generic [ref=e58]:
+            - generic [ref=e59]: 🚌
+            - heading "Public Transit" [level=3] [ref=e60]
+            - paragraph [ref=e61]:
+              - strong [ref=e62]: Paradise Metro Bus
+            - paragraph [ref=e63]: Route 42 stops directly in front
+            - paragraph [ref=e64]: Every 15 minutes during peak hours
+          - generic [ref=e65]:
+            - generic [ref=e66]: 🚢
+            - heading "By Water" [level=3] [ref=e67]
+            - paragraph [ref=e68]:
+              - strong [ref=e69]: Paradise Marina
+            - paragraph [ref=e70]: Private dock available for guests
+            - paragraph [ref=e71]: Water taxi service to downtown
+      - generic [ref=e73]:
+        - heading "Nearby Attractions" [level=2] [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - img "Paradise Beach" [ref=e78]
+            - generic [ref=e79]:
+              - heading "Paradise Beach" [level=3] [ref=e80]
+              - paragraph [ref=e81]: World-renowned white sand beach with crystal clear waters
+              - generic [ref=e82]:
+                - generic [ref=e83]: 0.5 miles
+                - generic [ref=e84]: 5 min walk
+          - generic [ref=e85]:
+            - img "Paradise Gardens" [ref=e87]
+            - generic [ref=e88]:
+              - heading "Paradise Botanical Gardens" [level=3] [ref=e89]
+              - paragraph [ref=e90]: Stunning tropical gardens with rare plant species
+              - generic [ref=e91]:
+                - generic [ref=e92]: 1.2 miles
+                - generic [ref=e93]: 15 min walk
+          - generic [ref=e94]:
+            - img "Paradise Museum" [ref=e96]
+            - generic [ref=e97]:
+              - heading "Paradise Art Museum" [level=3] [ref=e98]
+              - paragraph [ref=e99]: Contemporary art museum featuring local and international artists
+              - generic [ref=e100]:
+                - generic [ref=e101]: 2.1 miles
+                - generic [ref=e102]: 25 min walk
+          - generic [ref=e103]:
+            - img "Paradise Marina" [ref=e105]
+            - generic [ref=e106]:
+              - heading "Paradise Marina" [level=3] [ref=e107]
+              - paragraph [ref=e108]: Luxury marina with yacht charters and water activities
+              - generic [ref=e109]:
+                - generic [ref=e110]: 0.8 miles
+                - generic [ref=e111]: 10 min walk
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - heading "Parking" [level=3] [ref=e116]
+          - list [ref=e117]:
+            - listitem [ref=e118]: Complimentary valet parking
+            - listitem [ref=e119]: Self-parking garage available
+            - listitem [ref=e120]: Electric vehicle charging stations
+            - listitem [ref=e121]: Oversized vehicle parking
+        - generic [ref=e122]:
+          - heading "Accessibility" [level=3] [ref=e123]
+          - list [ref=e124]:
+            - listitem [ref=e125]: Wheelchair accessible entrances
+            - listitem [ref=e126]: Elevator access to all floors
+            - listitem [ref=e127]: Accessible parking spaces
+            - listitem [ref=e128]: Assistance available 24/7
+  - contentinfo [ref=e129]:
+    - generic [ref=e132]:
+      - generic [ref=e133]:
+        - link "Paradise Hotel" [ref=e134] [cursor=pointer]:
+          - /url: /
+        - list [ref=e135]
+      - list [ref=e137]:
+        - listitem [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]: 123 Paradise Drive
+            - generic [ref=e141]: Paradise City, PC 90210
+            - generic [ref=e142]: United States
+        - listitem [ref=e143]:
+          - 'link "Tel: +1 (555) 123-4567" [ref=e145] [cursor=pointer]':
+            - /url: tel:+1 (555) 123-4567
+        - listitem [ref=e146]:
+          - link "info@paradisehotel.com" [ref=e148] [cursor=pointer]:
+            - /url: mailto:info@paradisehotel.com
+      - generic [ref=e149]:
+        - list
+        - list [ref=e150]:
+          - listitem [ref=e151]:
+            - link "Follow us on Facebook" [ref=e152] [cursor=pointer]:
+              - /url: https://facebook.com/paradisehotel
+              - img [ref=e154]
+          - listitem [ref=e156]:
+            - link "Follow us on Instagram" [ref=e157] [cursor=pointer]:
+              - /url: https://instagram.com/paradisehotel
+              - img [ref=e159]
+          - listitem [ref=e163]:
+            - link "Follow us on Twitter" [ref=e164] [cursor=pointer]:
+              - /url: https://twitter.com/paradisehotel
+              - img [ref=e166]
+    - generic [ref=e169]:
+      - list
+      - button "Open theme controls" [ref=e171] [cursor=pointer]:
+        - img [ref=e173]
+        - generic [ref=e175]: Customize
+  - generic [ref=e178]:
+    - generic [ref=e179]:
+      - checkbox "Use dark theme" [ref=e180]
+      - generic [ref=e181] [cursor=pointer]:
+        - img [ref=e182]
+        - img [ref=e185]
+        - generic [ref=e188]: Use dark theme
+    - banner [ref=e189]:
+      - generic [ref=e190]:
+        - heading [level=2]
+        - heading "An error occurred." [level=1] [ref=e191]
+      - img [ref=e194]
+    - generic [ref=e198]:
+      - img [ref=e200]
+      - generic [ref=e202]: Failed to resolve import "./iconRegistry" from "src/lib/inlineEditor.ts". Does the file exist?
+    - generic [ref=e204]:
+      - heading "lib/inlineEditor.ts:1360:46" [level=2] [ref=e205]
+      - button "Open in editor" [ref=e207]:
+        - text: Open in editor
+        - img [ref=e208]
+    - generic [ref=e211]:
+      - heading "Stack Trace" [level=2] [ref=e212]
+      - generic [ref=e213]: at TransformPluginContext._formatLog (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42517:41) at TransformPluginContext.error (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42514:16) at normalizeUrl (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40493:23) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40612:37 at async Promise.all (index 3) at async TransformPluginContext.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:40539:7) at async EnvironmentPluginContainer.transform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18) at async loadAndTransform (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27) at async viteTransformMiddleware (file:///Users/thomasgriggs/Development/hotel-website-template/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
+  - generic [ref=e216]:
+    - button "Menu" [ref=e217]:
+      - img [ref=e219]
+      - generic: Menu
+    - button "Inspect" [ref=e223]:
+      - img [ref=e225]
+      - generic: Inspect
+    - button "Audit" [ref=e227]:
+      - img [ref=e229]
+      - generic: Audit
+    - button "Settings" [ref=e232]:
+      - img [ref=e234]
+      - generic: Settings
+```

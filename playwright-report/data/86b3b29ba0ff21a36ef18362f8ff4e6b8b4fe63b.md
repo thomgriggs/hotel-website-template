@@ -9,7 +9,7 @@
       - list [ref=e6]:
         - listitem [ref=e7]:
           - button "Open mobile menu" [ref=e8] [cursor=pointer]
-      - link "Paradise Hotel - Home" [ref=e13] [cursor=pointer]:
+      - link "Paradise Hotel - Home" [ref=e13]:
         - /url: /
         - text: Paradise Hotel
       - list [ref=e14]:
@@ -137,7 +137,7 @@
   - contentinfo [ref=e151]:
     - generic [ref=e154]:
       - generic [ref=e155]:
-        - link "Paradise Hotel" [ref=e156] [cursor=pointer]:
+        - link "Paradise Hotel" [ref=e156]:
           - /url: /
         - list [ref=e157]
       - list [ref=e159]:
@@ -147,24 +147,24 @@
             - generic [ref=e163]: Paradise City, PC 90210
             - generic [ref=e164]: United States
         - listitem [ref=e165]:
-          - 'link "Tel: +1 (555) 123-4567" [ref=e167] [cursor=pointer]':
+          - 'link "Tel: +1 (555) 123-4567" [ref=e167]':
             - /url: tel:+1 (555) 123-4567
         - listitem [ref=e168]:
-          - link "info@paradisehotel.com" [ref=e170] [cursor=pointer]:
+          - link "info@paradisehotel.com" [ref=e170]:
             - /url: mailto:info@paradisehotel.com
       - generic [ref=e171]:
         - list
         - list [ref=e172]:
           - listitem [ref=e173]:
-            - link "Follow us on Facebook" [ref=e174] [cursor=pointer]:
+            - link "Follow us on Facebook" [ref=e174]:
               - /url: https://facebook.com/paradisehotel
               - img [ref=e176]
           - listitem [ref=e178]:
-            - link "Follow us on Instagram" [ref=e179] [cursor=pointer]:
+            - link "Follow us on Instagram" [ref=e179]:
               - /url: https://instagram.com/paradisehotel
               - img [ref=e181]
           - listitem [ref=e184]:
-            - link "Follow us on Twitter" [ref=e185] [cursor=pointer]:
+            - link "Follow us on Twitter" [ref=e185]:
               - /url: https://twitter.com/paradisehotel
               - img [ref=e187]
     - generic [ref=e190]:
