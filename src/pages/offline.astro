@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Offline - Paradise Hotel" description="You're currently offline. Some features may not be available.">
+  <main>
+    <div class="wrapper">
+      <div class="offline-content">
+        <h1>You're Offline</h1>
+        <p>Don't worry! You can still browse some of our content that was previously loaded.</p>
+        <div class="offline-actions">
+          <button onclick="window.location.reload()" class="btn btn-primary">
+            Try Again
+          </button>
+          <a href="/" class="btn btn-secondary">
+            Go Home
+          </a>
+        </div>
+        <div class="offline-info">
+          <h2>What you can do offline:</h2>
+          <ul>
+            <li>View previously visited pages</li>
+            <li>Browse room information</li>
+            <li>Check dining options</li>
+            <li>Explore amenities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .offline-content {
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .offline-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .offline-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-secondary);
+  }
+
+  .offline-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .offline-info {
+    text-align: left;
+    background: var(--color-surface);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+  }
+
+  .offline-info h2 {
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .offline-info ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .offline-info li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .offline-info li:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: 768px) {
+    .offline-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
+
+
+

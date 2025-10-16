@@ -1,0 +1,314 @@
+---
+// Hero Slider Component
+export interface HeroSlide {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  ctaText: string;
+  ctaUrl: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryUrl?: string;
+}
+
+// Default slides data
+const defaultSlides: HeroSlide[] = [
+  {
+    id: 'luxury-experience',
+    title: 'Luxury Redefined',
+    subtitle: 'Welcome to',
+    description: 'Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.',
+    image: 'https://picsum.photos/seed/luxuryhotel/1920/1080',
+    ctaText: 'View Rooms',
+    ctaUrl: '/rooms',
+    ctaSecondaryText: 'Book Now',
+    ctaSecondaryUrl: '/contact'
+  },
+  {
+    id: 'dining-experience',
+    title: 'Exceptional Dining',
+    subtitle: 'Culinary Excellence',
+    description: 'Indulge in world-class cuisine at our award-winning restaurants. From fine dining to casual fare, our culinary team creates unforgettable experiences.',
+    image: 'https://picsum.photos/seed/restaurantdining/1920/1080',
+    ctaText: 'Explore Dining',
+    ctaUrl: '/dining',
+    ctaSecondaryText: 'Make Reservation',
+    ctaSecondaryUrl: '/contact'
+  },
+  {
+    id: 'amenities-experience',
+    title: 'World-Class Amenities',
+    subtitle: 'Relax & Rejuvenate',
+    description: 'Discover our comprehensive amenities including spa services, fitness center, infinity pool, and concierge services designed for your ultimate comfort.',
+    image: 'https://picsum.photos/seed/hotelspa/1920/1080',
+    ctaText: 'View Amenities',
+    ctaUrl: '/amenities',
+    ctaSecondaryText: 'Spa Services',
+    ctaSecondaryUrl: '/amenities'
+  },
+  {
+    id: 'location-experience',
+    title: 'Prime Location',
+    subtitle: 'Paradise Awaits',
+    description: 'Located in the heart of paradise with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure.',
+    image: 'https://picsum.photos/seed/luxuryhotel/1920/1080',
+    ctaText: 'Explore Location',
+    ctaUrl: '/location',
+    ctaSecondaryText: 'Get Directions',
+    ctaSecondaryUrl: '/contact'
+  }
+];
+
+// Get slides from props or use defaults
+const slides = Astro.props.slides || defaultSlides;
+---
+
+<section class="hero-slider" aria-label="Hero slider">
+	<div class="slider-container">
+		<div class="slider-track" id="slider-track">
+			{slides.map((slide, index) => (
+				<div 
+					class={`slide ${index === 0 ? 'active' : ''}`} 
+					data-slide={index}
+					aria-hidden={index !== 0}
+				>
+					<div class="slide-image">
+						<img 
+							src={slide.image} 
+							alt={slide.title}
+							loading={index === 0 ? 'eager' : 'lazy'}
+							data-sanity-edit-field={`homepage#heroImage`}
+						/>
+						<div class="slide-overlay"></div>
+					</div>
+					<div class="slide-content">
+						<div class="wrapper">
+							<div class="slide-inner">
+								<span class="slide-subtitle" data-sanity-edit-field={`homepage#heroSubtitle`}>{slide.subtitle}</span>
+								<h1 class="slide-title" data-sanity-edit-field={`homepage#heroTitle`}>{slide.title}</h1>
+								<p class="slide-description" data-sanity-edit-field={`homepage#heroDescription`}>{slide.description}</p>
+								<div class="slide-actions">
+									<a href={slide.ctaUrl} class="btn btn-primary" data-sanity-edit-field={`homepage#heroPrimaryButton`}>
+										{slide.ctaText}
+									</a>
+									{slide.ctaSecondaryText && slide.ctaSecondaryUrl && (
+										<a href={slide.ctaSecondaryUrl} class="btn btn-secondary" data-sanity-edit-field={`homepage#heroSecondaryButton`}>
+											{slide.ctaSecondaryText}
+										</a>
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			))}
+		</div>
+		
+		<!-- Navigation Dots -->
+		<div class="slider-nav" aria-label="Slider navigation">
+			{slides.map((_, index) => (
+				<button 
+					class={`nav-dot ${index === 0 ? 'active' : ''}`}
+					data-slide={index}
+					aria-label={`Go to slide ${index + 1}`}
+				></button>
+			))}
+		</div>
+		
+		<!-- Navigation Arrows -->
+		<button class="slider-arrow slider-arrow-prev" aria-label="Previous slide">
+			<span class="material-symbols-outlined">chevron_left</span>
+		</button>
+		<button class="slider-arrow slider-arrow-next" aria-label="Next slide">
+			<span class="material-symbols-outlined">chevron_right</span>
+		</button>
+		
+	</div>
+</section>
+
+<script>
+	// Hero Slider JavaScript
+	document.addEventListener('DOMContentLoaded', function() {
+		const sliderTrack = document.getElementById('slider-track');
+		const slides = document.querySelectorAll('.slide');
+		const navDots = document.querySelectorAll('.nav-dot');
+		const prevArrow = document.querySelector('.slider-arrow-prev');
+		const nextArrow = document.querySelector('.slider-arrow-next');
+		
+		let currentSlide = 0;
+		let slideInterval;
+		let isTransitioning = false;
+		
+		// Check if we're in preview mode
+		const isPreview = window.location.search.includes('preview=true') || 
+		                 window.location.search.includes('previewMode=true');
+		
+		// Auto-play settings - disabled in preview mode
+		const autoPlayDelay = isPreview ? 0 : 5000; // Disable auto-play in preview
+		const transitionDuration = 800; // 0.8 seconds
+		
+		// Add preview mode indicator
+		if (isPreview) {
+			const editIndicator = document.createElement('div');
+			editIndicator.className = 'slider-edit-indicator';
+			editIndicator.innerHTML = '✏️ Edit Mode - Slides paused for editing';
+			editIndicator.style.cssText = `
+				position: absolute;
+				top: 20px;
+				left: 20px;
+				background: rgba(255, 107, 53, 0.95);
+				color: white;
+				padding: 8px 16px;
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 600;
+				z-index: 1000;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+				border: 2px solid white;
+			`;
+			sliderTrack?.parentElement?.appendChild(editIndicator);
+		}
+		
+		// Initialize slider
+		function initSlider() {
+			updateSlider();
+			startAutoPlay();
+		}
+		
+		// Update slider display
+		function updateSlider() {
+			// Update slides
+			slides.forEach((slide, index) => {
+				slide.classList.toggle('active', index === currentSlide);
+				slide.setAttribute('aria-hidden', index !== currentSlide);
+			});
+			
+			// Update navigation dots
+			navDots.forEach((dot, index) => {
+				dot.classList.toggle('active', index === currentSlide);
+			});
+			
+		}
+		
+		// Go to specific slide
+		function goToSlide(slideIndex) {
+			if (isTransitioning) return;
+			
+			isTransitioning = true;
+			currentSlide = slideIndex;
+			updateSlider();
+			
+			setTimeout(() => {
+				isTransitioning = false;
+			}, transitionDuration);
+		}
+		
+		// Next slide
+		function nextSlide() {
+			const nextIndex = (currentSlide + 1) % slides.length;
+			goToSlide(nextIndex);
+		}
+		
+		// Previous slide
+		function prevSlide() {
+			const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+			goToSlide(prevIndex);
+		}
+		
+		// Start auto-play (disabled in preview mode)
+		function startAutoPlay() {
+			if (isPreview) return; // Don't auto-play in preview mode
+			
+			if (slideInterval) {
+				clearInterval(slideInterval);
+			}
+			slideInterval = setInterval(nextSlide, autoPlayDelay);
+		}
+		
+		// Stop auto-play
+		function stopAutoPlay() {
+			if (slideInterval) {
+				clearInterval(slideInterval);
+			}
+		}
+		
+		// Event listeners
+		navDots.forEach((dot, index) => {
+			dot.addEventListener('click', () => {
+				stopAutoPlay();
+				goToSlide(index);
+				if (!isPreview) startAutoPlay(); // Only restart if not in preview mode
+			});
+		});
+		
+		prevArrow?.addEventListener('click', () => {
+			stopAutoPlay();
+			prevSlide();
+			if (!isPreview) startAutoPlay(); // Only restart if not in preview mode
+		});
+		
+		nextArrow?.addEventListener('click', () => {
+			stopAutoPlay();
+			nextSlide();
+			if (!isPreview) startAutoPlay(); // Only restart if not in preview mode
+		});
+		
+		// Pause on hover (enhanced for preview mode)
+		sliderTrack?.addEventListener('mouseenter', () => {
+			stopAutoPlay();
+			if (isPreview) {
+				sliderTrack.classList.add('edit-pause');
+			}
+		});
+		
+		sliderTrack?.addEventListener('mouseleave', () => {
+			if (!isPreview) startAutoPlay(); // Only restart if not in preview mode
+			sliderTrack.classList.remove('edit-pause');
+		});
+		
+		// Keyboard navigation
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowLeft') {
+				stopAutoPlay();
+				prevSlide();
+				if (!isPreview) startAutoPlay();
+			} else if (e.key === 'ArrowRight') {
+				stopAutoPlay();
+				nextSlide();
+				if (!isPreview) startAutoPlay();
+			}
+		});
+		
+		// Touch/swipe support
+		let touchStartX = 0;
+		let touchEndX = 0;
+		
+		sliderTrack?.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].screenX;
+		});
+		
+		sliderTrack?.addEventListener('touchend', (e) => {
+			touchEndX = e.changedTouches[0].screenX;
+			handleSwipe();
+		});
+		
+		function handleSwipe() {
+			const swipeThreshold = 50;
+			const diff = touchStartX - touchEndX;
+			
+			if (Math.abs(diff) > swipeThreshold) {
+				stopAutoPlay();
+				if (diff > 0) {
+					nextSlide();
+				} else {
+					prevSlide();
+				}
+				startAutoPlay();
+			}
+		}
+		
+		// Initialize
+		initSlider();
+	});
+</script>

@@ -1,61 +1,103 @@
 ---
-// Simplified header without Sanity for now
-const navigation = [
-	{ label: 'Home', url: '/' },
-	{ label: 'Rooms', url: '/rooms' },
-	{ label: 'Dining', url: '/dining' },
-	{ label: 'Amenities', url: '/amenities' },
-	{ label: 'Location', url: '/location' },
-	{ label: 'Contact', url: '/contact' }
+import { client, queries } from '../lib/sanity';
+
+// Helper function to build URL from navigation item
+function buildNavigationUrl(item: any): string {
+	if (item.linkType === 'external') {
+		return item.externalUrl;
+	}
+	
+	switch (item.pageType) {
+		case 'main':
+			return item.mainPage;
+		case 'room':
+			return `/rooms/${item.roomSlug}`;
+		case 'restaurant':
+			return `/dining/${item.restaurantSlug}`;
+		case 'amenity':
+			return `/amenities/${item.amenitySlug}`;
+		default:
+			return item.mainPage || '/';
+	}
+}
+
+// Fetch navigation from Sanity
+const siteSettings = await client.fetch(queries.siteSettings);
+const navigation = siteSettings?.navigation || [
+	{ label: 'Home', linkType: 'internal', pageType: 'main', mainPage: '/' },
+	{ label: 'Rooms', linkType: 'internal', pageType: 'main', mainPage: '/rooms' },
+	{ label: 'Dining', linkType: 'internal', pageType: 'main', mainPage: '/dining' },
+	{ label: 'Amenities', linkType: 'internal', pageType: 'main', mainPage: '/amenities' },
+	{ label: 'Location', linkType: 'internal', pageType: 'main', mainPage: '/location' },
+	{ label: 'Contact', linkType: 'internal', pageType: 'main', mainPage: '/contact' }
 ];
 ---
 
-<header>
+<header role="banner">
 	<div class="wrapper">
-		<ul class="header-links">
-			<li>
-				<button 
-					class="menu-btn" 
-					aria-label="Open mobile menu" 
-					aria-expanded="false" 
-					aria-controls="mobile-menu"
-					popovertarget="mobile-menu"
-				>
-					<span class="menu-icon" aria-hidden="true">
-						<span></span>
-						<span></span>
-						<span></span>
-					</span>
-					<span class="menu-text">Menu</span>
-				</button>
-			</li>
-		</ul>
-		<a class="logo" href="/">
-			<img height="200" width="800" class="logo-color" src="/logo-placeholder.png" alt="Paradise Hotel" />
-			<img height="200" width="800" class="logo-white" src="/logo-white-placeholder.png" alt="Paradise Hotel" />
-		</a>
-		<ul class="header-links">
-			<li>
-				<a class="btn btn-book" href="/contact">Book Now</a>
-			</li>
-		</ul>
+		<nav class="header-nav" role="navigation" aria-label="Main navigation">
+			<ul class="header-links">
+				<li>
+					<button 
+						class="menu-btn" 
+						aria-label="Open mobile menu" 
+						aria-expanded="false" 
+						aria-controls="mobile-menu"
+						popovertarget="mobile-menu"
+						role="button"
+						type="button"
+					>
+						<span class="menu-icon" aria-hidden="true">
+							<span></span>
+							<span></span>
+							<span></span>
+						</span>
+						<span class="menu-text">Menu</span>
+					</button>
+				</li>
+			</ul>
+			<a class="logo" href="/" aria-label="Paradise Hotel - Home" data-sanity-edit-field="siteSettings#siteName">
+				<span class="logo-text">Paradise Hotel</span>
+			</a>
+			<ul class="header-links">
+				<li>
+					<a class="btn btn-book" href="/contact" aria-label="Book your stay" data-sanity-edit-field="siteSettings#navBookNow">Book Now</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </header>
-<dialog id="mobile-menu" class="mobile-menu" popover="manual">
+<dialog id="mobile-menu" class="mobile-menu" popover="manual" role="dialog" aria-labelledby="mobile-menu-title" aria-modal="true">
 	<div class="inner">
-		<button class="mobile-menu-close" aria-label="Close mobile menu" popovertarget="mobile-menu" popovertargetaction="hide">
-			<span class="material-symbols-outlined">close</span>
+		<h2 id="mobile-menu-title" class="sr-only">Mobile Navigation Menu</h2>
+		<button class="mobile-menu-close" aria-label="Close mobile menu" popovertarget="mobile-menu" popovertargetaction="hide" role="button" type="button">
+			<span class="material-symbols-outlined" aria-hidden="true">close</span>
 		</button>
-		<ul class="menu menu-trigger">
-			{navigation.map((item: any) => (
-				<li>
-					<a href={item.url}>
-						{item.label}
-					</a>
-				</li>
-			))}
-		</ul>
-		<ul class="menu menu-alt">
+		<nav role="navigation" aria-label="Mobile navigation">
+			<ul class="menu menu-trigger">
+				{navigation.map((item: any, index: number) => {
+					const url = buildNavigationUrl(item);
+					const target = item.linkType === 'external' && item.openInNewTab ? '_blank' : '_self';
+					const rel = item.linkType === 'external' && item.openInNewTab ? 'noopener noreferrer' : '';
+					const isCurrentPage = url === Astro.url.pathname;
+					return (
+						<li>
+							<a 
+								href={url} 
+								target={target} 
+								rel={rel}
+								aria-current={isCurrentPage ? 'page' : undefined}
+								tabindex={index === 0 ? '0' : undefined}
+								data-sanity-edit-field={`siteSettings#nav${item.label.replace(/\s+/g, '')}`}
+							>
+								{item.label}
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+		</nav>
+		<ul class="menu menu-alt" role="list">
 			<!-- Secondary menu items can be added here -->
 		</ul>
 	</div>

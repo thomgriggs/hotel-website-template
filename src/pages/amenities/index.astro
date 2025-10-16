@@ -34,8 +34,8 @@ function getAmenityImageType(category: string): string {
     <div class="wrapper">
       <div class="summary">
         <div class="inner">
-          <h1><span>Hotel Amenities</span></h1>
-          <p>Discover our world-class facilities and services designed to enhance your stay and provide the ultimate luxury experience.</p>
+          <h1 data-sanity-edit-field="amenities-page#mainTitle"><span>Hotel Amenities</span></h1>
+          <p data-sanity-edit-field="amenities-page#mainDescription">Discover our world-class facilities and services designed to enhance your stay and provide the ultimate luxury experience.</p>
         </div>
       </div>
       
@@ -48,19 +48,21 @@ function getAmenityImageType(category: string): string {
                   <img 
                     src={urlFor(amenity.images[0]).width(800).height(600).url()} 
                     alt={amenity.images[0].alt || amenity.title}
+                    data-sanity-edit-field={`${amenity._id}#images`}
                   />
                 ) : (
                   <img 
                     src={getUnsplashImage(getAmenityImageType(amenity.category), 800, 600)} 
                     alt={amenity.title}
+                    data-sanity-edit-field={`${amenity._id}#images`}
                   />
                 )}
               </div>
               <div class="post-content">
                 <div class="inner">
-                  <h2><span>{amenity.title}</span></h2>
-                  <span class="subtitle">{amenity.category}</span>
-                  <p>{amenity.description}</p>
+                  <h2 data-sanity-edit-field={`${amenity._id}#title`}><span>{amenity.title}</span></h2>
+                  <span class="subtitle" data-sanity-edit-field={`${amenity._id}#category`}>{amenity.category}</span>
+                  <p data-sanity-edit-field={`${amenity._id}#description`}>{amenity.description}</p>
                   
                   <div class="amenity-info">
                     {amenity.location && (
@@ -86,7 +88,7 @@ function getAmenityImageType(category: string): string {
                   </div>
                   
                   {amenity.features && amenity.features.length > 0 && (
-                    <ul class="alt-list">
+                    <ul class="alt-list" data-sanity-edit-field={`${amenity._id}#features`}>
                       {amenity.features.slice(0, 4).map((feature: string) => (
                         <li>{feature}</li>
                       ))}
@@ -95,7 +97,7 @@ function getAmenityImageType(category: string): string {
                   
                   <div class="buttons">
                     <div>
-                      <a class="btn" href={`/amenities/${amenity.slug.current}`}>
+                      <a class="btn" href={`/amenities/${amenity.slug.current}`} data-sanity-edit-field={`${amenity._id}#learnMoreButton`}>
                         Learn More
                       </a>
                     </div>

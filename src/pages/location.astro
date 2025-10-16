@@ -2,448 +2,250 @@
 import Layout from '../layouts/Layout.astro';
 import { client, queries, urlFor } from '../lib/sanity';
 
-// Fetch location page content from Sanity
+// Fetch location page data from Sanity
 const locationPage = await client.fetch(queries.locationPage);
-
-// Extract content with fallbacks
-const pageTitle = locationPage?.pageTitle || 'Location - Paradise Hotel';
-const heroTitle = locationPage?.heroTitle || 'Our Location';
-const heroSubtitle = locationPage?.heroSubtitle || 'Find us in paradise';
-const heroImage = locationPage?.heroImage;
-const address = locationPage?.address || {};
-const mapSettings = locationPage?.mapSettings || {};
-const directions = locationPage?.directions || {};
-const localAttractions = locationPage?.localAttractions || [];
-const parkingInfo = locationPage?.parkingInfo || {};
-const accessibility = locationPage?.accessibility || {};
 
 // Helper function to get image URL safely
 function getImageUrl(image: any, width: number, height: number): string {
-  if (!image?.asset?._ref) {
-    return '/hero-image.jpg'; // fallback image
-  }
-  return urlFor(image).width(width).height(height).url();
+	if (!image?.asset?._ref) {
+		return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=' + width + '&h=' + height + '&fit=crop&auto=format&q=80&fm=webp';
+	}
+	return urlFor(image).width(width).height(height).format('webp').quality(85).url();
 }
 
-// Unsplash image helper function
-function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
-  // Use Picsum Photos for reliable placeholder images
-  const seed = query.replace(/\s+/g, '').toLowerCase();
-  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
-}
-
-// Helper function to get attraction icon
-function getAttractionIcon(category: string): string {
-  const icons: { [key: string]: string } = {
-    restaurant: '🍽️',
-    shopping: '🛍️',
-    entertainment: '🎭',
-    nature: '🌿',
-    culture: '🏛️',
-    sports: '⚽'
-  };
-  return icons[category] || '📍';
-}
+// Extract location page content
+const pageTitle = locationPage?.pageTitle || 'Location - Paradise Hotel';
+const heroTitle = locationPage?.heroTitle || 'Our Location';
+const heroSubtitle = locationPage?.heroSubtitle || 'Paradise Awaits';
+const heroImage = locationPage?.heroImage;
+const address = locationPage?.address || '123 Paradise Drive, Paradise City, Paradise State 12345';
+const mapSettings = locationPage?.mapSettings || {
+	latitude: 25.7617,
+	longitude: -80.1918,
+	zoom: 15,
+	markerText: 'Paradise Hotel'
+};
 ---
 
-<Layout title={pageTitle}>
-	<main>
-		<!-- Banner Section -->
-		<section class="page-banner">
-			<img src={heroImage ? getImageUrl(heroImage, 1920, 1080) : getUnsplashImage('luxury hotel exterior', 1920, 1080)} alt="Hotel location" />
-			<div class="overlay"></div>
-			<div class="heading">
-				<div class="inner">
-					<span class="subtitle">{heroSubtitle}</span>
-					<h1 class="title3">{heroTitle}</h1>
+<Layout 
+	title={pageTitle}
+	description="Discover Paradise Hotel's prime location with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure."
+	type="website"
+>
+	<main id="main">
+		<!-- Hero Section -->
+		<section class="page-hero">
+			<div class="hero-content">
+				<div class="wrapper">
+					<div class="hero-text">
+						<span class="hero-subtitle" data-sanity-edit-field="location-page#heroSubtitle">{heroSubtitle}</span>
+						<h1 data-sanity-edit-field="location-page#heroTitle">{heroTitle}</h1>
+						<p data-sanity-edit-field="location-page#heroDescription">Located in the heart of paradise with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure.</p>
+					</div>
+				</div>
+			</div>
+			{heroImage && (
+				<div class="hero-image">
+					<img 
+						src={getImageUrl(heroImage, 1920, 1080)} 
+						alt={heroTitle}
+						loading="eager"
+					/>
+				</div>
+			)}
+		</section>
+
+		<!-- Address & Map -->
+		<section class="location-main">
+			<div class="wrapper">
+				<div class="location-grid">
+					<div class="address-card">
+						<h2 data-sanity-edit-field="location-page#addressTitle">Our Address</h2>
+						<div class="address-details">
+							<p data-sanity-edit-field="location-page#address">{address}</p>
+							<div class="address-actions">
+								<a href={`https://maps.google.com/maps?q=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-sanity-edit-field="location-page#directionsButton">
+									<span class="material-symbols-outlined">directions</span>
+									Get Directions
+								</a>
+								<a href="tel:+1-555-PARADISE" class="btn btn-secondary" data-sanity-edit-field="location-page#callButton">
+									<span class="material-symbols-outlined">phone</span>
+									Call Us
+								</a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="map-container">
+						<div 
+							id="hotel-map"
+							class="map"
+							data-lat={mapSettings.latitude}
+							data-lng={mapSettings.longitude}
+							data-zoom={mapSettings.zoom}
+							data-marker-text={mapSettings.markerText}
+						></div>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Main Content -->
-		<section id="main">
+		<!-- Transportation -->
+		<section class="transportation">
 			<div class="wrapper">
-				<!-- Address Section -->
-				<div class="address-section">
-					<h2>Address</h2>
-					<div class="address-card">
-						{address.fullAddress ? (
-							<p class="full-address">{address.fullAddress}</p>
-						) : (
-							<div class="address-details">
-								{address.street && <p>{address.street}</p>}
-								{address.city && address.state && (
-									<p>{address.city}, {address.state} {address.zipCode}</p>
-								)}
-								{address.country && <p>{address.country}</p>}
-							</div>
-						)}
+				<h2 data-sanity-edit-field="location-page#transportationTitle">Getting Here</h2>
+				<div class="transport-grid">
+					<div class="transport-card">
+						<div class="transport-icon">✈️</div>
+						<h3>By Air</h3>
+						<p><strong>Paradise International Airport (PIA)</strong></p>
+						<p>15 minutes by car or taxi</p>
+						<p>Airport shuttle service available</p>
+					</div>
+					
+					<div class="transport-card">
+						<div class="transport-icon">🚗</div>
+						<h3>By Car</h3>
+						<p><strong>From Downtown Paradise</strong></p>
+						<p>Take Paradise Drive south for 5 miles</p>
+						<p>Free valet parking available</p>
+					</div>
+					
+					<div class="transport-card">
+						<div class="transport-icon">🚌</div>
+						<h3>Public Transit</h3>
+						<p><strong>Paradise Metro Bus</strong></p>
+						<p>Route 42 stops directly in front</p>
+						<p>Every 15 minutes during peak hours</p>
+					</div>
+					
+					<div class="transport-card">
+						<div class="transport-icon">🚢</div>
+						<h3>By Water</h3>
+						<p><strong>Paradise Marina</strong></p>
+						<p>Private dock available for guests</p>
+						<p>Water taxi service to downtown</p>
 					</div>
 				</div>
+			</div>
+		</section>
 
-				<!-- Map Section -->
-				<div class="map-section">
-					<h2>{mapSettings.mapTitle || 'Find Us on the Map'}</h2>
-					<div class="map-container">
-						{mapSettings.latitude && mapSettings.longitude ? (
-							<div 
-								id="location-map" 
-								class="leaflet-map"
-								data-lat={mapSettings.latitude}
-								data-lng={mapSettings.longitude}
-								data-zoom={mapSettings.zoom || 15}
-								data-marker-zoom={mapSettings.markerZoom || 18}
-							></div>
-						) : (
-							<div class="map-placeholder">
-								<p>Map coordinates not configured. Please add latitude and longitude in the CMS.</p>
+		<!-- Local Attractions -->
+		<section class="attractions">
+			<div class="wrapper">
+				<h2 data-sanity-edit-field="location-page#attractionsTitle">Nearby Attractions</h2>
+				<div class="attractions-grid">
+					<div class="attraction-card">
+						<div class="attraction-image">
+							<img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&auto=format&q=80&fm=webp" alt="Paradise Beach" loading="lazy" />
+						</div>
+						<div class="attraction-content">
+							<h3>Paradise Beach</h3>
+							<p>World-renowned white sand beach with crystal clear waters</p>
+							<div class="attraction-details">
+								<span class="distance">0.5 miles</span>
+								<span class="time">5 min walk</span>
 							</div>
-						)}
+						</div>
+					</div>
+					
+					<div class="attraction-card">
+						<div class="attraction-image">
+							<img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format&q=80&fm=webp" alt="Paradise Gardens" loading="lazy" />
+						</div>
+						<div class="attraction-content">
+							<h3>Paradise Botanical Gardens</h3>
+							<p>Stunning tropical gardens with rare plant species</p>
+							<div class="attraction-details">
+								<span class="distance">1.2 miles</span>
+								<span class="time">15 min walk</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="attraction-card">
+						<div class="attraction-image">
+							<img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop&auto=format&q=80&fm=webp" alt="Paradise Museum" loading="lazy" />
+						</div>
+						<div class="attraction-content">
+							<h3>Paradise Art Museum</h3>
+							<p>Contemporary art museum featuring local and international artists</p>
+							<div class="attraction-details">
+								<span class="distance">2.1 miles</span>
+								<span class="time">25 min walk</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="attraction-card">
+						<div class="attraction-image">
+							<img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&auto=format&q=80&fm=webp" alt="Paradise Marina" loading="lazy" />
+						</div>
+						<div class="attraction-content">
+							<h3>Paradise Marina</h3>
+							<p>Luxury marina with yacht charters and water activities</p>
+							<div class="attraction-details">
+								<span class="distance">0.8 miles</span>
+								<span class="time">10 min walk</span>
+							</div>
+						</div>
 					</div>
 				</div>
+			</div>
+		</section>
 
-				<!-- Directions Section -->
-				<div class="directions-section">
-					<h2>How to Get Here</h2>
-					<div class="directions-grid">
-						{directions.fromAirport && (
-							<div class="direction-card">
-								<h3>✈️ From Airport</h3>
-								<p>{directions.fromAirport}</p>
-							</div>
-						)}
-
-						{directions.fromHighway && (
-							<div class="direction-card">
-								<h3>🛣️ From Highway</h3>
-								<p>{directions.fromHighway}</p>
-							</div>
-						)}
-
-						{directions.fromCityCenter && (
-							<div class="direction-card">
-								<h3>🏙️ From City Center</h3>
-								<p>{directions.fromCityCenter}</p>
-							</div>
-						)}
-
-						{directions.publicTransport && (
-							<div class="direction-card">
-								<h3>🚌 Public Transportation</h3>
-								<p>{directions.publicTransport}</p>
-							</div>
-						)}
+		<!-- Parking & Accessibility -->
+		<section class="parking-accessibility">
+			<div class="wrapper">
+				<div class="info-grid">
+					<div class="info-card">
+						<h3>Parking</h3>
+						<ul>
+							<li>Complimentary valet parking</li>
+							<li>Self-parking garage available</li>
+							<li>Electric vehicle charging stations</li>
+							<li>Oversized vehicle parking</li>
+						</ul>
+					</div>
+					
+					<div class="info-card">
+						<h3>Accessibility</h3>
+						<ul>
+							<li>Wheelchair accessible entrances</li>
+							<li>Elevator access to all floors</li>
+							<li>Accessible parking spaces</li>
+							<li>Assistance available 24/7</li>
+						</ul>
 					</div>
 				</div>
-
-				<!-- Local Attractions -->
-				{localAttractions.length > 0 && (
-					<div class="attractions-section">
-						<h2>Local Attractions</h2>
-						<div class="attractions-grid">
-							{localAttractions.map((attraction: any) => (
-								<div class="attraction-card">
-									<div class="attraction-header">
-										<span class="attraction-icon">{getAttractionIcon(attraction.category)}</span>
-										<h3>{attraction.name}</h3>
-									</div>
-									{attraction.description && (
-										<p class="attraction-description">{attraction.description}</p>
-									)}
-									{attraction.distance && (
-										<p class="attraction-distance">📍 {attraction.distance}</p>
-									)}
-									{attraction.image && (
-										<div class="attraction-image">
-											<img src={getImageUrl(attraction.image, 300, 200)} alt={attraction.name} />
-										</div>
-									)}
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-
-				<!-- Parking Information -->
-				{(parkingInfo.onSiteParking || parkingInfo.parkingDetails || parkingInfo.valetService || parkingInfo.nearbyParking) && (
-					<div class="parking-section">
-						<h2>Parking Information</h2>
-						<div class="parking-info">
-							{parkingInfo.onSiteParking && (
-								<div class="parking-item">
-									<h3>✅ On-Site Parking</h3>
-									{parkingInfo.parkingDetails && <p>{parkingInfo.parkingDetails}</p>}
-								</div>
-							)}
-
-							{parkingInfo.valetService && (
-								<div class="parking-item">
-									<h3>🚗 Valet Service</h3>
-									<p>Valet parking service available</p>
-								</div>
-							)}
-
-							{parkingInfo.nearbyParking && (
-								<div class="parking-item">
-									<h3>🅿️ Nearby Parking</h3>
-									<p>{parkingInfo.nearbyParking}</p>
-								</div>
-							)}
-						</div>
-					</div>
-				)}
-
-				<!-- Accessibility Information -->
-				{(accessibility.wheelchairAccessible || accessibility.accessibilityDetails || accessibility.specialNeedsContact) && (
-					<div class="accessibility-section">
-						<h2>Accessibility</h2>
-						<div class="accessibility-info">
-							{accessibility.wheelchairAccessible && (
-								<div class="accessibility-item">
-									<h3>♿ Wheelchair Accessible</h3>
-									<p>Our facility is wheelchair accessible</p>
-								</div>
-							)}
-
-							{accessibility.accessibilityDetails && (
-								<div class="accessibility-item">
-									<h3>Accessibility Features</h3>
-									<p>{accessibility.accessibilityDetails}</p>
-								</div>
-							)}
-
-							{accessibility.specialNeedsContact && (
-								<div class="accessibility-item">
-									<h3>Special Needs Contact</h3>
-									<p>{accessibility.specialNeedsContact}</p>
-								</div>
-							)}
-						</div>
-					</div>
-				)}
 			</div>
 		</section>
 	</main>
 </Layout>
 
-<style>
-	.address-section,
-	.map-section,
-	.directions-section,
-	.attractions-section,
-	.parking-section,
-	.accessibility-section {
-		margin-bottom: 3rem;
-	}
-
-	.address-section h2,
-	.map-section h2,
-	.directions-section h2,
-	.attractions-section h2,
-	.parking-section h2,
-	.accessibility-section h2 {
-		margin-bottom: 1.5rem;
-		color: var(--color-primary);
-	}
-
-	.address-card {
-		background: var(--color-light);
-		padding: 2rem;
-		border-radius: 8px;
-		border-left: 4px solid var(--color-primary);
-	}
-
-	.full-address {
-		font-size: 1.1rem;
-		line-height: 1.6;
-		margin: 0;
-	}
-
-	.address-details p {
-		margin: 0.5rem 0;
-		font-size: 1.1rem;
-	}
-
-	.map-container {
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	}
-
-	.map-placeholder {
-		height: 400px;
-		background: #f8f9fa;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--color-text-light);
-	}
-
-	.leaflet-map {
-		height: 400px;
-		width: 100%;
-		border-radius: 8px;
-	}
-
-	.directions-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.direction-card {
-		background: var(--color-light);
-		padding: 1.5rem;
-		border-radius: 8px;
-		border-left: 4px solid var(--color-primary);
-	}
-
-	.direction-card h3 {
-		margin-bottom: 0.5rem;
-		color: var(--color-primary);
-		font-size: 1.1rem;
-	}
-
-	.direction-card p {
-		margin: 0;
-		line-height: 1.6;
-	}
-
-	.attractions-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.attraction-card {
-		background: white;
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	.attraction-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-	}
-
-	.attraction-header {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 1rem;
-		background: var(--color-light);
-	}
-
-	.attraction-icon {
-		font-size: 1.5rem;
-	}
-
-	.attraction-header h3 {
-		margin: 0;
-		color: var(--color-primary);
-		font-size: 1.1rem;
-	}
-
-	.attraction-description {
-		padding: 0 1rem;
-		margin: 0.5rem 0;
-		color: var(--color-text);
-		line-height: 1.6;
-	}
-
-	.attraction-distance {
-		padding: 0 1rem;
-		margin: 0.5rem 0;
-		color: var(--color-text-light);
-		font-size: 0.9rem;
-		font-weight: 600;
-	}
-
-	.attraction-image {
-		margin-top: 1rem;
-	}
-
-	.attraction-image img {
-		width: 100%;
-		height: 200px;
-		object-fit: cover;
-	}
-
-	.parking-info,
-	.accessibility-info {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.parking-item,
-	.accessibility-item {
-		background: var(--color-light);
-		padding: 1.5rem;
-		border-radius: 8px;
-		border-left: 4px solid var(--color-primary);
-	}
-
-	.parking-item h3,
-	.accessibility-item h3 {
-		margin-bottom: 0.5rem;
-		color: var(--color-primary);
-		font-size: 1.1rem;
-	}
-
-	.parking-item p,
-	.accessibility-item p {
-		margin: 0;
-		line-height: 1.6;
-	}
-
-	@media (max-width: 768px) {
-		.directions-grid,
-		.attractions-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.parking-info,
-		.accessibility-info {
-			grid-template-columns: 1fr;
-		}
-	}
-</style>
-
-<!-- Leaflet CSS and JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
-	// Initialize Leaflet map for location page
+	// Initialize map when page loads
 	document.addEventListener('DOMContentLoaded', function() {
-		const mapElement = document.getElementById('location-map');
+		const mapElement = document.getElementById('hotel-map');
+		
 		if (mapElement) {
 			const lat = parseFloat(mapElement.dataset.lat);
 			const lng = parseFloat(mapElement.dataset.lng);
-			const initialZoom = parseInt(mapElement.dataset.zoom) || 15;
-			const markerZoom = parseInt(mapElement.dataset.markerZoom) || 18;
+			const zoom = parseInt(mapElement.dataset.zoom);
+			const markerText = mapElement.dataset.markerText;
 			
-			if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
-				// Initialize the map
-				const map = L.map('location-map').setView([lat, lng], initialZoom);
+			if (lat && lng) {
+				// Initialize Leaflet map
+				const map = L.map('hotel-map').setView([lat, lng], zoom);
 				
-				// Add OpenStreetMap tiles
 				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					attribution: '© OpenStreetMap contributors'
 				}).addTo(map);
 				
-				// Add a marker with click zoom functionality
-				const marker = L.marker([lat, lng]).addTo(map);
-				
-				marker.bindPopup('Hotel Location').openPopup();
-				
-				// Add click event to zoom in when marker is clicked
-				marker.on('click', function() {
-					map.setView([lat, lng], markerZoom);
-				});
+				if (markerText) {
+					L.marker([lat, lng]).addTo(map)
+						.bindPopup(markerText);
+				}
 			}
 		}
 	});

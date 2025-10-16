@@ -2,42 +2,121 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/main.css';
+import { generateStructuredData } from '../lib/structuredData';
 
 export interface Props {
 	title: string;
 	description?: string;
+	image?: string;
+	url?: string;
+	type?: string;
+	publishedTime?: string;
+	modifiedTime?: string;
+	author?: string;
+	keywords?: string[];
+	canonical?: string;
+	noindex?: boolean;
 }
 
-const { title, description = "Modern Portfolio Template" } = Astro.props;
+const { 
+	title, 
+	description = "Experience luxury hospitality at Paradise Hotel. World-class accommodations, exceptional dining, and premium amenities in a stunning beachfront location.",
+	image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=630&fit=crop&auto=format&q=80&fm=webp",
+	url = Astro.url.href,
+	type = "website",
+	publishedTime,
+	modifiedTime,
+	author = "Paradise Hotel",
+	keywords = ["luxury hotel", "beachfront resort", "fine dining", "spa", "accommodations"],
+	canonical,
+	noindex = false
+} = Astro.props;
+
+// Generate enhanced structured data
+const structuredData = generateStructuredData({
+	title,
+	description,
+	image,
+	url,
+	publishedTime,
+	modifiedTime,
+	author
+}, type);
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		
-		<!-- Accessibility & SEO -->
-		<meta name="robots" content="index, follow" />
+		<!-- Primary SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords.join(', ')} />
+		<meta name="author" content={author} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={image} />
+		<meta property="og:site_name" content="Paradise Hotel" />
+		<meta property="og:locale" content="en_US" />
+		
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={image} />
+		<meta property="twitter:site" content="@paradisehotel" />
+		<meta property="twitter:creator" content="@paradisehotel" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={canonical || url} />
+		
+		<!-- Robots -->
+		<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+		
+		<!-- Theme & Icons -->
 		<meta name="theme-color" content="#043345" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="/manifest.json" />
+		
+		<!-- Security Headers -->
+		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+		<meta http-equiv="X-Frame-Options" content="DENY" />
+		<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+		<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+		
+		<!-- Performance Hints -->
+		<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width" />
+		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="//fonts.gstatic.com" />
+		<link rel="dns-prefetch" href="//images.unsplash.com" />
+		
+		<!-- Structured Data -->
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
 		
 		<!-- Preload critical fonts -->
 		<!-- Enhanced Font Loading - Performance Optimized -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		
-		<!-- Preload critical fonts -->
-		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600&display=swap" as="style">
+		<!-- Preload critical fonts with font-display: swap -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600&display=swap"></noscript>
 		
-		<!-- Load fonts with display=swap for better UX -->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600&display=swap">
-		
-		<!-- Material Symbols for icons -->
-		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+		<!-- Material Symbols for icons - lazy loaded -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"></noscript>
 		
 		<title>{title}</title>
 	</head>
@@ -46,7 +125,9 @@ const { title, description = "Modern Portfolio Template" } = Astro.props;
 		
 		<Header />
 		
-		<slot />
+		<main id="main" role="main">
+			<slot />
+		</main>
 		
 		<Footer />
 		
@@ -167,16 +248,27 @@ const { title, description = "Modern Portfolio Template" } = Astro.props;
 
 				// Close menu when escape key is pressed
 				document.addEventListener('keydown', function(e) {
-					if (e.key === 'Escape' && mobileMenu.open) {
-						mobileMenu.close();
-						menuBtn.setAttribute('aria-expanded', 'false');
-						menuBtn.setAttribute('aria-label', 'Open mobile menu');
-						menuBtn.focus();
+					if (e.key === 'Escape') {
+						// Close mobile menu if open
+						if (mobileMenu && mobileMenu.open) {
+							mobileMenu.close();
+							menuBtn.setAttribute('aria-expanded', 'false');
+							menuBtn.setAttribute('aria-label', 'Open mobile menu');
+							menuBtn.focus();
+						}
+						
+						// Close theme controls popover if open
+						const themePopover = document.getElementById('theme-controls-popover');
+						if (themePopover && themePopover.matches(':popover-open')) {
+							themePopover.hidePopover();
+						}
 					}
 				});
 
-				// Focus trapping in the menu
+				// Focus trapping and arrow key navigation in the menu
 				if (mobileMenu) {
+					const menuItems = mobileMenu.querySelectorAll('.menu a');
+					
 					mobileMenu.addEventListener('keydown', function(e) {
 						if (e.key === 'Tab') {
 							const focusableElements = mobileMenu.querySelectorAll('a, button');
@@ -196,11 +288,65 @@ const { title, description = "Modern Portfolio Template" } = Astro.props;
 									firstElement.focus();
 								}
 							}
+						} else if (menuItems.length > 0) {
+							// Arrow key navigation for menu items
+							const currentIndex = Array.from(menuItems).indexOf(document.activeElement);
+							
+							switch(e.key) {
+								case 'ArrowDown':
+									e.preventDefault();
+									const nextIndex = (currentIndex + 1) % menuItems.length;
+									menuItems[nextIndex].focus();
+									break;
+								case 'ArrowUp':
+									e.preventDefault();
+									const prevIndex = currentIndex <= 0 ? menuItems.length - 1 : currentIndex - 1;
+									menuItems[prevIndex].focus();
+									break;
+								case 'Home':
+									e.preventDefault();
+									menuItems[0].focus();
+									break;
+								case 'End':
+									e.preventDefault();
+									menuItems[menuItems.length - 1].focus();
+									break;
+							}
 						}
 					});
 				}
 			});
 
+			// Service Worker Registration
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('/sw.js')
+						.then(function(registration) {
+							console.log('ServiceWorker registration successful with scope: ', registration.scope);
+						})
+						.catch(function(err) {
+							console.log('ServiceWorker registration failed: ', err);
+						});
+				});
+			}
+
+			// Performance monitoring
+			if ('performance' in window) {
+				window.addEventListener('load', function() {
+					setTimeout(function() {
+						const perfData = performance.getEntriesByType('navigation')[0];
+						console.log('Page Load Time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+					}, 0);
+				});
+			}
+
+	</script>
+
+	<!-- Global Preview Mode -->
+	<script>
+		import('/src/lib/previewMode.ts').then(module => {
+			module.initPreviewMode();
+		});
 	</script>
 </body>
 </html>

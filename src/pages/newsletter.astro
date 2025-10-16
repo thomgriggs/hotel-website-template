@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client, queries, urlFor } from '../lib/sanity';
+
+// Fetch newsletter page data from Sanity
+const newsletterPage = await client.fetch(queries.newsletterPage);
+const siteSettings = await client.fetch(queries.siteSettings);
+
+// Helper function to get image URL safely
+function getImageUrl(image: any, width: number, height: number): string {
+	if (!image?.asset?._ref) {
+		return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=' + width + '&h=' + height + '&fit=crop&auto=format&q=80&fm=webp';
+	}
+	return urlFor(image).width(width).height(height).format('webp').quality(85).url();
+}
+
+// Extract newsletter page content
+const pageTitle = newsletterPage?.pageTitle || 'Newsletter Signup - Paradise Hotel';
+const heroTitle = newsletterPage?.heroTitle || 'Stay Connected';
+const heroSubtitle = newsletterPage?.heroSubtitle || 'Newsletter Signup';
+const heroImage = newsletterPage?.heroImage;
+const description = newsletterPage?.description || 'Subscribe to our newsletter for exclusive offers, updates, and insider access to our luxury experiences.';
+---
+
+<Layout
+	title={pageTitle}
+	description="Subscribe to Paradise Hotel's newsletter for exclusive offers, luxury travel tips, and special events."
+>
+	<main id="main">
+		<!-- Hero Section -->
+		<section class="page-hero">
+			<div class="hero-content">
+				<div class="wrapper">
+					<div class="hero-text">
+						<span class="hero-subtitle">{heroSubtitle}</span>
+						<h1>{heroTitle}</h1>
+						<p>{description}</p>
+					</div>
+				</div>
+			</div>
+			{heroImage && (
+				<div class="hero-image">
+					<img
+						src={getImageUrl(heroImage, 1920, 1080)}
+						alt={heroTitle}
+						loading="eager"
+					/>
+				</div>
+			)}
+		</section>
+
+		<!-- Newsletter Signup Form -->
+		<section class="newsletter-signup">
+			<div class="wrapper">
+				<div class="newsletter-container">
+					<h2>Join Our Newsletter</h2>
+					<p>Get the latest updates on special offers, events, and exclusive experiences.</p>
+
+					<form class="newsletter-form" action="#" method="POST">
+						<div class="form-group">
+							<label for="email">Email Address</label>
+							<input type="email" id="email" name="email" required placeholder="Enter your email address" />
+						</div>
+						<div class="form-group">
+							<label for="firstName">First Name (Optional)</label>
+							<input type="text" id="firstName" name="firstName" placeholder="Enter your first name" />
+						</div>
+						<div class="form-group">
+							<label for="interests">Interests (Optional)</label>
+							<select id="interests" name="interests">
+								<option value="">Select your interests</option>
+								<option value="offers">Special Offers</option>
+								<option value="events">Events & Activities</option>
+								<option value="dining">Dining Updates</option>
+								<option value="spa">Spa & Wellness</option>
+								<option value="rooms">Room Promotions</option>
+								<option value="all">All Updates</option>
+							</select>
+						</div>
+						<div class="form-group checkbox-group">
+							<label class="checkbox-label">
+								<input type="checkbox" name="terms" required />
+								<span class="checkmark"></span>
+								I agree to receive marketing communications from Paradise Hotel
+							</label>
+						</div>
+						<button type="submit" class="btn btn-primary">Subscribe Now</button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<!-- Benefits Section -->
+		<section class="newsletter-benefits">
+			<div class="wrapper">
+				<h2>What You'll Get</h2>
+				<div class="benefits-grid">
+					<div class="benefit-card">
+						<div class="benefit-icon">🎁</div>
+						<h3>Exclusive Offers</h3>
+						<p>Access to special promotions and discounts available only to subscribers.</p>
+					</div>
+					<div class="benefit-card">
+						<div class="benefit-icon">📅</div>
+						<h3>Event Invitations</h3>
+						<p>Be the first to know about exclusive events, tastings, and special occasions.</p>
+					</div>
+					<div class="benefit-card">
+						<div class="benefit-icon">💡</div>
+						<h3>Insider Tips</h3>
+						<p>Get expert recommendations and insider knowledge about our services and amenities.</p>
+					</div>
+					<div class="benefit-card">
+						<div class="benefit-icon">🌟</div>
+						<h3>VIP Access</h3>
+						<p>Early access to new services, room upgrades, and premium experiences.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Additional Information -->
+		<section class="newsletter-info">
+			<div class="wrapper">
+				<div class="info-content">
+					<h2>Your Privacy Matters</h2>
+					<p>We respect your privacy and will never share your information with third parties. You can unsubscribe at any time using the link in our emails.</p>
+					<div class="contact-info">
+						<p>Questions about our newsletter? Contact us at:</p>
+						<p><a href={`mailto:${siteSettings?.contactInfo?.email || 'newsletter@paradisehotel.com'}`}>
+							{siteSettings?.contactInfo?.email || 'newsletter@paradisehotel.com'}
+						</a></p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+
+
+

@@ -9,6 +9,15 @@ export const client = createClient({
 	apiVersion: '2023-05-03', // Use current date (YYYY-MM-DD) for latest API
 })
 
+// Authenticated write client for mutations
+export const writeClient = createClient({
+	projectId: '0knotzp4',
+	dataset: 'production',
+	useCdn: false, // Don't use CDN for writes
+	apiVersion: '2023-05-03',
+	token: import.meta.env.SANITY_API_WRITE_TOKEN || import.meta.env.SANITY_API_READ_TOKEN,
+})
+
 // Image URL builder for Sanity images
 const builder = imageUrlBuilder(client)
 
@@ -214,5 +223,59 @@ export const queries = {
 		localAttractions,
 		parkingInfo,
 		accessibility
+	}`,
+
+	// Get aggregate page by page type
+	aggregatePage: `*[_type == "aggregatePage" && pageType == $pageType][0] {
+		_id,
+		pageType,
+		title,
+		slug,
+		description,
+		heroImage,
+		heroTitle,
+		heroSubtitle,
+		heroDescription,
+		introSection,
+		highlights,
+		specialOffers,
+		testimonials,
+		ctaSection,
+		seoSettings
+	}`,
+
+	// Get page by slug
+	page: `*[_type == "page" && slug.current == $slug][0] {
+		_id,
+		pageType,
+		slug,
+		title,
+		metaDescription,
+		intro,
+		sections,
+		cta,
+		seoSettings
+	}`,
+
+	// Get page by page type
+	pageByType: `*[_type == "page" && pageType == $pageType][0] {
+		_id,
+		pageType,
+		slug,
+		title,
+		metaDescription,
+		intro,
+		sections,
+		cta,
+		seoSettings
+	}`,
+
+	// Get all pages
+	pages: `*[_type == "page"] | order(_createdAt desc) {
+		_id,
+		pageType,
+		slug,
+		title,
+		metaDescription
 	}`
 }

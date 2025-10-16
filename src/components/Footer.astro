@@ -1,6 +1,26 @@
 ---
 import { client, queries, urlFor } from '../lib/sanity';
 
+// Helper function to build URL from navigation item
+function buildNavigationUrl(item: any): string {
+	if (item.linkType === 'external') {
+		return item.externalUrl;
+	}
+	
+	switch (item.pageType) {
+		case 'main':
+			return item.mainPage;
+		case 'room':
+			return `/rooms/${item.roomSlug}`;
+		case 'restaurant':
+			return `/dining/${item.restaurantSlug}`;
+		case 'amenity':
+			return `/amenities/${item.amenitySlug}`;
+		default:
+			return item.mainPage || '/';
+	}
+}
+
 // Fetch site settings from Sanity
 const siteSettings = await client.fetch(queries.siteSettings);
 
@@ -41,11 +61,11 @@ function getSocialIcon(platform: string): string {
 		<div class="wrapper">
 			<div class="footer-columns">
 				<div class="footer-column">
-					<a class="footer-logo" href="/">
-						<img height="86" width="343" src={getImageUrl(logoWhite, 343, 86)} alt={logoWhite?.alt || siteSettings?.title || "Hotel Logo"} />
+					<a class="footer-logo" href="/" data-sanity-edit-field="siteSettings#footerLogo">
+						<span class="footer-logo-text">{siteSettings?.title || "Paradise Hotel"}</span>
 					</a>
 					<ul class="footer-partners">
-						{partnerLogos.map((logo: any) => (
+						{partnerLogos && Array.isArray(partnerLogos) && partnerLogos.map((logo: any) => (
 							<li>
 								<a href={logo.url || '#'} aria-label={logo.alt || 'Partner'}>
 									<img height="76" width="105" src={getImageUrl(logo, 105, 76)} alt={logo.alt || 'Partner'} />
@@ -56,19 +76,23 @@ function getSocialIcon(platform: string): string {
 				</div>
 				<div class="footer-column">
 					<ul class="footer-links">
-						{contactInfo?.address && contactInfo.address.length > 0 && (
+						{contactInfo?.address && (
 							<li>
-								<span class="address">
-									{contactInfo.address.map((line: string) => (
-										<span>{line}</span>
-									))}
+								<span class="address" data-sanity-edit-field="siteSettings#contactAddress">
+									{Array.isArray(contactInfo.address) ? (
+										contactInfo.address.map((line: string) => (
+											<span>{line}</span>
+										))
+									) : (
+										<span>{contactInfo.address}</span>
+									)}
 								</span>
 							</li>
 						)}
 						{contactInfo?.phone && (
 							<li>
 								<span class="telephone">
-									<a href={`tel:${contactInfo.phone}`}>
+									<a href={`tel:${contactInfo.phone}`} data-sanity-edit-field="siteSettings#contactPhone">
 										<span>Tel:</span>
 										<span>{contactInfo.phone}</span>
 									</a>
@@ -78,7 +102,7 @@ function getSocialIcon(platform: string): string {
 						{contactInfo?.email && (
 							<li>
 								<span class="email">
-									<a href={`mailto:${contactInfo.email}`}>
+									<a href={`mailto:${contactInfo.email}`} data-sanity-edit-field="siteSettings#contactEmail">
 										<span>{contactInfo.email}</span>
 									</a>
 								</span>
@@ -88,8 +112,8 @@ function getSocialIcon(platform: string): string {
 				</div>
 				<div class="footer-column">
 					<ul class="footer-menu">
-						{footerMenu.map((item: any) => {
-							const url = item.linkType === 'internal' ? item.internalUrl : item.externalUrl;
+						{footerMenu && Array.isArray(footerMenu) && footerMenu.map((item: any) => {
+							const url = buildNavigationUrl(item);
 							const target = item.linkType === 'external' && item.openInNewTab ? '_blank' : '_self';
 							const rel = item.linkType === 'external' && item.openInNewTab ? 'noopener noreferrer' : '';
 							return (
@@ -102,7 +126,7 @@ function getSocialIcon(platform: string): string {
 						})}
 					</ul>
 					<ul class="social">
-						{socialLinks.map((social: any) => {
+						{socialLinks && Array.isArray(socialLinks) && socialLinks.map((social: any) => {
 							const icon = social.customIcon ? getImageUrl(social.customIcon, 24, 24) : getSocialIcon(social.platform);
 							const ariaLabel = social.ariaLabel || `${social.platform} social media`;
 							return (
@@ -126,8 +150,8 @@ function getSocialIcon(platform: string): string {
 	<div class="footer-bottom">
 		<div class="wrapper">
 			<ul class="footer-legal">
-				{legalLinks.map((link: any) => {
-					const url = link.linkType === 'internal' ? link.internalUrl : link.externalUrl;
+				{legalLinks && Array.isArray(legalLinks) && legalLinks.map((link: any) => {
+					const url = buildNavigationUrl(link);
 					const target = link.linkType === 'external' && link.openInNewTab ? '_blank' : '_self';
 					const rel = link.linkType === 'external' && link.openInNewTab ? 'noopener noreferrer' : '';
 					return (
@@ -139,7 +163,6 @@ function getSocialIcon(platform: string): string {
 					);
 				})}
 			</ul>
-			
 			<!-- Theme Controls -->
 			<div class="footer-theme-controls">
 				<button 
@@ -151,7 +174,6 @@ function getSocialIcon(platform: string): string {
 					<span class="theme-icon">🎨</span>
 					<span class="theme-text">Customize</span>
 				</button>
-				
 				<div id="theme-controls-popover" class="theme-controls-popover" popover="manual">
 					<div class="popover-header">
 						<h3>Customize Appearance</h3>
@@ -164,7 +186,6 @@ function getSocialIcon(platform: string): string {
 							<span class="material-symbols-outlined">close</span>
 						</button>
 					</div>
-					
 					<div class="popover-content">
 						<div class="theme-section">
 							<label for="theme-select">Color Theme</label>
@@ -202,7 +223,3 @@ function getSocialIcon(platform: string): string {
 		</div>
 	</div>
 </footer>
-
-<div class="footer-bar-mobile hide-desktop">
-	<a class="btn btn-footer-bar">Contact Us</a>
-</div>

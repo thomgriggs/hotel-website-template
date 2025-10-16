@@ -5,6 +5,18 @@ import { client, queries, urlFor } from '../../lib/sanity';
 // Fetch all rooms from Sanity
 const rooms = await client.fetch(queries.rooms);
 
+// Fetch page content for rooms
+const pageContent = await client.fetch(queries.pageContent, { pageType: 'rooms' });
+
+// Extract content with fallbacks
+const pageTitle = pageContent?.pageTitle || 'Hotel Rooms - Luxury Accommodations';
+const pageDescription = pageContent?.pageDescription || 'Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.';
+const heroImage = pageContent?.heroImage ? urlFor(pageContent.heroImage).width(1200).height(630).url() : getUnsplashImage('luxury hotel rooms', 1200, 630);
+const heroTitle = pageContent?.heroTitle || 'Our Rooms & Suites';
+const heroSubtitle = pageContent?.heroSubtitle || '';
+const heroDescription = pageContent?.heroDescription || 'Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.';
+const introContent = pageContent?.introContent;
+
 // Unsplash image helper function
 function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
   // Use Picsum Photos for reliable placeholder images
@@ -13,16 +25,51 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
 }
 ---
 
-<Layout title="Hotel Rooms - Luxury Accommodations">
+<Layout 
+	title={pageTitle}
+	description={pageDescription}
+	image={heroImage}
+	keywords={[
+		"luxury hotel rooms",
+		"hotel accommodations", 
+		"luxury suites",
+		"hotel booking",
+		"luxury stay",
+		"hotel reservations"
+	]}
+>
+  <!-- Hero Section -->
+  <section class="page-banner" data-sanity-edit-section="rooms-page#hero">
+    <img src={heroImage} alt={heroTitle} data-sanity-edit-field="rooms-page#hero.image" />
+    <div class="overlay"></div>
+    <div class="heading">
+      <div class="inner">
+        <h1 class="title3" data-sanity-edit-field="rooms-page#hero.title">{heroTitle}</h1>
+        <p class="hero-description" data-sanity-edit-field="rooms-page#hero.description">{heroDescription}</p>
+      </div>
+    </div>
+  </section>
+
   <section id="main">
     <div class="wrapper">
-      <div class="summary">
-        <div class="inner">
-          <h1><span>Our Rooms & Suites</span></h1>
-          <p>Experience luxury and comfort in our beautifully appointed accommodations, each designed to provide the perfect retreat for your stay.</p>
+      <!-- Introduction Content -->
+      {introContent && introContent.length > 0 && (
+        <div class="intro-section">
+          <div class="intro-content">
+            {introContent.map((block: any) => {
+              if (block.style === 'h2') {
+                return <h2>{block.children[0]?.text}</h2>;
+              } else if (block.style === 'h3') {
+                return <h3>{block.children[0]?.text}</h3>;
+              } else {
+                return <p>{block.children[0]?.text}</p>;
+              }
+            })}
+          </div>
         </div>
-      </div>
+      )}
       
+      <!-- Room Listings -->
       <div class="post-group">
         {rooms.map((room: any) => (
           <article class="post post-repeat">
@@ -32,21 +79,23 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
                   <img 
                     src={urlFor(room.images[0]).width(800).height(600).url()} 
                     alt={room.images[0].alt || room.title}
+                    data-sanity-edit-field={`${room._id}#images`}
                   />
                 ) : (
                   <img 
                     src={getUnsplashImage('luxury hotel bedroom', 800, 600)} 
                     alt={room.title}
+                    data-sanity-edit-field={`${room._id}#images`}
                   />
                 )}
               </div>
               <div class="post-content">
                 <div class="inner">
-                  <h2><span>{room.title}</span></h2>
-                  <span class="subtitle">Starting at ${room.price}/night</span>
-                  <p>{room.description}</p>
+                  <h2 data-sanity-edit-field={`${room._id}#title`}><span>{room.title}</span></h2>
+                  <span class="subtitle" data-sanity-edit-field={`${room._id}#price`}>Starting at ${room.price}/night</span>
+                  <p data-sanity-edit-field={`${room._id}#description`}>{room.description}</p>
                   {room.amenities && room.amenities.length > 0 && (
-                    <ul class="alt-list">
+                    <ul class="alt-list" data-sanity-edit-field={`${room._id}#amenities`}>
                       {room.amenities.slice(0, 3).map((amenity: string) => (
                         <li>{amenity}</li>
                       ))}
@@ -54,7 +103,7 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
                   )}
                   <div class="buttons">
                     <div>
-                      <a class="btn" href={`/rooms/${room.slug.current}`}>
+                      <a class="btn" href={`/rooms/${room.slug.current}`} data-sanity-edit-field={`${room._id}#viewDetailsButton`}>
                         View Details
                       </a>
                     </div>
@@ -68,3 +117,4 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
     </div>
   </section>
 </Layout>
+

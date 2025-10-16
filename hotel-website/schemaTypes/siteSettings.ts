@@ -28,97 +28,13 @@ export default {
       name: 'navigation',
       title: 'Main Navigation Menu',
       type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'label',
-              title: 'Label',
-              type: 'string',
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'linkType',
-              title: 'Link Type',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Internal Page', value: 'internal' },
-                  { title: 'External URL', value: 'external' }
-                ]
-              },
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'internalUrl',
-              title: 'Internal URL',
-              type: 'string',
-              hidden: ({ parent }) => parent?.linkType !== 'internal'
-            },
-            {
-              name: 'externalUrl',
-              title: 'External URL',
-              type: 'url',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            },
-            {
-              name: 'openInNewTab',
-              title: 'Open in New Tab',
-              type: 'boolean',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            }
-          ]
-        }
-      ]
+      of: [{ type: 'navigationItem' }]
     },
     {
       name: 'footerMenu',
       title: 'Footer Menu',
       type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'label',
-              title: 'Label',
-              type: 'string',
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'linkType',
-              title: 'Link Type',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Internal Page', value: 'internal' },
-                  { title: 'External URL', value: 'external' }
-                ]
-              },
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'internalUrl',
-              title: 'Internal URL',
-              type: 'string',
-              hidden: ({ parent }) => parent?.linkType !== 'internal'
-            },
-            {
-              name: 'externalUrl',
-              title: 'External URL',
-              type: 'url',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            },
-            {
-              name: 'openInNewTab',
-              title: 'Open in New Tab',
-              type: 'boolean',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            }
-          ]
-        }
-      ]
+      of: [{ type: 'navigationItem' }]
     },
     {
       name: 'socialLinks',
@@ -201,47 +117,50 @@ export default {
       name: 'legalLinks',
       title: 'Legal Links',
       type: 'array',
-      of: [
+      of: [{ type: 'navigationItem' }]
+    },
+    {
+      name: 'siteName',
+      title: 'Site Name (Legacy)',
+      type: 'string',
+      description: 'Legacy field - use title instead'
+    },
+    {
+      name: 'siteDescription',
+      title: 'Site Description (Legacy)',
+      type: 'text',
+      description: 'Legacy field - use description instead'
+    },
+    {
+      name: 'favicon',
+      title: 'Favicon',
+      type: 'image',
+      description: 'Site favicon icon'
+    },
+    {
+      name: 'seoSettings',
+      title: 'SEO Settings',
+      type: 'object',
+      fields: [
         {
-          type: 'object',
-          fields: [
-            {
-              name: 'label',
-              title: 'Label',
-              type: 'string',
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'linkType',
-              title: 'Link Type',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Internal Page', value: 'internal' },
-                  { title: 'External URL', value: 'external' }
-                ]
-              },
-              validation: Rule => Rule.required()
-            },
-            {
-              name: 'internalUrl',
-              title: 'Internal URL',
-              type: 'string',
-              hidden: ({ parent }) => parent?.linkType !== 'internal'
-            },
-            {
-              name: 'externalUrl',
-              title: 'External URL',
-              type: 'url',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            },
-            {
-              name: 'openInNewTab',
-              title: 'Open in New Tab',
-              type: 'boolean',
-              hidden: ({ parent }) => parent?.linkType !== 'external'
-            }
-          ]
+          name: 'defaultMetaTitle',
+          title: 'Default Meta Title',
+          type: 'string'
+        },
+        {
+          name: 'defaultMetaDescription',
+          title: 'Default Meta Description',
+          type: 'text',
+          rows: 3
+        },
+        {
+          name: 'keywords',
+          title: 'Default Keywords',
+          type: 'array',
+          of: [{ type: 'string' }],
+          options: {
+            layout: 'tags'
+          }
         }
       ]
     }

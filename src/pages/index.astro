@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { client, queries, urlFor } from '../lib/sanity';
+import { getOptimizedImageUrl, getUnsplashImage } from '../lib/imageOptimization';
 
 // Fetch site settings and featured content from Sanity
 const siteSettings = await client.fetch(queries.siteSettings);
@@ -24,19 +26,67 @@ const roomsSectionTitle = homepage?.roomsSectionTitle || 'Featured Accommodation
 const diningSectionTitle = homepage?.diningSectionTitle || 'Exceptional Dining';
 const amenitiesSectionTitle = homepage?.amenitiesSectionTitle || 'World-Class Amenities';
 
+// Create slides data for the hero slider
+const heroSlides = [
+	{
+		id: 'luxury-experience',
+		title: heroTitle || 'Paradise Hotel',
+		subtitle: heroSubtitle || 'Welcome to',
+		description: mainDescription || 'Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.',
+		image: heroImage ? getOptimizedImageUrl(heroImage, 1920, 1080, 'webp') : getUnsplashImage('luxury hotel', 1920, 1080, 'webp'),
+		ctaText: primaryButtonText || 'View Rooms',
+		ctaUrl: primaryButtonUrl || '/rooms',
+		ctaSecondaryText: secondaryButtonText || 'Book Now',
+		ctaSecondaryUrl: secondaryButtonUrl || '/contact'
+	},
+	{
+		id: 'dining-experience',
+		title: 'Exceptional Dining',
+		subtitle: 'Culinary Excellence',
+		description: 'Indulge in world-class cuisine at our award-winning restaurants. From fine dining to casual fare, our culinary team creates unforgettable experiences.',
+		image: getUnsplashImage('restaurant dining', 1920, 1080, 'webp'),
+		ctaText: 'Explore Dining',
+		ctaUrl: '/dining',
+		ctaSecondaryText: 'Make Reservation',
+		ctaSecondaryUrl: '/contact'
+	},
+	{
+		id: 'amenities-experience',
+		title: 'World-Class Amenities',
+		subtitle: 'Relax & Rejuvenate',
+		description: 'Discover our comprehensive amenities including spa services, fitness center, infinity pool, and concierge services designed for your ultimate comfort.',
+		image: getUnsplashImage('hotel spa', 1920, 1080, 'webp'),
+		ctaText: 'View Amenities',
+		ctaUrl: '/amenities',
+		ctaSecondaryText: 'Spa Services',
+		ctaSecondaryUrl: '/amenities'
+	},
+	{
+		id: 'location-experience',
+		title: 'Prime Location',
+		subtitle: 'Paradise Awaits',
+		description: 'Located in the heart of paradise with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure.',
+		image: getUnsplashImage('luxury hotel location', 1920, 1080, 'webp'),
+		ctaText: 'Explore Location',
+		ctaUrl: '/location',
+		ctaSecondaryText: 'Get Directions',
+		ctaSecondaryUrl: '/contact'
+	}
+];
+
 // Helper function to get image URL safely
 function getImageUrl(image: any, width: number, height: number): string {
   if (!image?.asset?._ref) {
-    return '/hero-image.jpg'; // fallback image
+    return getUnsplashImage('luxury hotel', width, height, 'webp');
   }
-  return urlFor(image).width(width).height(height).url();
+  return urlFor(image).width(width).height(height).format('webp').quality(85).url();
 }
 
-// Unsplash image helper function
-function getUnsplashImage(query: string, width: number = 800, height: number = 600): string {
-  // Use Picsum Photos for reliable placeholder images
-  const seed = query.replace(/\s+/g, '').toLowerCase();
-  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+// Unsplash image helper function - now using optimized format
+function getUnsplashImage(query: string, width: number = 800, height: number = 600, format: string = 'webp'): string {
+  // Use Unsplash Source API with optimization
+  const seed = query.replace(/\s+/g, '-').toLowerCase();
+  return `https://images.unsplash.com/photo-1566073771259-6a8506099945?w=${width}&h=${height}&fit=crop&crop=center&auto=format&q=80&fm=${format}`;
 }
 
 // Helper function to map amenity categories to image types
@@ -56,30 +106,47 @@ function getAmenityImageType(category: string): string {
 }
 ---
 
-<Layout title={pageTitle}>
-	<main>
-		<!-- Banner Section -->
-		<section class="page-banner">
-			<img src={heroImage ? getImageUrl(heroImage, 1920, 1080) : getUnsplashImage('luxury hotel', 1920, 1080)} alt="Luxury hotel exterior" />
-			<div class="overlay"></div>
-			<div class="heading">
-				<div class="inner">
-					<span class="subtitle">{heroSubtitle}</span>
-					<h1 class="title3">{heroTitle}</h1>
-				</div>
-			</div>
-		</section>
+<Layout 
+	title={pageTitle}
+	description={mainDescription}
+	image={heroSlides[0].image}
+	type="Hotel"
+	keywords={[
+		"luxury hotel",
+		"beachfront resort", 
+		"fine dining",
+		"spa services",
+		"luxury accommodations",
+		"hotel rooms",
+		"restaurant",
+		"amenities",
+		"paradise hotel"
+	]}
+>
+	<!-- Preview Mode Indicator (client-side) -->
+	<div id="preview-mode-indicator" style="position: fixed; top: 0; left: 0; right: 0; background: #ff6b35; color: white; padding: 8px 16px; text-align: center; font-size: 14px; font-weight: bold; z-index: 999; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: none;">
+		🔴 PREVIEW MODE - Changes are live
+	</div>
+	
+	<!-- Debug Info (client-side) -->
+	<div id="debug-info" style="position: fixed; top: 40px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; font-size: 12px; z-index: 998; border-radius: 4px; display: none;">
+		Debug: Preview Mode Active
+	</div>
+	
+	<main id="main-content">
+		<!-- Hero Slider -->
+		<HeroSlider slides={heroSlides} />
 
 		<!-- Main Content -->
-		<section id="main">
+		<section id="main" data-sanity-edit-section={`${homepage?._id}#main`}>
 			<div class="wrapper">
 				<div class="summary">
 					<div class="inner">
-						<h1><span>{mainHeading}</span></h1>
-						<p>{mainDescription}</p>
+						<h1 data-sanity-edit-field={`${homepage?._id}#mainHeading`}><span>{mainHeading}</span></h1>
+						<p data-sanity-edit-field={`${homepage?._id}#mainDescription`}>{mainDescription}</p>
 						<div class="buttons">
-							<div><a class="btn" href={primaryButtonUrl}>{primaryButtonText}</a></div>
-							<div><a class="btn btn-secondary" href={secondaryButtonUrl}>{secondaryButtonText}</a></div>
+							<div><a class="btn" href={primaryButtonUrl} data-sanity-edit-field={`${homepage?._id}#primaryButtonText`}>{primaryButtonText}</a></div>
+							<div><a class="btn btn-secondary" href={secondaryButtonUrl} data-sanity-edit-field={`${homepage?._id}#secondaryButtonText`}>{secondaryButtonText}</a></div>
 						</div>
 					</div>
 				</div>
@@ -87,7 +154,7 @@ function getAmenityImageType(category: string): string {
 				<!-- Featured Rooms -->
 				{featuredRooms.length > 0 && (
 					<div class="section">
-						<h2 class="section-title">{roomsSectionTitle}</h2>
+						<h2 class="section-title" data-sanity-edit-field={`${homepage?._id}#roomsSectionTitle`}>{roomsSectionTitle}</h2>
 						<div class="post-group">
 							{featuredRooms.slice(0, 2).map((room: any) => (
 								<article class="post post-repeat">
@@ -95,23 +162,27 @@ function getAmenityImageType(category: string): string {
 										<div class="post-img">
 											{room.images && room.images.length > 0 ? (
 												<img 
-													src={urlFor(room.images[0]).width(800).height(600).url()} 
+													src={urlFor(room.images[0]).width(800).height(600).format('webp').quality(85).url()} 
 													alt={room.images[0].alt || room.title}
+													loading="lazy"
+													data-sanity-edit-field={`${room._id}#images`}
 												/>
 											) : (
 												<img 
-													src={getUnsplashImage('luxury hotel bedroom', 800, 600)} 
+													src={getUnsplashImage('luxury hotel bedroom', 800, 600, 'webp')} 
 													alt={room.title}
+													loading="lazy"
+													data-sanity-edit-field={`${room._id}#images`}
 												/>
 											)}
 										</div>
 										<div class="post-content">
 											<div class="inner">
-												<h3><span>{room.title}</span></h3>
-												<span class="subtitle">Starting at ${room.price}/night</span>
-												<p>{room.description}</p>
+												<h3 data-sanity-edit-field={`${room._id}#title`}><span>{room.title}</span></h3>
+												<span class="subtitle" data-sanity-edit-field={`${room._id}#price`}>Starting at ${room.price}/night</span>
+												<p data-sanity-edit-field={`${room._id}#description`}>{room.description}</p>
 												{room.amenities && room.amenities.length > 0 && (
-													<ul class="alt-list">
+													<ul class="alt-list" data-sanity-edit-field={`${room._id}#amenities`}>
 														{room.amenities.slice(0, 3).map((amenity: string) => (
 															<li>{amenity}</li>
 														))}
@@ -119,7 +190,7 @@ function getAmenityImageType(category: string): string {
 												)}
 												<div class="buttons">
 													<div>
-														<a class="btn" href={`/rooms/${room.slug.current}`}>
+														<a class="btn" href={`/rooms/${room.slug.current}`} data-sanity-edit-field={`${room._id}#viewDetailsButton`}>
 															View Details
 														</a>
 													</div>
@@ -136,7 +207,7 @@ function getAmenityImageType(category: string): string {
 				<!-- Featured Dining -->
 				{featuredDining.length > 0 && (
 					<div class="section">
-						<h2 class="section-title">{diningSectionTitle}</h2>
+						<h2 class="section-title" data-sanity-edit-field={`${homepage?._id}#diningSectionTitle`}>{diningSectionTitle}</h2>
 						<div class="post-group">
 							{featuredDining.slice(0, 2).map((restaurant: any) => (
 								<article class="post post-repeat">
@@ -146,22 +217,24 @@ function getAmenityImageType(category: string): string {
 												<img 
 													src={urlFor(restaurant.images[0]).width(800).height(600).url()} 
 													alt={restaurant.images[0].alt || restaurant.name}
+													data-sanity-edit-field={`${restaurant._id}#images`}
 												/>
 											) : (
 												<img 
 													src={getUnsplashImage('restaurant dining', 800, 600)} 
 													alt={restaurant.name}
+													data-sanity-edit-field={`${restaurant._id}#images`}
 												/>
 											)}
 										</div>
 										<div class="post-content">
 											<div class="inner">
-												<h3><span>{restaurant.name}</span></h3>
-												<span class="subtitle">{restaurant.cuisine} • {restaurant.priceRange}</span>
-												<p>{restaurant.description}</p>
+												<h3 data-sanity-edit-field={`${restaurant._id}#name`}><span>{restaurant.name}</span></h3>
+												<span class="subtitle" data-sanity-edit-field={`${restaurant._id}#cuisine`}>{restaurant.cuisine} • {restaurant.priceRange}</span>
+												<p data-sanity-edit-field={`${restaurant._id}#description`}>{restaurant.description}</p>
 												<div class="buttons">
 													<div>
-														<a class="btn" href={`/dining/${restaurant.slug.current}`}>
+														<a class="btn" href={`/dining/${restaurant.slug.current}`} data-sanity-edit-field={`${restaurant._id}#viewMenuButton`}>
 															View Menu
 														</a>
 													</div>
@@ -178,7 +251,7 @@ function getAmenityImageType(category: string): string {
 				<!-- Featured Amenities -->
 				{featuredAmenities.length > 0 && (
 					<div class="section">
-						<h2 class="section-title">{amenitiesSectionTitle}</h2>
+						<h2 class="section-title" data-sanity-edit-field={`${homepage?._id}#amenitiesSectionTitle`}>{amenitiesSectionTitle}</h2>
 						<div class="post-group">
 							{featuredAmenities.slice(0, 2).map((amenity: any) => (
 								<article class="post post-repeat">
@@ -188,21 +261,23 @@ function getAmenityImageType(category: string): string {
 												<img 
 													src={urlFor(amenity.images[0]).width(800).height(600).url()} 
 													alt={amenity.images[0].alt || amenity.title}
+													data-sanity-edit-field={`${amenity._id}#images`}
 												/>
 											) : (
 												<img 
 													src={getUnsplashImage(getAmenityImageType(amenity.category), 800, 600)} 
 													alt={amenity.title}
+													data-sanity-edit-field={`${amenity._id}#images`}
 												/>
 											)}
 										</div>
 										<div class="post-content">
 											<div class="inner">
-												<h3><span>{amenity.title}</span></h3>
-												<span class="subtitle">{amenity.category}</span>
-												<p>{amenity.description}</p>
+												<h3 data-sanity-edit-field={`${amenity._id}#title`}><span>{amenity.title}</span></h3>
+												<span class="subtitle" data-sanity-edit-field={`${amenity._id}#category`}>{amenity.category}</span>
+												<p data-sanity-edit-field={`${amenity._id}#description`}>{amenity.description}</p>
 												{amenity.features && amenity.features.length > 0 && (
-													<ul class="alt-list">
+													<ul class="alt-list" data-sanity-edit-field={`${amenity._id}#features`}>
 														{amenity.features.slice(0, 3).map((feature: string) => (
 															<li>{feature}</li>
 														))}
@@ -210,7 +285,7 @@ function getAmenityImageType(category: string): string {
 												)}
 												<div class="buttons">
 													<div>
-														<a class="btn" href={`/amenities/${amenity.slug.current}`}>
+														<a class="btn" href={`/amenities/${amenity.slug.current}`} data-sanity-edit-field={`${amenity._id}#learnMoreButton`}>
 															Learn More
 														</a>
 													</div>

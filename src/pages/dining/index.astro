@@ -18,8 +18,8 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
     <div class="wrapper">
       <div class="summary">
         <div class="inner">
-          <h1><span>Dining & Restaurants</span></h1>
-          <p>Indulge in exceptional culinary experiences at our diverse collection of restaurants, bars, and dining venues.</p>
+          <h1 data-sanity-edit-field="dining-page#mainTitle"><span>Dining & Restaurants</span></h1>
+          <p data-sanity-edit-field="dining-page#mainDescription">Indulge in exceptional culinary experiences at our diverse collection of restaurants, bars, and dining venues.</p>
         </div>
       </div>
       
@@ -32,19 +32,21 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
                   <img 
                     src={urlFor(restaurant.images[0]).width(800).height(600).url()} 
                     alt={restaurant.images[0].alt || restaurant.name}
+                    data-sanity-edit-field={`${restaurant._id}#images`}
                   />
                 ) : (
                   <img 
                     src={getUnsplashImage('restaurant dining', 800, 600)} 
                     alt={restaurant.name}
+                    data-sanity-edit-field={`${restaurant._id}#images`}
                   />
                 )}
               </div>
               <div class="post-content">
                 <div class="inner">
-                  <h2><span>{restaurant.name}</span></h2>
-                  <span class="subtitle">{restaurant.cuisine} • {restaurant.priceRange}</span>
-                  <p>{restaurant.description}</p>
+                  <h2 data-sanity-edit-field={`${restaurant._id}#name`}><span>{restaurant.name}</span></h2>
+                  <span class="subtitle" data-sanity-edit-field={`${restaurant._id}#cuisine`}>{restaurant.cuisine} • {restaurant.priceRange}</span>
+                  <p data-sanity-edit-field={`${restaurant._id}#description`}>{restaurant.description}</p>
                   
                   <div class="restaurant-info">
                     {restaurant.location && (
@@ -66,7 +68,7 @@ function getUnsplashImage(query: string, width: number = 800, height: number = 6
                   
                   <div class="buttons">
                     <div>
-                      <a class="btn" href={`/dining/${restaurant.slug.current}`}>
+                      <a class="btn" href={`/dining/${restaurant.slug.current}`} data-sanity-edit-field={`${restaurant._id}#viewMenuButton`}>
                         View Menu
                       </a>
                     </div>

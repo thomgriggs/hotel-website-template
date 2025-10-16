@@ -1,6 +1,4 @@
-import { defineType } from 'sanity'
-
-export default defineType({
+export default {
   name: 'homepage',
   title: 'Homepage',
   type: 'document',
@@ -9,85 +7,67 @@ export default defineType({
       name: 'pageTitle',
       title: 'Page Title',
       type: 'string',
-      description: 'The title that appears in the browser tab (e.g., "Home - Paradise Hotel")'
+      validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'heroSubtitle',
-      title: 'Hero Subtitle',
-      type: 'string',
-      description: 'Text that appears above the main title (e.g., "Welcome to")'
+      name: 'slug',
+      title: 'URL Slug',
+      type: 'slug',
+      options: {
+        source: 'pageTitle',
+        maxLength: 96,
+      },
+      validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'heroTitle',
-      title: 'Hero Title',
-      type: 'string',
-      description: 'Main title on the homepage'
+      name: 'intro',
+      title: 'Page Introduction',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Intro Title', type: 'string' },
+        { name: 'subtitle', title: 'Subtitle', type: 'string' },
+        { name: 'description', title: 'Description', type: 'array', of: [{ type: 'block' }] },
+        { name: 'heroImage', title: 'Hero Image', type: 'image', options: { hotspot: true }, validation: (Rule: any) => Rule.optional() }
+      ],
+      validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      description: 'Background image for the hero section'
+      name: 'sections',
+      title: 'Page Sections',
+      type: 'array',
+      of: [
+        { type: 'textSection' },
+        { type: 'imageTextSection' },
+        { type: 'gallerySection' },
+        { type: 'postGridSection' },
+        { type: 'mapSection' },
+        { type: 'formSection' },
+        { type: 'testimonialsSection' },
+        { type: 'ctaSection' },
+        { type: 'faqSection' },
+        { type: 'popoverSection' },
+      ],
     },
     {
-      name: 'mainHeading',
-      title: 'Main Content Heading',
-      type: 'string',
-      description: 'Heading for the main content section'
+      name: 'cta',
+      title: 'Call to Action Section',
+      type: 'ctaSection',
     },
     {
-      name: 'mainDescription',
-      title: 'Main Content Description',
-      type: 'text',
-      description: 'Description text for the main content section'
-    },
-    {
-      name: 'primaryButtonText',
-      title: 'Primary Button Text',
-      type: 'string',
-      description: 'Text for the primary call-to-action button'
-    },
-    {
-      name: 'primaryButtonUrl',
-      title: 'Primary Button URL',
-      type: 'string',
-      description: 'URL for the primary button'
-    },
-    {
-      name: 'secondaryButtonText',
-      title: 'Secondary Button Text',
-      type: 'string',
-      description: 'Text for the secondary call-to-action button'
-    },
-    {
-      name: 'secondaryButtonUrl',
-      title: 'Secondary Button URL',
-      type: 'string',
-      description: 'URL for the secondary button'
-    },
-    {
-      name: 'roomsSectionTitle',
-      title: 'Rooms Section Title',
-      type: 'string',
-      description: 'Title for the featured rooms section'
-    },
-    {
-      name: 'diningSectionTitle',
-      title: 'Dining Section Title',
-      type: 'string',
-      description: 'Title for the featured dining section'
-    },
-    {
-      name: 'amenitiesSectionTitle',
-      title: 'Amenities Section Title',
-      type: 'string',
-      description: 'Title for the featured amenities section'
+      name: 'seoSettings',
+      title: 'SEO Settings',
+      type: 'object',
+      fields: [
+        { name: 'metaTitle', title: 'Meta Title', type: 'string' },
+        { name: 'metaDescription', title: 'Meta Description', type: 'text', rows: 3 },
+        { name: 'keywords', title: 'Keywords', type: 'array', of: [{ type: 'string' }], options: { layout: 'tags' } }
+      ],
     }
   ],
   preview: {
     select: {
-      title: 'heroTitle',
-      subtitle: 'pageTitle'
-    }
-  }
-})
+      title: 'pageTitle',
+      subtitle: 'slug.current',
+    },
+  },
+}
