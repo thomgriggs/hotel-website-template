@@ -81,109 +81,112 @@
             - generic [ref=e80]: chevron_left
           - button "Next slide" [ref=e81] [cursor=pointer]:
             - generic [ref=e82]: chevron_right
-      - generic [ref=e84]:
-        - generic [ref=e86]:
-          - heading "Luxury Redefined" [level=1] [ref=e87]
-          - paragraph [ref=e88]: Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.
-          - generic [ref=e89]:
-            - link "View Rooms" [ref=e91] [cursor=pointer]:
+          - generic [ref=e83]: ✏️ Edit Mode - Slides paused for editing
+      - generic [ref=e85]:
+        - generic [ref=e87]:
+          - heading "Luxury Redefined" [level=1] [ref=e88]
+          - paragraph [ref=e89]: Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.
+          - generic [ref=e90]:
+            - link "View Rooms" [ref=e92] [cursor=pointer]:
               - /url: /rooms
-            - link "Book Now" [ref=e93] [cursor=pointer]:
+            - link "Book Now" [ref=e94] [cursor=pointer]:
               - /url: /contact
-        - generic [ref=e94]:
-          - heading "Featured Accommodations" [level=2] [ref=e95]
-          - article [ref=e97]:
-            - generic [ref=e98]:
-              - img "Presidential Suite" [ref=e100]
-              - generic [ref=e102]:
-                - heading "Presidential Suite" [level=3] [ref=e103]
-                - generic [ref=e104]: Starting at $800/night
-                - paragraph [ref=e105]: Our most luxurious accommodation with panoramic city views, private terrace, and premium amenities.
-                - link "View Details" [ref=e108] [cursor=pointer]:
+        - generic [ref=e95]:
+          - heading "Featured Accommodations" [level=2] [ref=e96]
+          - article [ref=e98]:
+            - generic [ref=e99]:
+              - img "Presidential Suite" [ref=e101]
+              - generic [ref=e103]:
+                - heading "Presidential Suite" [level=3] [ref=e104]
+                - generic [ref=e105]: Starting at $800/night
+                - paragraph [ref=e106]: Our most luxurious accommodation with panoramic city views, private terrace, and premium amenities.
+                - link "View Details" [ref=e109] [cursor=pointer]:
                   - /url: /rooms/presidential-suite
-        - generic [ref=e109]:
-          - heading "Exceptional Dining" [level=2] [ref=e110]
-          - article [ref=e112]:
-            - generic [ref=e113]:
-              - img [ref=e115]
-              - generic [ref=e117]:
+        - generic [ref=e110]:
+          - heading "Exceptional Dining" [level=2] [ref=e111]
+          - article [ref=e113]:
+            - generic [ref=e114]:
+              - img [ref=e116]
+              - generic [ref=e118]:
                 - heading [level=3]
-                - generic [ref=e118]: Contemporary •
-                - paragraph [ref=e119]: Elegant fine dining experience with award-winning cuisine and extensive wine selection.
-                - link "View Menu" [ref=e122] [cursor=pointer]:
+                - generic [ref=e119]: Contemporary •
+                - paragraph [ref=e120]: Elegant fine dining experience with award-winning cuisine and extensive wine selection.
+                - link "View Menu" [ref=e123] [cursor=pointer]:
                   - /url: /dining/fine-dining-restaurant
-        - generic [ref=e123]:
-          - heading "World-Class Amenities" [level=2] [ref=e124]
-          - generic [ref=e125]:
-            - article [ref=e126]:
-              - generic [ref=e127]:
-                - img "Infinity Pool" [ref=e129]
-                - generic [ref=e131]:
-                  - heading "Infinity Pool" [level=3] [ref=e132]
-                  - generic [ref=e133]: Recreation
-                  - paragraph [ref=e134]: Stunning infinity pool with panoramic views and poolside service.
-                  - link "Learn More" [ref=e137] [cursor=pointer]:
+        - generic [ref=e124]:
+          - heading "World-Class Amenities" [level=2] [ref=e125]
+          - generic [ref=e126]:
+            - article [ref=e127]:
+              - generic [ref=e128]:
+                - img "Infinity Pool" [ref=e130]
+                - generic [ref=e132]:
+                  - heading "Infinity Pool" [level=3] [ref=e133]
+                  - generic [ref=e134]: Recreation
+                  - paragraph [ref=e135]: Stunning infinity pool with panoramic views and poolside service.
+                  - link "Learn More" [ref=e138] [cursor=pointer]:
                     - /url: /amenities/infinity-pool
-            - article [ref=e138]:
-              - generic [ref=e139]:
-                - img "Fitness Center" [ref=e141]
-                - generic [ref=e143]:
-                  - heading "Fitness Center" [level=3] [ref=e144]
-                  - generic [ref=e145]: Fitness
-                  - paragraph [ref=e146]: State-of-the-art fitness center with personal training and group classes.
-                  - link "Learn More" [ref=e149] [cursor=pointer]:
+            - article [ref=e139]:
+              - generic [ref=e140]:
+                - img "Fitness Center" [ref=e142]
+                - generic [ref=e144]:
+                  - heading "Fitness Center" [level=3] [ref=e145]
+                  - generic [ref=e146]: Fitness
+                  - paragraph [ref=e147]: State-of-the-art fitness center with personal training and group classes.
+                  - link "Learn More" [ref=e150] [cursor=pointer]:
                     - /url: /amenities/fitness-center
-  - contentinfo [ref=e150]:
-    - generic [ref=e153]:
-      - generic [ref=e154]:
-        - link "Paradise Hotel" [ref=e155] [cursor=pointer]:
+  - contentinfo [ref=e151]:
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - link "Paradise Hotel" [ref=e156] [cursor=pointer]:
           - /url: /
-        - list [ref=e156]
-      - list [ref=e158]:
-        - listitem [ref=e159]:
-          - generic [ref=e160]:
-            - generic [ref=e161]: 123 Paradise Drive
-            - generic [ref=e162]: Paradise City, PC 90210
-            - generic [ref=e163]: United States
-        - listitem [ref=e164]:
-          - 'link "Tel: +1 (555) 123-4567" [ref=e166] [cursor=pointer]':
+        - list [ref=e157]
+      - list [ref=e159]:
+        - listitem [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]: 123 Paradise Drive
+            - generic [ref=e163]: Paradise City, PC 90210
+            - generic [ref=e164]: United States
+        - listitem [ref=e165]:
+          - 'link "Tel: +1 (555) 123-4567" [ref=e167] [cursor=pointer]':
             - /url: tel:+1 (555) 123-4567
-        - listitem [ref=e167]:
-          - link "info@paradisehotel.com" [ref=e169] [cursor=pointer]:
+        - listitem [ref=e168]:
+          - link "info@paradisehotel.com" [ref=e170] [cursor=pointer]:
             - /url: mailto:info@paradisehotel.com
-      - generic [ref=e170]:
+      - generic [ref=e171]:
         - list
-        - list [ref=e171]:
-          - listitem [ref=e172]:
-            - link "Follow us on Facebook" [ref=e173] [cursor=pointer]:
+        - list [ref=e172]:
+          - listitem [ref=e173]:
+            - link "Follow us on Facebook" [ref=e174] [cursor=pointer]:
               - /url: https://facebook.com/paradisehotel
-              - generic [ref=e174]: 📘
-          - listitem [ref=e175]:
-            - link "Follow us on Instagram" [ref=e176] [cursor=pointer]:
+              - generic [ref=e175]: 📘
+          - listitem [ref=e176]:
+            - link "Follow us on Instagram" [ref=e177] [cursor=pointer]:
               - /url: https://instagram.com/paradisehotel
-              - generic [ref=e177]: 📷
-          - listitem [ref=e178]:
-            - link "Follow us on Twitter" [ref=e179] [cursor=pointer]:
+              - generic [ref=e178]: 📷
+          - listitem [ref=e179]:
+            - link "Follow us on Twitter" [ref=e180] [cursor=pointer]:
               - /url: https://twitter.com/paradisehotel
-              - generic [ref=e180]: 🐦
-    - generic [ref=e182]:
+              - generic [ref=e181]: 🐦
+    - generic [ref=e183]:
       - list
-      - button "Open theme controls" [ref=e184] [cursor=pointer]:
-        - generic [ref=e185]: 🎨
-        - generic [ref=e186]: Customize
-  - generic [ref=e189]:
-    - button "Menu" [ref=e190]:
-      - img [ref=e192]
+      - button "Open theme controls" [ref=e185] [cursor=pointer]:
+        - generic [ref=e186]: 🎨
+        - generic [ref=e187]: Customize
+  - generic [ref=e190]:
+    - button "Menu" [ref=e191]:
+      - img [ref=e193]
       - generic: Menu
-    - button "Inspect" [ref=e196]:
-      - img [ref=e198]
+    - button "Inspect" [ref=e197]:
+      - img [ref=e199]
       - generic: Inspect
-    - button "Audit" [ref=e200]:
-      - generic [ref=e201]:
-        - img [ref=e202]
-        - img [ref=e205]
+    - button "Audit" [ref=e201]:
+      - generic [ref=e202]:
+        - img [ref=e203]
+        - img [ref=e206]
       - generic: Audit
-    - button "Settings" [ref=e208]:
-      - img [ref=e210]
+    - button "Settings" [ref=e209]:
+      - img [ref=e211]
       - generic: Settings
+  - generic "Preview Mode Active" [ref=e214] [cursor=pointer]:
+    - img [ref=e215]
 ```

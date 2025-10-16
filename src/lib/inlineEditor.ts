@@ -919,7 +919,7 @@ export class InlineEditor {
         dataset: 'production',
         useCdn: false,
         apiVersion: '2023-05-03',
-        token: 'sk_test_your_token_here', // Use the read token from .env
+        token: 'skTgX04FcukL6ovhMe8qGUtUmiUIdPH0pLxiFuFWeCLts4fkrVb2dp8t0OU4PObdTeMmxzEnpQ0ckQiqq7v4Q4NkgiBvU8JSGxSZCDZIqHWRcfYZmWmZVV6DIXqIp5vdfjv0tLpi9mJEbhKeXpOsq0yJiwptMZHiuQ93rTjTGUSc0SvEU40v', // Write token for preview mode
       });
 
       // Build the patch operation
