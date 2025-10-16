@@ -286,6 +286,7 @@ export class InlineEditor {
         const value = wysiwygElement.dataset.value || '';
         
         // Create WYSIWYG editor
+        console.log('Creating WYSIWYG editor for:', fieldType);
         const wysiwygEditor = new WYSIWYGEditor(wysiwygElement, {
           fieldType: fieldType,
           placeholder: placeholder
@@ -298,6 +299,7 @@ export class InlineEditor {
         
         // Store reference for save functionality
         (overlay as any).wysiwygEditor = wysiwygEditor;
+        console.log('WYSIWYG editor created and stored:', !!wysiwygEditor);
       }
     }
 
@@ -884,6 +886,8 @@ export class InlineEditor {
   async saveChanges(fieldPath: string, saveButton: HTMLButtonElement, fieldType: string) {
     const [documentId, fieldName] = fieldPath.split('#');
     const overlay = saveButton.closest('.inline-editor-overlay') as HTMLElement;
+    
+    console.log('Save started:', { fieldPath, fieldType, overlay: !!overlay });
     
     try {
       // Show loading state
