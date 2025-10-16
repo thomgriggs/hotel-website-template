@@ -585,10 +585,15 @@ function initializePreviewMode() {
 				currentValue = field.textContent.trim();
 				currentUrl = field.href;
 			} else {
-				// Get text content excluding any child buttons
+				// Get text content excluding any child buttons, preserving line breaks from <br> tags
 				currentValue = Array.from(field.childNodes)
 					.filter(node => node.nodeType === Node.TEXT_NODE || !node.classList?.contains('preview-edit-button'))
-					.map(node => node.textContent)
+					.map(node => {
+						if (node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'BR') {
+							return '\n';
+						}
+						return node.textContent || '';
+					})
 					.join('').trim();
 			}
 			

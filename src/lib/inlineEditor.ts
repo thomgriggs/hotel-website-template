@@ -485,6 +485,7 @@ export class InlineEditor {
         min-height: 120px;
         transition: all 0.2s ease;
         box-sizing: border-box;
+        white-space: pre-wrap;
       }
       
       .inline-editor-field:focus {
@@ -698,10 +699,19 @@ export class InlineEditor {
           isList ? 'Enter list items... (Press Enter for new item)' : 
           'Enter text...';
         
-        // For address fields, preserve line breaks in display
-        const displayValue = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
-          escapeHtml(currentValue).replace(/\n/g, '\n') : 
-          escapeHtml(currentValue);
+        // For textareas, we don't need to escape HTML since it's not rendered as HTML
+        // Just preserve the raw text with line breaks intact
+        const displayValue = currentValue || '';
+        
+        // Debug logging for address fields
+        if (fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address')) {
+          console.log('Address field debug:', {
+            fieldName,
+            currentValue: JSON.stringify(currentValue),
+            displayValue: JSON.stringify(displayValue),
+            hasLineBreaks: displayValue.includes('\n')
+          });
+        }
         
         // Enhanced styling for address fields
         const addressStyle = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?

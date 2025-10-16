@@ -80,8 +80,8 @@ function getSocialIcon(platform: string): string {
 							<li>
 								<span class="address" data-sanity-edit-field="siteSettings#contactInfo.address">
 									{Array.isArray(contactInfo.address) ? (
-										contactInfo.address.map((line: string) => (
-											<span>{line}</span>
+										contactInfo.address.map((line: string, index: number) => (
+											<span>{line}{index < contactInfo.address.length - 1 ? <br /> : ''}</span>
 										))
 									) : (
 										<span>{contactInfo.address}</span>
