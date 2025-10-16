@@ -16,10 +16,11 @@ export interface WYSIWYGOptions {
 
 export class WYSIWYGEditor {
   private container: HTMLElement;
-  private textarea: HTMLTextAreaElement;
+  private textarea: HTMLElement; // Changed from HTMLTextAreaElement to HTMLElement
   private toolbar: HTMLElement;
   private options: WYSIWYGOptions;
   private iconPicker: IconPicker;
+  private isCodeView: boolean = false;
 
   constructor(container: HTMLElement, options: WYSIWYGOptions) {
     this.container = container;
@@ -50,6 +51,14 @@ export class WYSIWYGEditor {
       </div>
       <div class="toolbar-group toolbar-contextual">
         ${contextualButtons}
+      </div>
+      <div class="toolbar-group toolbar-view">
+        <button type="button" class="toolbar-btn" data-action="toggle-view" title="Toggle Code/Visual View">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16,18 22,12 16,6"/>
+            <polyline points="8,6 2,12 8,18"/>
+          </svg>
+        </button>
       </div>
     `;
     
@@ -126,12 +135,14 @@ export class WYSIWYGEditor {
   }
 
   private createTextarea() {
-    this.textarea = document.createElement('textarea');
+    // Create a contenteditable div instead of textarea for rich text
+    this.textarea = document.createElement('div');
     this.textarea.className = 'wysiwyg-textarea';
-    this.textarea.placeholder = this.options.placeholder || 'Enter content...';
+    this.textarea.contentEditable = 'true';
+    this.textarea.setAttribute('data-placeholder', this.options.placeholder || 'Enter content...');
     
     if (this.options.maxLength) {
-      this.textarea.maxLength = this.options.maxLength;
+      this.textarea.setAttribute('data-max-length', this.options.maxLength.toString());
     }
     
     this.container.appendChild(this.textarea);
@@ -173,6 +184,9 @@ export class WYSIWYGEditor {
       case 'list-number':
         this.insertList('number');
         break;
+      case 'toggle-view':
+        this.toggleView();
+        break;
     }
   }
 
@@ -197,20 +211,31 @@ export class WYSIWYGEditor {
   }
 
   private insertFormatting(prefix: string, suffix: string) {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    const selectedText = this.textarea.value.substring(start, end);
-    
-    if (selectedText) {
-      // Wrap selected text
-      const newText = prefix + selectedText + suffix;
-      this.replaceSelection(newText);
+    // For contenteditable, use document.execCommand or modern approach
+    if (document.queryCommandSupported('bold')) {
+      document.execCommand('bold', false);
     } else {
-      // Insert formatting markers
-      const newText = prefix + suffix;
-      this.replaceSelection(newText);
-      // Position cursor between markers
-      this.textarea.setSelectionRange(start + prefix.length, start + prefix.length);
+      // Fallback: wrap selection in formatting
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const selectedText = range.toString();
+        
+        if (selectedText) {
+          // Wrap selected text
+          const formattedText = `${prefix}${selectedText}${suffix}`;
+          range.deleteContents();
+          range.insertNode(document.createTextNode(formattedText));
+        } else {
+          // Insert formatting markers
+          range.insertNode(document.createTextNode(`${prefix}${suffix}`));
+          // Position cursor between markers
+          range.setStart(range.startContainer, range.startOffset + prefix.length);
+          range.setEnd(range.endContainer, range.endOffset - suffix.length);
+        }
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
     
     this.textarea.focus();
@@ -220,38 +245,50 @@ export class WYSIWYGEditor {
     const url = prompt('Enter URL:');
     if (!url) return;
     
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    const selectedText = this.textarea.value.substring(start, end);
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const selectedText = range.toString();
+      
+      const linkText = selectedText || 'Link Text';
+      const linkMarkdown = `[${linkText}](${url})`;
+      
+      range.deleteContents();
+      range.insertNode(document.createTextNode(linkMarkdown));
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
     
-    const linkText = selectedText || 'Link Text';
-    const linkMarkdown = `[${linkText}](${url})`;
-    
-    this.replaceSelection(linkMarkdown);
     this.textarea.focus();
   }
 
   private insertList(type: 'bullet' | 'number') {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
-    const selectedText = this.textarea.value.substring(start, end);
-    
-    if (selectedText) {
-      // Convert selected text to list
-      const lines = selectedText.split('\n');
-      const listItems = lines.map((line, index) => {
-        if (type === 'bullet') {
-          return `- ${line.trim()}`;
-        } else {
-          return `${index + 1}. ${line.trim()}`;
-        }
-      });
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const selectedText = range.toString();
       
-      this.replaceSelection(listItems.join('\n'));
-    } else {
-      // Insert new list item
-      const listItem = type === 'bullet' ? '- ' : '1. ';
-      this.replaceSelection(listItem);
+      if (selectedText) {
+        // Convert selected text to list
+        const lines = selectedText.split('\n');
+        const listItems = lines.map((line, index) => {
+          if (type === 'bullet') {
+            return `- ${line.trim()}`;
+          } else {
+            return `${index + 1}. ${line.trim()}`;
+          }
+        });
+        
+        range.deleteContents();
+        range.insertNode(document.createTextNode(listItems.join('\n')));
+      } else {
+        // Insert new list item
+        const listItem = type === 'bullet' ? '- ' : '1. ';
+        range.insertNode(document.createTextNode(listItem));
+      }
+      
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
     
     this.textarea.focus();
@@ -264,11 +301,25 @@ export class WYSIWYGEditor {
   }
 
   private insertIcon(iconHtml: string) {
-    const start = this.textarea.selectionStart;
-    const end = this.textarea.selectionEnd;
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      
+      // Create a temporary div to parse the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = iconHtml;
+      const iconElement = tempDiv.firstChild;
+      
+      if (iconElement) {
+        range.insertNode(iconElement.cloneNode(true));
+        // Move cursor after the icon
+        range.setStartAfter(iconElement);
+        range.setEndAfter(iconElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
     
-    // Insert icon HTML at cursor position
-    this.replaceSelection(iconHtml);
     this.textarea.focus();
   }
 
@@ -286,17 +337,42 @@ export class WYSIWYGEditor {
   }
 
   public getValue(): string {
-    return this.textarea.value;
+    return this.textarea.innerHTML;
   }
 
   public setValue(value: string) {
-    this.textarea.value = value;
+    this.textarea.innerHTML = value;
   }
 
-  public focus() {
+  private toggleView() {
+    this.isCodeView = !this.isCodeView;
+    
+    if (this.isCodeView) {
+      // Switch to code view
+      this.textarea.contentEditable = 'false';
+      this.textarea.style.fontFamily = 'monospace';
+      this.textarea.style.whiteSpace = 'pre-wrap';
+      this.textarea.style.backgroundColor = '#f8f9fa';
+      this.textarea.style.border = '1px solid #e9ecef';
+      
+      // Convert HTML to text
+      const htmlContent = this.textarea.innerHTML;
+      this.textarea.textContent = htmlContent;
+    } else {
+      // Switch to visual view
+      this.textarea.contentEditable = 'true';
+      this.textarea.style.fontFamily = 'var(--font-secondary, "Inter", sans-serif)';
+      this.textarea.style.whiteSpace = 'normal';
+      this.textarea.style.backgroundColor = 'var(--color-background, #ffffff)';
+      this.textarea.style.border = '1px solid var(--color-border, #e9ecef)';
+      
+      // Convert text to HTML
+      const textContent = this.textarea.textContent || '';
+      this.textarea.innerHTML = textContent.replace(/\n/g, '<br>');
+    }
+    
     this.textarea.focus();
   }
-}
 
 /**
  * Progressive Icon Picker
