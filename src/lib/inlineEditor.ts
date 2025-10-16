@@ -339,8 +339,8 @@ export class InlineEditor {
       }
     }
 
-    // Auto-resize textarea
-    if (isMultiLine) {
+    // Auto-resize textarea (only if we have a regular textarea, not WYSIWYG)
+    if (isMultiLine && input) {
       const textarea = input as HTMLTextAreaElement;
       const autoResize = () => {
         textarea.style.height = 'auto';
