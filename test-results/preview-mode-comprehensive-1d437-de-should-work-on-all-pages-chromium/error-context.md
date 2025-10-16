@@ -105,15 +105,13 @@
       - img [ref=e128]
       - generic: Inspect
     - button "Audit" [ref=e130]:
-      - generic [ref=e131]:
-        - img [ref=e132]
-        - img [ref=e135]
+      - img [ref=e132]
       - generic: Audit
-    - button "Settings" [ref=e138]:
-      - img [ref=e140]
+    - button "Settings" [ref=e135]:
+      - img [ref=e137]
       - generic: Settings
-  - generic "Preview Mode Active" [ref=e143] [cursor=pointer]:
-    - img [ref=e144]
+  - generic "Preview Mode Active" [ref=e140] [cursor=pointer]:
+    - img [ref=e141]
   - generic:
     - generic:
       - img

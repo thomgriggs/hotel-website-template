@@ -399,17 +399,7 @@ export class InlineEditor {
         align-items: center;
         justify-content: center;
         z-index: 10000;
-        animation: overlayFadeIn 0.2s ease;
         padding: 20px;
-      }
-
-      @keyframes overlayFadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
       }
       
       /* Popup */
@@ -422,18 +412,6 @@ export class InlineEditor {
         max-height: 85vh;
         display: flex;
         flex-direction: column;
-        animation: popupSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-
-      @keyframes popupSlideUp {
-        from {
-          transform: translateY(40px) scale(0.95);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
       }
       
       /* Header */
@@ -948,8 +926,11 @@ export class InlineEditor {
        } else if (fieldType === 'paragraph' || fieldType === 'list' || fieldType === 'textarea') {
          // Check if we have a WYSIWYG editor
          const wysiwygEditor = (overlay as any).wysiwygEditor;
+         console.log('WYSIWYG Save Debug:', { fieldType, hasWysiwygEditor: !!wysiwygEditor });
+         
          if (wysiwygEditor) {
            const rawValue = wysiwygEditor.getValue();
+           console.log('WYSIWYG Raw Value:', rawValue);
            
            // For textarea-based WYSIWYG, we get plain text
            if (fieldType === 'paragraph') {
@@ -962,7 +943,9 @@ export class InlineEditor {
              // For textarea, keep as string
              newValue = rawValue;
            }
+           console.log('WYSIWYG Processed Value:', newValue);
          } else {
+           console.log('WYSIWYG: No editor found, using fallback');
            // Fallback to regular textarea
            const textarea = overlay.querySelector('.inline-editor-field') as HTMLTextAreaElement;
           const rawValue = textarea?.value || '';
