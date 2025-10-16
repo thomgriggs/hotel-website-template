@@ -911,24 +911,39 @@ export class InlineEditor {
       
       console.log('Saving changes:', { documentId, fieldName, newValue, fieldType });
       
-      // Use API endpoint instead of direct Sanity client
-      const response = await fetch('/api/preview-save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          documentId,
-          fieldName,
-          newValue,
-          fieldType
-        })
+      // Use Sanity client directly with proper error handling
+      const { createClient } = await import('@sanity/client');
+      
+      const client = createClient({
+        projectId: '0knotzp4',
+        dataset: 'production',
+        useCdn: false,
+        apiVersion: '2023-05-03',
+        token: 'sk_test_your_token_here', // Use the read token from .env
       });
 
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Failed to save changes');
+      // Build the patch operation
+      const patch = client.patch(documentId);
+      
+      // Handle different field types
+      if (fieldType === 'button') {
+        await patch
+          .set({ [`${fieldName}.text`]: newValue.text })
+          .set({ [`${fieldName}.url`]: newValue.url })
+          .set({ [`${fieldName}.target`]: newValue.target })
+          .commit();
+      } else if (fieldType === 'image') {
+        await patch
+          .set({ [`${fieldName}.url`]: newValue.url })
+          .set({ [`${fieldName}.alt`]: newValue.alt })
+          .commit();
+      } else if (fieldType === 'menu') {
+        await patch
+          .set({ [`${fieldName}.text`]: newValue.text })
+          .set({ [`${fieldName}.url`]: newValue.url })
+          .commit();
+      } else {
+        await patch.set({ [fieldName]: newValue }).commit();
       }
 
       // Update the page content

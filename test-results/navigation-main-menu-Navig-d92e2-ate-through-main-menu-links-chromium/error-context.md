@@ -1,0 +1,189 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - navigation "Main navigation" [ref=e5]:
+      - list [ref=e6]:
+        - listitem [ref=e7]:
+          - button "Open mobile menu" [ref=e8] [cursor=pointer]
+      - link "Paradise Hotel - Home" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - text: Paradise Hotel
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Book your stay" [ref=e16] [cursor=pointer]:
+            - /url: /contact
+            - text: Book Now
+  - main [ref=e17]:
+    - main [ref=e18]:
+      - region "Hero slider" [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - img "Paradise Hotel" [ref=e24]
+              - generic [ref=e28]:
+                - generic [ref=e29]: Welcome to
+                - heading "Paradise Hotel" [level=1] [ref=e30]
+                - paragraph [ref=e31]: Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.
+                - generic [ref=e32]:
+                  - link "View Rooms" [ref=e33] [cursor=pointer]:
+                    - /url: /rooms
+                  - link "Book Now" [ref=e34] [cursor=pointer]:
+                    - /url: /contact
+            - generic [ref=e35]:
+              - img [ref=e37]
+              - generic [ref=e41]:
+                - generic [ref=e42]: Culinary Excellence
+                - heading [level=1] [ref=e43]: Exceptional Dining
+                - paragraph [ref=e44]: Indulge in world-class cuisine at our award-winning restaurants. From fine dining to casual fare, our culinary team creates unforgettable experiences.
+                - generic [ref=e45]:
+                  - link [ref=e46] [cursor=pointer]:
+                    - /url: /dining
+                    - text: Explore Dining
+                  - link [ref=e47] [cursor=pointer]:
+                    - /url: /contact
+                    - text: Make Reservation
+            - generic [ref=e48]:
+              - img [ref=e50]
+              - generic [ref=e54]:
+                - generic [ref=e55]: Relax & Rejuvenate
+                - heading [level=1] [ref=e56]: World-Class Amenities
+                - paragraph [ref=e57]: Discover our comprehensive amenities including spa services, fitness center, infinity pool, and concierge services designed for your ultimate comfort.
+                - generic [ref=e58]:
+                  - link [ref=e59] [cursor=pointer]:
+                    - /url: /amenities
+                    - text: View Amenities
+                  - link [ref=e60] [cursor=pointer]:
+                    - /url: /amenities
+                    - text: Spa Services
+            - generic [ref=e61]:
+              - img [ref=e63]
+              - generic [ref=e67]:
+                - generic [ref=e68]: Paradise Awaits
+                - heading [level=1] [ref=e69]: Prime Location
+                - paragraph [ref=e70]: Located in the heart of paradise with easy access to beaches, attractions, and cultural sites. Experience the best of both luxury and adventure.
+                - generic [ref=e71]:
+                  - link [ref=e72] [cursor=pointer]:
+                    - /url: /location
+                    - text: Explore Location
+                  - link [ref=e73] [cursor=pointer]:
+                    - /url: /contact
+                    - text: Get Directions
+          - generic "Slider navigation" [ref=e74]:
+            - button "Go to slide 1" [ref=e75] [cursor=pointer]
+            - button "Go to slide 2" [ref=e76] [cursor=pointer]
+            - button "Go to slide 3" [ref=e77] [cursor=pointer]
+            - button "Go to slide 4" [ref=e78] [cursor=pointer]
+          - button "Previous slide" [ref=e79] [cursor=pointer]:
+            - generic [ref=e80]: chevron_left
+          - button "Next slide" [ref=e81] [cursor=pointer]:
+            - generic [ref=e82]: chevron_right
+      - generic [ref=e84]:
+        - generic [ref=e86]:
+          - heading "Luxury Redefined" [level=1] [ref=e87]
+          - paragraph [ref=e88]: Experience unparalleled luxury and world-class service in our stunning beachfront resort. From elegant accommodations to exceptional dining, every detail is crafted for your comfort.
+          - generic [ref=e89]:
+            - link "View Rooms" [ref=e91] [cursor=pointer]:
+              - /url: /rooms
+            - link "Book Now" [ref=e93] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=e94]:
+          - heading "Featured Accommodations" [level=2] [ref=e95]
+          - article [ref=e97]:
+            - generic [ref=e98]:
+              - img "Presidential Suite" [ref=e100]
+              - generic [ref=e102]:
+                - heading "Presidential Suite" [level=3] [ref=e103]
+                - generic [ref=e104]: Starting at $800/night
+                - paragraph [ref=e105]: Our most luxurious accommodation with panoramic city views, private terrace, and premium amenities.
+                - link "View Details" [ref=e108] [cursor=pointer]:
+                  - /url: /rooms/presidential-suite
+        - generic [ref=e109]:
+          - heading "Exceptional Dining" [level=2] [ref=e110]
+          - article [ref=e112]:
+            - generic [ref=e113]:
+              - img [ref=e115]
+              - generic [ref=e117]:
+                - heading [level=3]
+                - generic [ref=e118]: Contemporary •
+                - paragraph [ref=e119]: Elegant fine dining experience with award-winning cuisine and extensive wine selection.
+                - link "View Menu" [ref=e122] [cursor=pointer]:
+                  - /url: /dining/fine-dining-restaurant
+        - generic [ref=e123]:
+          - heading "World-Class Amenities" [level=2] [ref=e124]
+          - generic [ref=e125]:
+            - article [ref=e126]:
+              - generic [ref=e127]:
+                - img "Infinity Pool" [ref=e129]
+                - generic [ref=e131]:
+                  - heading "Infinity Pool" [level=3] [ref=e132]
+                  - generic [ref=e133]: Recreation
+                  - paragraph [ref=e134]: Stunning infinity pool with panoramic views and poolside service.
+                  - link "Learn More" [ref=e137] [cursor=pointer]:
+                    - /url: /amenities/infinity-pool
+            - article [ref=e138]:
+              - generic [ref=e139]:
+                - img "Fitness Center" [ref=e141]
+                - generic [ref=e143]:
+                  - heading "Fitness Center" [level=3] [ref=e144]
+                  - generic [ref=e145]: Fitness
+                  - paragraph [ref=e146]: State-of-the-art fitness center with personal training and group classes.
+                  - link "Learn More" [ref=e149] [cursor=pointer]:
+                    - /url: /amenities/fitness-center
+  - contentinfo [ref=e150]:
+    - generic [ref=e153]:
+      - generic [ref=e154]:
+        - link "Paradise Hotel" [ref=e155] [cursor=pointer]:
+          - /url: /
+        - list [ref=e156]
+      - list [ref=e158]:
+        - listitem [ref=e159]:
+          - generic [ref=e160]:
+            - generic [ref=e161]: 123 Paradise Drive
+            - generic [ref=e162]: Paradise City, PC 90210
+            - generic [ref=e163]: United States
+        - listitem [ref=e164]:
+          - 'link "Tel: +1 (555) 123-4567" [ref=e166] [cursor=pointer]':
+            - /url: tel:+1 (555) 123-4567
+        - listitem [ref=e167]:
+          - link "info@paradisehotel.com" [ref=e169] [cursor=pointer]:
+            - /url: mailto:info@paradisehotel.com
+      - generic [ref=e170]:
+        - list
+        - list [ref=e171]:
+          - listitem [ref=e172]:
+            - link "Follow us on Facebook" [ref=e173] [cursor=pointer]:
+              - /url: https://facebook.com/paradisehotel
+              - generic [ref=e174]: 📘
+          - listitem [ref=e175]:
+            - link "Follow us on Instagram" [ref=e176] [cursor=pointer]:
+              - /url: https://instagram.com/paradisehotel
+              - generic [ref=e177]: 📷
+          - listitem [ref=e178]:
+            - link "Follow us on Twitter" [ref=e179] [cursor=pointer]:
+              - /url: https://twitter.com/paradisehotel
+              - generic [ref=e180]: 🐦
+    - generic [ref=e182]:
+      - list
+      - button "Open theme controls" [ref=e184] [cursor=pointer]:
+        - generic [ref=e185]: 🎨
+        - generic [ref=e186]: Customize
+  - generic [ref=e189]:
+    - button "Menu" [ref=e190]:
+      - img [ref=e192]
+      - generic: Menu
+    - button "Inspect" [ref=e196]:
+      - img [ref=e198]
+      - generic: Inspect
+    - button "Audit" [ref=e200]:
+      - generic [ref=e201]:
+        - img [ref=e202]
+        - img [ref=e205]
+      - generic: Audit
+    - button "Settings" [ref=e208]:
+      - img [ref=e210]
+      - generic: Settings
+```

@@ -7,7 +7,12 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "playwright test",
+    "test:preview": "playwright test tests/preview-mode",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",
@@ -22,6 +27,7 @@
     "typescript": "^5.7.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@types/node": "^22.10.2"
   }
 }

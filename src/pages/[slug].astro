@@ -106,11 +106,6 @@ const seoProps = {
 
 <Layout {...seoProps}>
   <!-- Preview Mode Indicator -->
-  {isPreview && (
-    <div id="preview-mode-indicator" style="position: fixed; top: 0; left: 0; right: 0; background: #ff6b35; color: white; padding: 8px 16px; text-align: center; font-size: 14px; font-weight: bold; z-index: 9999; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-      🔴 PREVIEW MODE - Changes are live
-    </div>
-  )}
   
   <main id="main" style={isPreview ? "margin-top: 40px;" : ""}>
     <!-- Page Introduction -->
