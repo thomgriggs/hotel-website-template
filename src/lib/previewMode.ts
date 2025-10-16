@@ -7,32 +7,20 @@ import { themeManager } from './themeConfig';
 /**
  * Render a Lucide icon as SVG string
  */
-async function renderLucideIcon(iconName: string, size: number = 16): Promise<string> {
-	try {
-		const { icons } = await import('lucide');
-		const IconComponent = icons[iconName as keyof typeof icons];
-		
-		if (!IconComponent) {
-			console.warn(`Lucide icon "${iconName}" not found`);
-			return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
-		}
+function renderLucideIcon(iconName: string, size: number = 16): string {
+	// Simple SVG icons that match Lucide design
+	const iconMap: Record<string, string> = {
+		'type': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,7 4,4 20,4 20,7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>`,
+		'image': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21,15 16,10 5,21"></polyline></svg>`,
+		'link': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
+		'file-text': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10,9 9,9 8,9"></polyline></svg>`,
+		'map-pin': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+		'edit': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
+		'save': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17,21 17,13 7,13 7,21"></polyline><polyline points="7,3 7,8 15,8"></polyline></svg>`,
+		'x': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
+	};
 
-		// Create a temporary element to render the icon
-		const tempDiv = document.createElement('div');
-		const iconElement = IconComponent({ size });
-		
-		if (typeof iconElement === 'string') {
-			return iconElement;
-		} else if (iconElement && typeof iconElement === 'object') {
-			tempDiv.appendChild(iconElement);
-			return tempDiv.innerHTML;
-		}
-
-		return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
-	} catch (error) {
-		console.error(`Error rendering Lucide icon "${iconName}":`, error);
-		return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`;
-	}
+	return iconMap[iconName] || iconMap['edit']; // Fallback to edit icon
 }
 
 export function initPreviewMode() {
@@ -525,8 +513,10 @@ function initializePreviewMode() {
 	document.head.appendChild(previewStyle);
 	
 	// Make ALL content editable - add labels and click handlers
-	document.querySelectorAll('[data-sanity-edit-field]').forEach(async (field) => {
+	document.querySelectorAll('[data-sanity-edit-field]').forEach((field) => {
 		const fieldPath = field.getAttribute('data-sanity-edit-field');
+		if (!fieldPath) return; // Skip if no field path
+		
 		const fieldName = fieldPath.split('#')[1];
 		
 		// Determine field type and get appropriate Lucide icon
@@ -557,7 +547,7 @@ function initializePreviewMode() {
 		}
 
 		// Render the Lucide icon
-		const iconSVG = await renderLucideIcon(iconName, 16);
+		const iconSVG = renderLucideIcon(iconName, 16);
 		const contentLabel = `${iconSVG} ${labelText}`;
 		
 		field.setAttribute('data-content-label', contentLabel);
@@ -597,11 +587,13 @@ function initializePreviewMode() {
 			let currentUrl = '';
 			
 			if (field.tagName === 'IMG') {
-				currentValue = field.src;
-				currentUrl = field.alt || '';
+				const imgElement = field as HTMLImageElement;
+				currentValue = imgElement.src;
+				currentUrl = imgElement.alt || '';
 			} else if (field.tagName === 'A') {
-				currentValue = field.textContent.trim();
-				currentUrl = field.href;
+				const linkElement = field as HTMLAnchorElement;
+				currentValue = linkElement.textContent?.trim() || '';
+				currentUrl = linkElement.href;
 			} else {
 				// Get text content excluding any child buttons, preserving line breaks from <br> tags
 				// Handle nested <br> tags by converting them to line breaks
