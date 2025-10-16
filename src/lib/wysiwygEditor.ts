@@ -373,6 +373,7 @@ export class WYSIWYGEditor {
     
     this.textarea.focus();
   }
+}
 
 /**
  * Progressive Icon Picker
