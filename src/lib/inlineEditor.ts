@@ -700,15 +700,20 @@ export class InlineEditor {
         
         // For address fields, preserve line breaks in display
         const displayValue = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
-          currentValue.replace(/\n/g, '\n') : 
+          escapeHtml(currentValue).replace(/\n/g, '\n') : 
           escapeHtml(currentValue);
+        
+        // Enhanced styling for address fields
+        const addressStyle = fieldType === 'paragraph' && fieldName?.toLowerCase().includes('address') ?
+          "white-space: pre-wrap; line-height: 1.6; min-height: 80px; font-family: inherit;" :
+          "white-space: pre-wrap; line-height: 1.6;";
         
         return `
           <textarea 
             class="inline-editor-field" 
             placeholder="${placeholder}"
             rows="${rows}"
-            style="white-space: pre-wrap; line-height: 1.6;"
+            style="${addressStyle}"
           >${displayValue}</textarea>
           ${currentValue ? `<div class="editor-count">${currentValue.length} characters</div>` : ''}
         `;

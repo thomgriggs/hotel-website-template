@@ -348,10 +348,12 @@ function initializePreviewMode() {
 		[data-sanity-edit-field] {
 			position: relative;
 			transition: all 0.2s ease;
+			display: inline-block;
 		}
 		
 		[data-sanity-edit-field]:hover {
 			cursor: pointer;
+			position: relative;
 		}
 		
 		/* Unified border and background for ALL editable elements */
@@ -368,6 +370,8 @@ function initializePreviewMode() {
 			pointer-events: none;
 			z-index: 9999; /* High z-index to avoid conflicts */
 			box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+			min-width: calc(100% + 8px);
+			min-height: calc(100% + 8px);
 		}
 		
 		/* Unified content type label for ALL elements */
