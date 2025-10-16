@@ -64,7 +64,7 @@ export default defineConfig({
             
             // All other content types
             ...S.documentTypeListItems().filter(
-              listItem => !['homepage', 'room', 'dining', 'amenity', 'contentTemplate', 'siteSettings'].includes(listItem.getId())
+              listItem => !['homepage', 'room', 'dining', 'amenity', 'contentTemplate', 'siteSettings'].includes(listItem.getId() || '')
             )
           ])
     }),
