@@ -418,40 +418,36 @@ a.btn:focus-visible {
 
 .social a {
 	align-items: center;
-	color: transparent;
+	color: #ffffff;
 	display: inline-flex;
 	justify-content: center;
-	max-width: 16px;
-	overflow: hidden;
-	position: relative;
-	text-align: center;
+	width: 32px;
+	height: 32px;
+	transition: all 0.3s ease;
+	border-radius: 4px;
 }
 
-.social a span {
-	display: inline-flex;
+.social a:hover,
+.social a:focus {
+	color: var(--color-secondary);
+	transform: translateY(-2px);
 }
 
-.social a:before {
-	background-color: #ffffff;
-	-webkit-mask-position: center;
-	mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	mask-repeat: no-repeat;
-	mask-size: contain;
-	-webkit-mask-size: contain;
-	content: "";
-	display: inline-block;
-	height: 16px;
-	left: 50%;
-	position: absolute;
-	top: 50%;
-	width: 16px;
-	transform: translate(-50%, -50%);
+.social a svg {
+	width: 24px;
+	height: 24px;
+	transition: all 0.3s ease;
 }
 
-.social a:hover:before,
-.social a:focus:before {
-	background-color: var(--color-secondary);
+.social a:hover svg,
+.social a:focus svg {
+	transform: scale(1.1);
+}
+
+.social-text {
+	font-size: 0.9rem;
+	text-transform: capitalize;
+	margin-left: 8px;
 }
 
 /* ========================================================================== */

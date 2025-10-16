@@ -491,8 +491,8 @@ function initializePreviewMode() {
 		/* CONTAINER OVERFLOW FIX */
 		/* Ensure parent containers don't clip our borders */
 		[data-sanity-edit-field] {
-			/* Add padding to prevent clipping */
-			margin: 4px;
+			/* Remove margin that was causing spacing issues */
+			margin: 0;
 		}
 		
 		/* Override common overflow settings that might clip borders */
